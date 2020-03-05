@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CPH Jetskis</title>
+    <link rel="stylesheet" type="text/css" href="../CSS/styles.css">
+</head>
+
+<body style="background-color:rgb(245, 246, 250)">
+
+<!-- Navigation bar and navigation buttons -->
+<div id="naviBar">
+    <div>
+        <h1 id="headTitle">CPH JETSKIS </h1>
+    </div>
+    <a href="index.html"><button id="buttonStyle"> Forside </button></a>
+    <button onclick="checkLoginOrderPage()" style="border-right-width: 0; border-left-width: 0" id="buttonStyle"> Bestil tid </button></a>
+    <button onclick="checkLoginProfilePage()" id="buttonStyle"> Profil </button> </a>
+    <!-- If user is active in localStorage, show the users phone: -->
+    <button id="loginPhone"> </button>
+</div>
+
+<!-- Text on the page-->
+<br><br><br>
+<div style="float: left" id="leftTextArea">
+    <h2 style="font-family: modernSansLight; font-size: 30px;"> Brugerprofil </h2>
+    <br>
+    <h4> Herunder kan du se de oplysninger vi har registreret om dig:</h4>
+
+    <br>
+    <h4>Navn: </h4> <p id="customerName"></p>
+    <br>
+
+    <h4>Adresse: </h4> <p id="customerAddress"></p>
+    <br>
+
+    <h4>By: </h4> <p id="customerCity"></p>
+    <br>
+
+    <h4>Telefonnummer: </h4> <p id="customerPhone"></p>
+    <br>
+
+    <h4>Email: </h4> <p id="customerEmail"></p>
+    <br>
+
+    <br><br>
+    <a href="Loginpage.html"><button id="buttonOnPage" onclick="logOut()"> Log ud </button></a>
+    <button id="buttonOnPage" onclick="deleteUser()"> Slet bruger </button>
+    <button id="buttonOnPage" onclick="deleteOrderAlert()">Annuller bestilling</button>
+    <select id="orderId">
+        <option value="00" selected disabled id="optionOrder">-Ordrer</option>
+        <!--<option id="order1"></option>-->
+
+
+    </select>
+</div>
+<div style="position: absolute; top: 225px; right: 300px; z-index: 1;" id="rightTextArea">
+    <h4> Dine tidligere bestillinger:</h4>
+    <div id="orderList" style="height: 500px; width: 300px; border:solid black 2px; overflow: scroll;">
+    <p id="noOrders"> Ingen aktive ordrer på nuværende tidspunkt. </p>
+    </div>
+
+</div>
+<script type="text/javascript" src="../Javascript/profile.js"></script>
+</body>
+
+</html
