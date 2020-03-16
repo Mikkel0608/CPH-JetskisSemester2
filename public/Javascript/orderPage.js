@@ -182,17 +182,17 @@ function calculatePrice() {
     /* MM: Checks if the order amount if above 0, and if so, it adds the jetski name, photo, price and amount to the <p> in the basket.
     If the order amount is 0, it empties the <p> so that the element is hidden in the basket */
     if (orderAmount1JS > 0) {
-        document.getElementById('basketJetski1').innerHTML = "<img style=\"width:30%; float:left; \" src=\"../API/public/images/sea-doo-spark.jpg\"> Sea Doo Spark <br> Antal: " + orderAmount1JS + "<br> Pris: " + orderAmount1JS * jetski1.price + " kr.";
+        document.getElementById('basketJetski1').innerHTML = "<img style=\"width:30%; float:left; \" src=\"images/sea-doo-spark.jpg\"> Sea Doo Spark <br> Antal: " + orderAmount1JS + "<br> Pris: " + orderAmount1JS * jetski1.price + " kr.";
     } else {
         document.getElementById('basketJetski1').innerHTML = "";
     }
     if (orderAmount2JS > 0) {
-        document.getElementById('basketJetski2').innerHTML = "<br><img style=\"width:30%; float:left; \" src=\"../API/public/images/yamaha-waverunner-vx.jpg\"> Yamaha Waverunner VX <br> Antal: " + orderAmount2JS + "<br> Pris: " + orderAmount2JS * jetski2.price + " kr.";
+        document.getElementById('basketJetski2').innerHTML = "<br><img style=\"width:30%; float:left; \" src=\"images/yamaha-waverunner-vx.jpg\"> Yamaha Waverunner VX <br> Antal: " + orderAmount2JS + "<br> Pris: " + orderAmount2JS * jetski2.price + " kr.";
     } else {
         document.getElementById('basketJetski2').innerHTML = "";
     }
     if (orderAmount3JS > 0) {
-        document.getElementById('basketJetski3').innerHTML = "<br><img style=\"width:30%; float:left; \" src=\"../API/public/images/kawasaki-stx-15f.jpg\"> Kawasaki STX-15F <br> Antal: " + orderAmount3JS + "<br> Pris: " + orderAmount3JS * jetski3.price + " kr.";
+        document.getElementById('basketJetski3').innerHTML = "<br><img style=\"width:30%; float:left; \" src=\"images/kawasaki-stx-15f.jpg\"> Kawasaki STX-15F <br> Antal: " + orderAmount3JS + "<br> Pris: " + orderAmount3JS * jetski3.price + " kr.";
     } else {
         document.getElementById('basketJetski3').innerHTML = "";
     }
