@@ -1,6 +1,6 @@
 @font-face {
     font-family: modernSansLight;
-    src= url("ModernSans-Light.otf")
+    src: url("ModernSans-Light.otf")
 }
 #headTitle {
     font-family: Candara;
