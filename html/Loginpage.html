@@ -21,16 +21,17 @@
 
 <div class="loginPage">
     <div class="form">
-    <form class="loginform">
+    <form class="loginform" action="auth" method="POST">
         <p id="logintext" >Login</p>
         <label for="phone">
-            <input id="phone" type="text" placeholder="Telefonnummer">
+            <input name="phone" type="text" placeholder="Telefonnummer">
         </label> <br>
         <label for="password">
-            <input id="password" type="password" placeholder="Password">
+            <input name="password" type="password" placeholder="Password">
         </label> <br>
+        <input type="submit">
         <!-- This button activates the JS function for validation-->
-        <button type="button" id="submit" onclick="validate()">Login</button>
+        <!--<button type="button" id="submit" onclick="validate()">Login</button>-->
         <br>
         <br>
         <a id=link href="Register2.html">Registrer bruger</a>
