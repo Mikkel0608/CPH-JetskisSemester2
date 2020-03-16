@@ -25,7 +25,9 @@ logged out by the system.
 //Function written by Morten Dyberg
 function logOut(){
     localStorage.removeItem("customerName");
-    localStorage.removeItem("address");
+    localStorage.removeItem("streetName");
+    localStorage.removeItem("streetNumber");
+    localStorage.removeItem("postalCode");
     localStorage.removeItem("city");
     localStorage.removeItem("phone");
     localStorage.removeItem("email");
@@ -43,7 +45,9 @@ window.onload = function getCustomerInfo() {
     information should be retrieved from. This retrieved information is then saved to the newly created variables.
      */
     var storedName = localStorage.getItem('customerName');
-    var storedAddress = localStorage.getItem('address');
+    var storedStreetName = localStorage.getItem('streetName');
+    var storedStreetNumber = localStorage.getItem('streetNumber');
+    var storedPostalCode = localStorage.getItem('postalCode');
     var storedCity = localStorage.getItem('city');
     var storedPhone = localStorage.getItem('phone');
     var storedEmail = localStorage.getItem('email');
@@ -52,7 +56,9 @@ window.onload = function getCustomerInfo() {
     MM: Inserts the value of the variables created above into the innerHTML of a set of <p> tags.
      */
     document.getElementById('customerName').innerHTML=storedName;
-    document.getElementById('customerAddress').innerHTML=storedAddress;
+    document.getElementById('customerStreetName').innerHTML=storedStreetName;
+    document.getElementById('customerStreetNumber').innerHTML=storedStreetNumber;
+    document.getElementById('customerPostalCode').innerHTML=storedPostalCode;
     document.getElementById('customerCity').innerHTML=storedCity;
     document.getElementById('customerPhone').innerHTML=storedPhone;
     document.getElementById('customerEmail').innerHTML=storedEmail;

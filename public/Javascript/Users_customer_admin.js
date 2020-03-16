@@ -1,9 +1,11 @@
 //MD: A class is created. Classes can in JavaScript be used for creating objects (instantiation)
 //Written by Morten Dyberg/Markus Kronborg
 class Customer {
-    constructor(customerName, address, city, phone, email, password){
+    constructor(customerName, streetName, streetNumber, postalCode, city, phone, email, password){
         this.customerName = customerName;
-        this.address = address;
+        this.streetName = streetName;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
         this.city = city;
         this.phone = phone;
         this.email = email;
@@ -19,7 +21,9 @@ that returns false if some of the text fields are invalid.
 //This code is written by Morten Dyberg
 function register() {
     var customerName = document.getElementById("customerName").value;
-    var address = document.getElementById("address").value;
+    var streetName = document.getElementById("streetName").value;
+    var streetNumber = document.getElementById("streetNumber").value;
+    var postalCode = document.getElementById("postalCode").value;
     var city = document.getElementById("city").value;
     var phone = document.getElementById("phone").value;
     var email = document.getElementById("email").value;
@@ -40,10 +44,10 @@ function register() {
     }
 
     //3. Validating the address (same method as the name)
-    if (address==null || address=="")
+    if (streetName==null || streetName=="")
     {
-        document.getElementById('address').style.borderColor = "red";
-        validation_message += "Venligst udfyld addresse!";
+        document.getElementById('streetName').style.borderColor = "red";
+        validation_message += "Venligst udfyld addresse navn!";
         form_valid = false;
     }
 
@@ -99,7 +103,7 @@ The method .push is used to introduce a new customer object into the back of the
     if (form_valid) {
 
         var userArray = JSON.parse(localStorage.getItem('userArray'));
-        userArray.push(new Customer(customerName, address, city, phone, email, password));
+        userArray.push(new Customer(customerName, streetName, streetNumber, postalCode, city, phone, email, password));
 
         localStorage.setItem("userArray", JSON.stringify(userArray));
         alert("Ny bruger er blevet oprettet");
@@ -123,11 +127,11 @@ var userArray;
 if (localStorage.getItem('userArray')==null) {
     userArray = [];
 
-    userArray.push(new Customer('Per','Nørregade 31, 4th', 'København', '45678904','per@købenahvn.dk', 'per123'));
-    userArray.push(new Customer('Tina','Gothersgade 42, 3tv', 'København', '22340987','tina@gmail.com', 'Minkode122'));
-    userArray.push(new Customer('Louise','Brostykkevej 81', 'Hvidovre', '67880322', 'Louise@hotmail.com', 'nulnul42'));
-    userArray.push(new Customer('Martin', 'Lemchesvej 22', 'Hellerup', '33445522', 'martin@privat.eu','Hejmeddig'));
-    userArray.push(new Customer('Niels', 'Gurrevej 12', 'Helsingør', '73459025','Niels123@yahoo.dk','Niels8477'));
+    userArray.push(new Customer('Per','Nørregade', '31, 4th', '2300', 'København', '45678904','per@købenahvn.dk', 'per123'));
+    userArray.push(new Customer('Tina','Gothersgade', '42, 3tv', '2300','København', '22340987','tina@gmail.com', 'Minkode122'));
+    userArray.push(new Customer('Louise','Brostykkevej', '81', '2000', 'Hvidovre', '67880322', 'Louise@hotmail.com', 'nulnul42'));
+    userArray.push(new Customer('Martin', 'Lemchesvej', '22', '2000', 'Hellerup', '33445522', 'martin@privat.eu','Hejmeddig'));
+    userArray.push(new Customer('Niels', 'Gurrevej', '12', '2450', 'Helsingør', '73459025','Niels123@yahoo.dk','Niels8477'));
     
     var userArrayString = JSON.stringify(userArray);
     localStorage.setItem('userArray', userArrayString);
@@ -152,9 +156,11 @@ function loginVal() {
     for (var i = 0; i < userArray.length; i++) {
         if (phone == userArray[i].phone && password == userArray[i].password) {
             status = true;
-            //window.location = "index.html";
+            window.location = "index.html";
             localStorage.setItem('customerName', userArray[i].customerName);
-            localStorage.setItem('address', userArray[i].address);
+            localStorage.setItem('streetName', userArray[i].streetName);
+            localStorage.setItem('streetNumber', userArray[i].streetNumber);
+            localStorage.setItem('postalCode', userArray[i].postalCode);
             localStorage.setItem('city', userArray[i].city);
             localStorage.setItem('phone', userArray[i].phone);
             localStorage.setItem('email', userArray[i].email);
@@ -245,7 +251,9 @@ function showInfo () {
     for (let i = 0; i < userArray.length; i++) {
         if (selection.value == userArray[i].phone) {
             document.getElementById('customerName').innerHTML = userArray[i].customerName;
-            document.getElementById('customerAddress').innerHTML = userArray[i].address;
+            document.getElementById('customerStreetName').innerHTML = userArray[i].streetName;
+            document.getElementById('customerStreetNumber').innerHTML = userArray[i].streetNumber;
+            document.getElementById('customerPostalCode').innerHTML = userArray[i].postalCode;
             document.getElementById('customerCity').innerHTML = userArray[i].city;
             document.getElementById('customerPhone').innerHTML = userArray[i].phone;
             document.getElementById('customerEmail').innerHTML = userArray[i].email;
