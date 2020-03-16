@@ -33,9 +33,9 @@ app.get('/Loginpage.html', function(request, response) {
 });
 
 
-app.post('/auth', function (request, response) {
-    var phone = request.body.phone;
-    var password = request.body.password;
+/*module.exports*/app.post('/auth', function (request, response) {
+    const phone = request.body.phone;
+    const password = request.body.password;
     console.log(phone, password);
         if (phone && password) {
             pool.query('SELECT * FROM customers WHERE phone = $1 AND password = $2', [phone, password], function (error, results, fields) {
@@ -54,6 +54,7 @@ app.post('/auth', function (request, response) {
             response.end();
         }
 });
+
 
 
 
