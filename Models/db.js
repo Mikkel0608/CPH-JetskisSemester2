@@ -8,9 +8,9 @@ const pool = new Pool({
 });
 module.exports = pool;
 
-//laver en customer-tabel
+//Opretter tabeller med udgangspunkt i E/R
 
-const createCustomerTable = () =>{
+const createTables = () =>{
     const queryText = `CREATE TABLE IF NOT EXISTS
                         Customers(
                             customerId INT PRIMARY KEY,
@@ -21,7 +21,33 @@ const createCustomerTable = () =>{
                             phone INT,
                             email VARCHAR(50),
                             password VARCHAR(50) 
-                            )`;
+                            );
+                            
+                            CREATE TABLE IF NOT EXISTS
+                            Products(
+                            productId INT PRIMARY KEY,
+                            price INT,
+                            modelName VARCHAR(50)
+                            );
+                            
+                            CREATE TABLE IF NOT EXISTS
+                            Orders(
+                            orderId INT PRIMARY KEY,
+                            orderDay VARCHAR(50),
+                            orderMonth VARCHAR(50),
+                            orderYear INT,
+                            timePeriod VARCHAR(50),
+                            orderPrice INT);
+                            
+                            CREATE TABLE IF NOT EXISTS 
+                            orderProductId(
+                            INT PRIMARY KEY);
+                            
+                            CREATE TABLE IF NOT EXISTS
+                            admin(
+                            adminId INT PRIMARY KEY,
+                            userName VARCHAR(50),
+                            password VARCHAR(50);`;
 
     pool.query(queryText)
         .then((res)=>{
@@ -33,8 +59,6 @@ const createCustomerTable = () =>{
             pool.end();
         });
 };
-
-
 
 
 
