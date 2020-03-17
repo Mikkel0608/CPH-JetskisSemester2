@@ -49,10 +49,9 @@ const createTables = () =>{
                             userName VARCHAR(50),
                             password VARCHAR(50));`;
 
-    pool.query(queryText)
-        .then((res)=>{
-//            console.log(res);
-//            pool.end();
+   pool.query(queryText)
+        .then(()=>{
+            pool.end();
         })
         .catch((err)=>{
             console.log(err);
@@ -60,7 +59,6 @@ const createTables = () =>{
         });
 };
 createTables();
-
 
 
 
