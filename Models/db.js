@@ -32,7 +32,7 @@ const createTables = () =>{
                             
                             CREATE TABLE IF NOT EXISTS
                             Orders(
-                            orderIdINT PRIMARY KEY,
+                            orderId INT PRIMARY KEY,
                             orderDay VARCHAR(50),
                             orderMonth VARCHAR(50),
                             orderYear INT,
@@ -47,12 +47,12 @@ const createTables = () =>{
                             admin(
                             adminId INT PRIMARY KEY,
                             userName VARCHAR(50),
-                            password VARCHAR(50);`;
+                            password VARCHAR(50));`;
 
     pool.query(queryText)
         .then((res)=>{
-            console.log(res);
-            pool.end();
+//            console.log(res);
+//            pool.end();
         })
         .catch((err)=>{
             console.log(err);

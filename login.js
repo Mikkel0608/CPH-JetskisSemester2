@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const pool = require('./Models/db');
-const app = require('/index');
+//const app = require('./index.js');
+const app = express();
 
 app.use(express.static('views'));
 app.listen(3000);
@@ -32,7 +33,8 @@ app.post('/auth', function (request, response) {
     console.log(phone, password);
         if (phone && password) {
             pool.query('SELECT * FROM customers WHERE phone = $1 AND password = $2', [phone, password], function (error, results, fields) {
-                console.log(results.length);
+                console.log(error);
+                console.log(results);
                 if (results.length > 0) {
                     request.session.loggedin = true;
                     request.session.phone = phone;
