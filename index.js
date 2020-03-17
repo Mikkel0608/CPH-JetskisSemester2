@@ -45,8 +45,14 @@ app.get('/Adminpage.html',(req,res)=>{
 app.get('/Calendar.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/Calendar.html'))
 });
+
 const loginFunction = require('./login.js');
 app.post('/auth', loginFunction);
+
+const registerFunction = require('./registerCustomer');
+app.post('/register', registerFunction);
+
+
 
 
 

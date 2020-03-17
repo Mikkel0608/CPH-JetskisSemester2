@@ -39,7 +39,7 @@ function register() {
     if (customerName==null || customerName=="")
     {
         document.getElementById('customerName').style.borderColor = "red";
-        validation_message += "Venligst udfyld navn!";
+        validation_message += "Venligst udfyld navn! \n";
         form_valid = false;
     }
 
@@ -47,7 +47,7 @@ function register() {
     if (streetName==null || streetName=="")
     {
         document.getElementById('streetName').style.borderColor = "red";
-        validation_message += "Venligst udfyld addresse navn!";
+        validation_message += "Venligst udfyld vejnavn!\n";
         form_valid = false;
     }
 
@@ -55,7 +55,7 @@ function register() {
     if (city==null || city=="")
     {
         document.getElementById('city').style.borderColor = "red";
-        validation_message += "Venligst udfyld by!";
+        validation_message += "Venligst udfyld by!\n";
         form_valid = false;
     }
 
@@ -63,7 +63,7 @@ function register() {
     if (isNaN(phone) || phone==null || phone=="")
     {
         document.getElementById('phone').style.borderColor = "red";
-        validation_message += "Venligst udfyld telefonnummer!";
+        validation_message += "Venligst udfyld telefonnummer!\n";
         form_valid = false;
     }
 
@@ -71,7 +71,7 @@ function register() {
     if (email==null || email=="")
     {
         document.getElementById('email').style.borderColor = "red";
-        validation_message += "Venligst udfyld E-mail!";
+        validation_message += "Venligst udfyld E-mail!\n";
         form_valid = false;
     }
 
@@ -81,7 +81,7 @@ function register() {
     {
         document.getElementById('password').style.borderColor = "red";
         document.getElementById('confirmPassword').style.borderColor = "red";
-        validation_message += "Venligst udfyld password!";
+        validation_message += "Venligst udfyld password!\n";
         form_valid = false;
     }
 
@@ -100,17 +100,19 @@ The JSON.stringify command does the opposite, and converts JavaScript values to 
 The method .push is used to introduce a new customer object into the back of the userArray.
 .setItem is used to put data into the localStorage.
 */
-    if (form_valid) {
 
-        var userArray = JSON.parse(localStorage.getItem('userArray'));
+    if (form_valid) {
+        return true;
+        /*var userArray = JSON.parse(localStorage.getItem('userArray'));
         userArray.push(new Customer(customerName, streetName, streetNumber, postalCode, city, phone, email, password));
 
         localStorage.setItem("userArray", JSON.stringify(userArray));
         alert("Ny bruger er blevet oprettet");
         window.location = "Loginpage.html";
-
+*/
     } else {
-        alert(validation_message)
+        alert(validation_message);
+        return false;
     }
 
 }

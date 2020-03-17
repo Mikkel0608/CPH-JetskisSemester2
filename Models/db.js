@@ -9,7 +9,6 @@ const pool = new Pool({
 module.exports = pool;
 
 //Opretter tabeller med udgangspunkt i E/R
-
 const createTables = () =>{
     const queryText = `CREATE TABLE IF NOT EXISTS
                         Customers(
@@ -18,6 +17,7 @@ const createTables = () =>{
                             streetName VARCHAR(50),
                             streetNumber INT,
                             postalCode INT,
+                            city VARCHAR(50),
                             phone INT,
                             email VARCHAR(50),
                             password VARCHAR(50) 
