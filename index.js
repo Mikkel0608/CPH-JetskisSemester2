@@ -1,7 +1,9 @@
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
+module.exports = app;
 
 app.use(express.static('views'));
 app.listen(3000, ()=>{
@@ -45,8 +47,7 @@ app.get('/Calendar.html',(req,res)=>{
 });
 
 /*const loginFunction = require('./login.js');
-app.post('/auth', loginFunction());
- */
+app.post('/auth', loginFunction());*/
 
 
 

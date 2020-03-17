@@ -2,11 +2,10 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-//const Pool = require('pg').Pool;
 
 const pool = require('./Models/db');
+const app = require('/index');
 
-const app = express();
 app.use(express.static('views'));
 app.listen(3000);
 
@@ -27,7 +26,7 @@ app.get('/Loginpage.html', function(request, response) {
 });
 
 
-/*module.exports*/app.post('/auth', function (request, response) {
+app.post('/auth', function (request, response) {
     const phone = request.body.phone;
     const password = request.body.password;
     console.log(phone, password);
