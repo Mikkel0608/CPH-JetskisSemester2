@@ -44,10 +44,11 @@ module.exports = function (request, response){
             responseText+='Email-addressen er allerede registreret';
         }
         response.send(responseText);
+        response.end();
     });
     console.log(form_valid);
 
-    if (phone && password){
+    if (form_valid === true){
         pool.query(`INSERT INTO customers(
                     customerName, 
                     streetName,
