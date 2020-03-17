@@ -2,15 +2,9 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const Pool = require('pg').Pool;
+//const Pool = require('pg').Pool;
 
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'cphjetskis',
-    password: 'cphjetskis',
-    port: 5432,
-});
+const pool = require('./Models/db');
 
 const app = express();
 app.use(express.static('views'));

@@ -6,6 +6,7 @@ const pool = new Pool({
     password: 'cphjetskis',
     port: 5432,
 });
+module.exports = pool;
 
 //laver en customer-tabel
 

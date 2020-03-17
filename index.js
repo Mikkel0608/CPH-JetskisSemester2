@@ -44,8 +44,9 @@ app.get('/Calendar.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/Calendar.html'))
 });
 
-const loginFunction = require('./login.js');
+/*const loginFunction = require('./login.js');
 app.post('/auth', loginFunction());
+ */
 
 
 
