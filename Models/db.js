@@ -32,7 +32,7 @@ const createTables = () =>{
                             
                             CREATE TABLE IF NOT EXISTS
                             Orders(
-                            orderId INT PRIMARY KEY,
+                            orderIdINT PRIMARY KEY,
                             orderDay VARCHAR(50),
                             orderMonth VARCHAR(50),
                             orderYear INT,
@@ -40,8 +40,8 @@ const createTables = () =>{
                             orderPrice INT);
                             
                             CREATE TABLE IF NOT EXISTS 
-                            orderProductId(
-                            INT PRIMARY KEY);
+                            orderProduct(
+                            orderProductId INT PRIMARY KEY);
                             
                             CREATE TABLE IF NOT EXISTS
                             admin(
@@ -59,7 +59,7 @@ const createTables = () =>{
             pool.end();
         });
 };
-
+createTables();
 
 
 
