@@ -30,7 +30,7 @@ module.exports = function (request, response){
 
     //Dette kode virker ikke helt endnu
     //Making sure that it is not possible to register the same email or phone number
-    /*var form_valid = true;
+    var form_valid = true;
     var responseText = "";
         pool.query(`SELECT * FROM customers WHERE phone = $1`, [phone], function (error, results, fields) {
         if (results.rows.length > 0) {
@@ -45,8 +45,7 @@ module.exports = function (request, response){
         }
         response.send(responseText);
     });
-    //console.log(form_valid);
-    */
+    console.log(form_valid);
 
     if (phone && password){
         pool.query(`INSERT INTO customers(
