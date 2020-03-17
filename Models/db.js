@@ -51,7 +51,6 @@ const createTables = () =>{
 
    pool.query(queryText)
         .then(()=>{
-            pool.end();
         })
         .catch((err)=>{
             console.log(err);
