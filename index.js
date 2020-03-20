@@ -51,9 +51,10 @@ const loginFunction = require('./login.js');
 //login validation
 app.post('/auth', loginFunction.loginFunc);
 //Checks that the user is logged in before viewing page
+app.get('/checklogin', loginFunction.checkLogin);
 app.get('/profile.html', loginFunction.checkLogin);
 //logs user out
-app.get('/checklogin', loginFunction.logOut);
+app.get('/logout', loginFunction.logOut);
 
 const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);

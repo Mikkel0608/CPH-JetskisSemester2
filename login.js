@@ -17,46 +17,47 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+
 //This function takes the form data, and compares it to the data in the database.
 function loginFunc (request, response) {
     var phone = request.body.phone;
     var password = request.body.password;
     console.log(phone, password);
-        if (phone && password) {
-            pool.query(`SELECT * FROM customers WHERE phone = $1 AND password = $2`, [phone, password], function (error, results, fields) {
-                //console.log(error);
-                //console.log(results);
-                //The results from the query contain a rows object, which has an array of the results
-                //If the row has a length of more than 0 there is a match
-                if (results.rows.length > 0) {
-                    request.session.loggedin = true;
-                    request.session.phone = phone;
-                    response.redirect('/');
-                } else {
-                    response.send('Incorrect phone and/or password');
-                }
-                response.end();
-            });
-        } else {
-            response.send('Please enter phone and password');
+    if (phone && password) {
+        pool.query(`SELECT * FROM customers WHERE phone = $1 AND password = $2`, [phone, password], function (error, results, fields) {
+            //console.log(error);
+            //console.log(results);
+            //The results from the query contain a rows object, which has an array of the results
+            //If the row has a length of more than 0 there is a match
+            if (results.rows.length > 0) {
+                request.session.loggedin = true;
+                request.session.phone = phone;
+                response.redirect('/');
+            } else {
+                response.send('Incorrect phone and/or password');
+            }
             response.end();
-        }
+        });
+    } else {
+        response.send('Please enter phone and password');
+        response.end();
+    }
 }
 
-function checkLogin (request, response) {
+function checkLogin (request, response,) {
     if (request.session.loggedin) {
         response.redirect('/profile.html');
-        console.log(session.loggedin);
     } else {
-        response.send('Venligst log ind for at se denne side');
         response.redirect('/loginpage.html');
     }
     response.end();
 }
 
 function logOut (request, response){
-    request.session.loggedin = false;
-    response.redirect('/loginpage.html');
+request.session.loggedin = false;
+    console.log("Venligst log ind");
+    response.redirect('loginpage.html');
+    response.end();
 }
 
 

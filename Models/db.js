@@ -33,7 +33,7 @@ const createTables = () =>{
                             CREATE TABLE IF NOT EXISTS
                             orders(
                             orderId SERIAL PRIMARY KEY,
-                            customerId int REFERENCES Costumers(customerId),
+                            customerId int REFERENCES customers(customerId),
                             orderDay VARCHAR(50),
                             orderMonth VARCHAR(50),
                             orderYear INT,
