@@ -17,6 +17,7 @@ window.onload = function checkLoginButton() {
 /This function use the same if statement as the function above but here it is an if else statement. The difference is mainly that this function is activated when a button is clicked.
 This if statement locate the user to either the loginPage or the orderPage. If the key in local storage is null they direct to loginPage else the user go to orderPage where the order can be made.
  */
+/*
 function checkLoginOrderPage() {
     if (localStorage.getItem('phone') == null) {
         var confirmLoginOrder = window.confirm("Du skal være logget ind for at bestille en tid. Tryk OK for at logge ind.");
@@ -39,3 +40,4 @@ function checkLoginProfilePage() {
         window.location ="profile.html"
     }
 }
+*/

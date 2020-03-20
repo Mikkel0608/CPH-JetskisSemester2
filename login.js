@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 //This function takes the form data, and compares it to the data in the database.
-module.exports = function (request, response) {
+function loginFunc (request, response) {
     var phone = request.body.phone;
     var password = request.body.password;
     console.log(phone, password);
@@ -41,7 +41,27 @@ module.exports = function (request, response) {
             response.send('Please enter phone and password');
             response.end();
         }
+}
+
+function checkLogin (request, response){
+    if (request.session.loggedin){
+        response.redirect('/profile.html');
+    } else{
+        return false;
+    }
+}
+
+
+
+module.exports = {
+    loginFunc,
+    checkLogin
 };
+
+
+
+
+
 
 
 

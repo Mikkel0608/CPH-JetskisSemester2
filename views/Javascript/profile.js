@@ -2,7 +2,7 @@
 If the condition is true, it sends the user to the login page, as the user is not logged in. If not, it allows the user to access the order page.
 The function is activated by the onclick attribute specified on the "Bestil tid" button HTML tag.
  */
-function checkLoginOrderPage() {
+/*function checkLoginOrderPage() {
     if (localStorage.getItem('phone') == null) {
         window.location = "Loginpage.html"
     } else {
@@ -11,6 +11,7 @@ function checkLoginOrderPage() {
 }
 /* MM: The following function has the same functionality as the function above, but with the "Profil" button instead.
  */
+/*
 function checkLoginProfilePage() {
     if (localStorage.getItem('phone') == null) {
         window.location = "Loginpage.html"
@@ -18,6 +19,7 @@ function checkLoginProfilePage() {
         window.location ="profile.html"
     }
 }
+ */
 
 /* MM: The logOut function removes the specified keys from the local storage. By removing the keys, the user is seen as
 logged out by the system.
@@ -66,9 +68,9 @@ window.onload = function getCustomerInfo() {
     /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
     links the user to the login page.
      */
-        if (localStorage.getItem('phone') == null) {
+    /*    if (localStorage.getItem('phone') == null) {
             window.location = "Loginpage.html"
-        }
+        }*/
     /* MM: This line of code retrieves the innerHTML part of the HTML tag with id "loginPhone" and sets it equal to some text and
     the phone key's value stored in local storage.
      */
