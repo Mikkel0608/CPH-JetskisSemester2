@@ -43,19 +43,28 @@ function loginFunc (request, response) {
         }
 }
 
-function checkLogin (request, response){
-    if (request.session.loggedin){
+function checkLogin (request, response) {
+    if (request.session.loggedin) {
         response.redirect('/profile.html');
-    } else{
-        return false;
+        console.log(session.loggedin);
+    } else {
+        response.send('Venligst log ind for at se denne side');
+        response.redirect('/loginpage.html');
     }
+    response.end();
+}
+
+function logOut (request, response){
+    request.session.loggedin = false;
+    response.redirect('/loginpage.html');
 }
 
 
 
 module.exports = {
     loginFunc,
-    checkLogin
+    checkLogin,
+    logOut
 };
 
 

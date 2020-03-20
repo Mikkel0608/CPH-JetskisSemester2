@@ -46,11 +46,14 @@ app.get('/Calendar.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/Calendar.html'))
 });
 
-
+//require functions from login.js
 const loginFunction = require('./login.js');
+//login validation
 app.post('/auth', loginFunction.loginFunc);
-
+//Checks that the user is logged in before viewing page
 app.get('/profile.html', loginFunction.checkLogin);
+//logs user out
+app.get('/checklogin', loginFunction.logOut);
 
 const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
