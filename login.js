@@ -49,6 +49,7 @@ function checkLogin (request, response,) {
         response.redirect('/profile.html');
     } else {
         response.redirect('/loginpage.html');
+        console.log("Venligts log ind");
     }
     response.end();
 }

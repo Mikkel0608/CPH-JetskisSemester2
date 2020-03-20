@@ -34,8 +34,8 @@ const createTables = () =>{
                             orders(
                             orderId SERIAL PRIMARY KEY,
                             customerId int REFERENCES customers(customerId),
-                            orderDay VARCHAR(50),
-                            orderMonth VARCHAR(50),
+                            orderDay INT,
+                            orderMonth INT,
                             orderYear INT,
                             timePeriod VARCHAR(50),
                             orderPrice INT);
