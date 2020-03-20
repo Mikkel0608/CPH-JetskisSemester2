@@ -27,12 +27,12 @@
     <br>
 </div>
     <!-- Selection of date and time -->
+<form action="createOrder" method="POST">
 <div name="chooseDate">
     <h3> Vælg venligst et udlejningstidspunkt for at se ledige vandscootere:</h3>
     <br>
     <p> Udlejningsdato </p>
-    <form action="getOrders" method="GET">
-    <select type="text" name="rentDay">
+    <select type="text" name="rentDay" id="rentDay">
         <option value="00" selected disabled>-Dag-</option>
         <option value="01">01</option>
         <option value="02">02</option>
@@ -66,7 +66,7 @@
         <option value="30">30</option>
         <option value="31">31</option>
     </select>
-    <select type="text" name="rentMonth">
+    <select type="text" name="rentMonth" id="rentMonth">
         <option value="00" selected disabled>-Måned-</option>
         <option value="1">January</option>
         <option value="2">February</option>
@@ -82,7 +82,7 @@
         <option value="12">December</option>
     </select>
 
-    <select type="text" name="rentYear">
+    <select type="text" name="rentYear" id="rentYear">
         <option value="00" selected disabled>-År-</option>
         <option value="2019">2019</option>
         <option value="2020">2020</option>
@@ -90,7 +90,7 @@
     </select>
     <br><br>
     <p> Udlejningstidspunkt</p>
-    <select type="text" name="rentTime">
+    <select type="text" name="rentTime" id="rentTime">
         <option value="00" selected disabled>-Tid-</option>
         <option value="10-12">10:00-12:00</option>
         <option value="12-14">12:00-14:00</option>
@@ -100,25 +100,24 @@
     <br><br><br>
 
     <!-- This confirmation button checks the vacant jetskis for the given time -->
-    <button onclick="confirmTime()" type="submit" id="buttonOnPage"> Vælg tidspunkt </button>
-    </form>
+    <button onclick="confirmTime()" type="button" id="buttonOnPage"> Vælg tidspunkt </button>
 
 </div>
 <br><br>
 <hr>
 <!-- Jetski model 1 -->
-<div style="display:none; float: left; width: 100%;" id="modelContainer1">
+<div style="float: left; width: 100%;" id="modelContainer1">
     <div style="width:100%; height: 50px; background-color: #00A8FF; position: relative; top: 10px;">
         <h2 id="jetskiHeadline"> Sea Doo Spark </h2>
     </div>
         <div style="float: left; width: 45%; padding: 20px" id="jetski1Photo">
-        <img style="width:100%" src="images/sea-doo-spark.jpg">
+        <img style="width:100%" src="../images/sea-doo-spark.jpg">
         </div>
     <div style="float: left; width: 45%; padding: 20px" id="jetski1Text">
         <p>Sea Doo Spark er en fornuftig maskine til <br> en stærk pris. <br><br>
             Pris: 300 kr. for 2 timer. <br><br>
             Antal: </p>
-        <select onchange="calculatePrice()" type="text" id="orderAmount1">
+        <select onchange="calculatePrice()" type="text" name="orderAmount1" id="orderAmount1">
             <option value="0" selected disabled> -Antal- </option>
             <option value="00">0</option>
             <option id="jetski1Amount1" value="1"> 1</option>
@@ -130,17 +129,17 @@
 </div>
 
 <!-- Jetski model 2-->
-<div style="display:none; float: left; width: 100%;" id="modelContainer2">
+<div style="float: left; width: 100%;" id="modelContainer2">
     <div style="width:100%; height: 50px; background-color: #00A8FF; position: relative; top: 10px;">
         <h2 id="jetskiHeadline"> Yamaha Waverunner VX </h2>
     </div>
     <div style="float: left; width: 45%; padding: 20px;" id="jetski2Photo">
-        <img style="width: 100%" src="images/yamaha-waverunner-vx.jpg">
+        <img style="width: 100%" src="../images/yamaha-waverunner-vx.jpg">
     </div>
     <div style="float: left; width: 45%; padding: 20px;" id="jetski2Text">
         <p>Pris: 500 kr. for 2 timer. <br><br>
         Antal: </p>
-        <select onchange="calculatePrice()" type="text" id="orderAmount2">
+        <select onchange="calculatePrice()" type="text" name="orderAmount2" id="orderAmount2">
             <option value="0" selected disabled> -Antal- </option>
             <option value="00">0</option>
             <option id="jetski2Amount1" value="1">1</option>
@@ -152,17 +151,17 @@
 </div>
 
 <!-- Jetski model 3-->
-<div style="display:none; float: left; width: 100%;" id="modelContainer3">
+<div style="float: left; width: 100%;" id="modelContainer3">
     <div style="width:100%; height: 50px; background-color: #00A8FF; position: relative; top: 10px;">
         <h2 id="jetskiHeadline"> Kawasaki STF-15F </h2>
     </div>
     <div style="float: left; width: 45%; padding: 20px;" id="jetski3Photo">
-        <img style="width: 100%" src="images/kawasaki-stx-15f.jpg">
+        <img style="width: 100%" src="../images/kawasaki-stx-15f.jpg">
     </div>
     <div style="float: left; width: 45%; padding: 20px;" id="jetski3Text">
         <p>Pris: 600 kr. for 2 timer. <br><br>
         Antal: </p>
-        <select onchange="calculatePrice()" type="text" id="orderAmount3">
+        <select onchange="calculatePrice()" type="text" name="orderAmount3" id="orderAmount3">
             <option value="0" selected disabled> -Antal- </option>
             <option value="00">0</option>
             <option id="jetski3Amount1" value="1">1</option>
@@ -194,10 +193,11 @@ selects an amount of jetskis. -->
             <!-- The following div "totalPrice" shows the total price of everything in the basket  -->
             <div id="totalPrice"> </div>
         </div>
-       <button onclick="storeOrder()" id="confirmPurchaseButton"> BESTIL </button></a>
+       <button type="submit" onclick="storeOrder()" id="confirmPurchaseButton"> BESTIL </button></a>
     </div>
     <br style="clear: left">
 </div>
+</form>
 <script type="text/javascript" src="Javascript/orderPage.js">
 
 </script>

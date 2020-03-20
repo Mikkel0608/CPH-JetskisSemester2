@@ -4,6 +4,7 @@ in localStorage (here we use the 'phone' key), and checks if there are is any va
 is redirected to the login page. In addition, the function also inserts the users phone number in the navibar as text.
  */
 //Function written by: MM
+/*
 window.onload = function checkLoginButton() {
     document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + localStorage.getItem('phone');
 
@@ -39,9 +40,10 @@ function checkLoginProfilePage() {
 2. It checks if there already are reservations for the given time/date, and adjusts the amount of jetskis shown.
  */
 //Function written by: MM
+/*
 function confirmTime() {
     /* MK/MM Creating variables that represent the user selection of date and time we assign the variable to the different elementID's from our HTML
-    */
+
     var rentDayID = document.getElementById("rentDay");
     var rentDayValue = rentDayID.options[rentDayID.selectedIndex].value;
     var rentMonthID = document.getElementById("rentMonth");
@@ -68,10 +70,9 @@ function confirmTime() {
     } else { //MM: If the user has not filled out alle the date/time fields, an error is shown:
         alert("Udfyld venligst alle felter.");
     }
-    /*
        MM:
        Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
-        */
+
     var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;
     var orderArray = JSON.parse(localStorage.getItem('orderArray'));
     //MK: Three new variables are created for occupiedAmount1/2/3 which refers to the jetskis. They are defined using number 0 because they as a standard are not rented.
@@ -82,7 +83,7 @@ function confirmTime() {
     /*MK/MM: A loop is created to cycle through all registered order and count the occupied jetskis for the selected period.
     The purpose of this loop is that only available jetskis are shown, and that jetskis that are already reserved are hidden.
     The loop uses the orderAmount and the orderArray variables.
-     */
+
     for (var i = 0; i < orderAmount; i++) {
         if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
             //MM:Counts the amount of jetski1 reserved and adds to the var
@@ -143,6 +144,7 @@ function confirmTime() {
         document.getElementById("modelContainer3").style.display = "none";
     }
 }
+*/
 //MM: The Jetski class is created. For now, only the price property is used in the code.
 class Jetski {
     constructor(model, price, HorsePower) {

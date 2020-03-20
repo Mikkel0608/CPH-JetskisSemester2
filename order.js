@@ -18,7 +18,12 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 module.exports = function (request, response) {
-    var rentDayID = request.body.rentDay;
-    var rentDayValue = rentDayID.options[rentDayID.selectedIndex].value;
-
+    var rentDay = request.body.rentDay;
+    var rentMonth = request.body.rentMonth;
+    var rentYear = request.body.rentYear;
+    var rentTime = request.body.rentTime;
+    var orderAmount1 = request.body.orderAmount1;
+    var orderAmount2 = request.body.orderAmount2;
+    var orderAmount3 = request.body.orderAmount3;
+    console.log([rentDay, rentMonth, rentYear, rentTime, orderAmount1, orderAmount2, orderAmount3]);
 }

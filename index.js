@@ -59,8 +59,8 @@ app.get('/logout', loginFunction.logOut);
 const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
 
-const checkOrder = require('./order.js');
-app.get('/getOrders', checkOrder);
+const createOrder = require('./order.js');
+app.post('/createOrder', createOrder);
 
 
 
