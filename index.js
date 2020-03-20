@@ -55,8 +55,8 @@ app.get('/profile.html', loginFunction.checkLogin);
 const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
 
-
-
+const checkOrder = require('./order.js');
+app.get('/getOrders', checkOrder);
 
 
 

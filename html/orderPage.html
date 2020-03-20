@@ -27,11 +27,12 @@
     <br>
 </div>
     <!-- Selection of date and time -->
-<div>
+<div name="chooseDate">
     <h3> Vælg venligst et udlejningstidspunkt for at se ledige vandscootere:</h3>
     <br>
     <p> Udlejningsdato </p>
-    <select type="text" id="rentDay">
+    <form action="getOrders" method="GET">
+    <select type="text" name="rentDay">
         <option value="00" selected disabled>-Dag-</option>
         <option value="01">01</option>
         <option value="02">02</option>
@@ -65,7 +66,7 @@
         <option value="30">30</option>
         <option value="31">31</option>
     </select>
-    <select type="text" id="rentMonth">
+    <select type="text" name="rentMonth">
         <option value="00" selected disabled>-Måned-</option>
         <option value="1">January</option>
         <option value="2">February</option>
@@ -81,7 +82,7 @@
         <option value="12">December</option>
     </select>
 
-    <select type="text" id="rentYear">
+    <select type="text" name="rentYear">
         <option value="00" selected disabled>-År-</option>
         <option value="2019">2019</option>
         <option value="2020">2020</option>
@@ -89,7 +90,7 @@
     </select>
     <br><br>
     <p> Udlejningstidspunkt</p>
-    <select type="text" id="rentTime">
+    <select type="text" name="rentTime">
         <option value="00" selected disabled>-Tid-</option>
         <option value="10-12">10:00-12:00</option>
         <option value="12-14">12:00-14:00</option>
@@ -100,6 +101,7 @@
 
     <!-- This confirmation button checks the vacant jetskis for the given time -->
     <button onclick="confirmTime()" type="submit" id="buttonOnPage"> Vælg tidspunkt </button>
+    </form>
 
 </div>
 <br><br>

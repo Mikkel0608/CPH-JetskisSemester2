@@ -16,3 +16,9 @@ app.use(session({
 //the bodyParser extracts the form data from our orderPage.html file.
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+
+module.exports = function (request, response) {
+    var rentDayID = request.body.rentDay;
+    var rentDayValue = rentDayID.options[rentDayID.selectedIndex].value;
+
+}
