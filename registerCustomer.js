@@ -32,36 +32,39 @@ module.exports = function (request, response){
     //Making sure that it is not possible to register the same email or phone number
     var form_valid = true;
     var responseText = "";
-        pool.query(`SELECT * FROM customers WHERE phone = $1`, [phone], function (error, results, fields) {
+    pool.query(`SELECT * FROM customers WHERE phone = $1`, [phone], function (error, results, fields) {
         if (results.rows.length > 0) {
             form_valid = false;
             responseText+='Mobilnummeret er allerede registreret\n';
         }
-    });
-    pool.query(`SELECT * FROM customers WHERE email = $1`, [email], function (error, results, fields) {
-        if (results.rows.length > 0) {
-            form_valid = false;
-            responseText+='Email-addressen er allerede registreret';
-        }
-        response.send(responseText);
-        response.end();
-    });
-    console.log(form_valid);
 
-    if (form_valid === true){
-        pool.query(`INSERT INTO customers(
-                    customerName, 
-                    streetName,
-                    streetNumber,
-                    postalCode,
-                    city,
-                    phone,
-                    email,
-                    password)
-                    VALUES(
-                    $1, $2, $3, $4, $5, $6, $7, $8);
-                    `, [customerName, streetName, streetNumber, postalCode, city, phone, email, password]);
-        response.redirect('/Loginpage.html');
-    }
-    response.end();
+
+        pool.query(`SELECT * FROM customers WHERE email = $1`, [email], function (error, results, fields) {
+            if (results.rows.length > 0) {
+                form_valid = false;
+                responseText+='Email-addressen er allerede registreret';
+            }
+            if(form_valid === false) {
+                response.send(responseText);
+            }
+
+            if (form_valid === true){
+                pool.query(`INSERT INTO customers(
+                customerName, 
+                streetName,
+                streetNumber,
+                postalCode,
+                city,
+                phone,
+                email,
+                password)
+                VALUES(
+                $1, $2, $3, $4, $5, $6, $7, $8);
+                `, [customerName, streetName, streetNumber, postalCode, city, phone, email, password]);
+                response.redirect('/Loginpage.html');
+            }
+            response.end();
+        });
+        console.log(form_valid);
+    });
 };
