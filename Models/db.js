@@ -11,7 +11,7 @@ module.exports = pool;
 //Opretter tabeller med udgangspunkt i E/R
 const createTables = () =>{
     const queryText = `CREATE TABLE IF NOT EXISTS
-                        Customers(
+                        customers(
                             customerId SERIAL PRIMARY KEY,
                             customerName VARCHAR(50),
                             streetName VARCHAR(50),
@@ -24,15 +24,16 @@ const createTables = () =>{
                             );
                             
                             CREATE TABLE IF NOT EXISTS
-                            Products(
+                            products(
                             productId SERIAL PRIMARY KEY,
                             price INT,
                             modelName VARCHAR(50)
                             );
                             
                             CREATE TABLE IF NOT EXISTS
-                            Orders(
+                            orders(
                             orderId SERIAL PRIMARY KEY,
+                            customerId int REFERENCES Costumers(customerId),
                             orderDay VARCHAR(50),
                             orderMonth VARCHAR(50),
                             orderYear INT,
@@ -41,7 +42,10 @@ const createTables = () =>{
                             
                             CREATE TABLE IF NOT EXISTS 
                             orderProduct(
-                            orderProductId SERIAL PRIMARY KEY);
+                            orderProductId SERIAL PRIMARY KEY,
+                            productId int REFERENCES Products(productId),
+                            orderId int REFERENCES Orders(orderId));
+                            
                             
                             CREATE TABLE IF NOT EXISTS
                             admin(
@@ -59,8 +63,15 @@ const createTables = () =>{
 };
 createTables();
 
-//TODO fjernes
+// Funktion der pusher producter ind i product tabel
+ const pushProducts = () =>{
 
+ }
+
+/* TODO: Slet evt tables før arbejde med DB fortsættes:
+Dette skyldes vi benytter "Create table if not exist"
+Drop tabels og derefter refresh.
+ */
 
 
 
