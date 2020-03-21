@@ -58,7 +58,7 @@ app.get('/checklogin', loginFunction.checkLogin);
 app.get('/logout', loginFunction.logOut);
 
 //deletes the customer-user that is logged in
-app.delete('/deleteuser', loginFunction.deleteUser);
+app.get('/deleteuser', loginFunction.deleteUser);
 
 
 const registerFunction = require('./registerCustomer');

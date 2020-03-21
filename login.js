@@ -65,12 +65,15 @@ request.session.loggedin = false;
 
 //Denne kode virker ikke helt endnu
 function deleteUser(request, response){
-    const activePhone = request.session.loggedin;
+    const activePhone = request.session.phone;
+    console.log(activePhone);
     pool.query(`DELETE FROM customers where phone = $1`, [activePhone], function (error, results){
         if (error){
             throw error;
         }
         console.log(`Bruger med mobilnummeret ${activePhone} er blevet slettet.`);
+        request.session.phone = null;
+        request.session.loggedin = null;
         response.redirect('/');
         response.end();
     }
