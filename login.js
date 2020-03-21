@@ -30,6 +30,7 @@ function loginFunc (request, response) {
             //The results from the query contain a rows object, which has an array of the results
             //If the row has a length of more than 0 there is a match
             if (results.rows.length > 0) {
+                console.log(results.rows);
                 request.session.loggedin = true;
                 request.session.phone = phone;
                 response.redirect('/');
@@ -44,12 +45,13 @@ function loginFunc (request, response) {
     }
 }
 
-function checkLogin (request, response,) {
+
+function checkLogin (request, response){
     if (request.session.loggedin) {
         response.redirect('/profile.html');
     } else {
         response.redirect('/loginpage.html');
-        console.log("Venligts log ind");
+        console.log("Venligst log ind");
     }
     response.end();
 }
@@ -60,6 +62,7 @@ request.session.loggedin = false;
     response.redirect('loginpage.html');
     response.end();
 }
+
 
 
 
