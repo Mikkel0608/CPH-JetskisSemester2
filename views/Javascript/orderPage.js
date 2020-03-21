@@ -175,6 +175,7 @@ function calculatePrice() {
     var orderAmount3JS = document.getElementById('orderAmount3').value;
     var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
     document.getElementById('totalPrice').innerHTML = "Samlet Pris: " + finalPrice + " kr.";
+    document.getElementById('totalPriceHidden').value = finalPrice;
     document.getElementById('basketDivFull').style.display = "";
 
     //MM:Checks if all order amounts are 0, then the basket should be hidden
