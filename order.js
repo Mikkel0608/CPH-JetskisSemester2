@@ -52,6 +52,7 @@ module.exports = function (request, response) {
 
      */
     //Creates the order row in the DB from the collected information
+    var orderId = null;
     function createOrder() {
         pool.query(`INSERT INTO orders(
         customerid, 
@@ -60,13 +61,46 @@ module.exports = function (request, response) {
         orderyear, 
         timeperiod, 
         orderprice) 
-        VALUES($1, $2, $3, $4, $5, $6);
-        `, [customerID, rentDay, rentMonth, rentYear, rentTime, totalPrice]);
-        createLineItems()
+        VALUES($1, $2, $3, $4, $5, $6) RETURNING orderid;
+        `, [customerID, rentDay, rentMonth, rentYear, rentTime, totalPrice], function (error, result) {
+            if(error) {
+                throw error;
+            } else {
+                orderId = result.rows[0].orderid;
+                console.log(orderId);
+                createOrderProducts();
+            }
+        });
     }
 
-    function createLineItems() {
-
+    function createOrderProducts() {
+        if (orderAmount1>0) {
+            for (let i = 0; i < orderAmount1; i++) {
+                pool.query(`INSERT INTO orderproduct(
+            productid,
+            orderid)
+            VALUES($1, $2);
+            `, [1, orderId])
+            }
+        }
+        if (orderAmount2>0) {
+            for (let i = 0; i < orderAmount2; i++) {
+                pool.query(`INSERT INTO orderproduct(
+            productid,
+            orderid)
+            VALUES($1, $2);
+            `, [2, orderId])
+            }
+        }
+        if (orderAmount3>0) {
+            for (let i = 0; i < orderAmount3; i++) {
+                pool.query(`INSERT INTO orderproduct(
+            productid,
+            orderid)
+            VALUES($1, $2);
+            `, [3, orderId])
+            }
+        }
     }
 
 
