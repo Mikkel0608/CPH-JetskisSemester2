@@ -20,6 +20,8 @@ app.use(bodyParser.json());
 
 //This function takes the form data, and compares it to the data in the database.
 function loginFunc (request, response) {
+    var fiveHours = 18000000;
+    request.session.cookie.maxAge = fiveHours;
     var phone = request.body.phone;
     var password = request.body.password;
     console.log(phone, password);
@@ -58,6 +60,7 @@ function checkLogin (request, response){
 
 function logOut (request, response){
 request.session.loggedin = false;
+request.session.phone = undefined;
     console.log("Venligst log ind");
     response.redirect('loginpage.html');
     response.end();

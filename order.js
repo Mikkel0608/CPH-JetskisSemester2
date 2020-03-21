@@ -27,7 +27,10 @@ module.exports = function (request, response) {
     var orderAmount3 = request.body.orderAmount3;
     var totalPrice = request.body.totalPriceHidden;
     console.log([rentDay, rentMonth, rentYear, rentTime, orderAmount1, orderAmount2, orderAmount3, totalPrice]);
-
+    console.log(request.session.phone);
+    if (request.session.phone === undefined) {
+        response.send("Session timed out. Please login again and resubmit your order. <br><br><br> <a href='/loginpage.html'> Click here to go to the loginpage</a>");
+    }
 
 
 
