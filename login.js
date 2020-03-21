@@ -61,7 +61,7 @@ function checkLogin (request, response){
 function logOut (request, response){
 request.session.loggedin = false;
 request.session.phone = undefined;
-    console.log("Venligst log ind");
+    console.log("Du har logget ud");
     response.redirect('loginpage.html');
     response.end();
 }
@@ -75,8 +75,8 @@ function deleteUser(request, response){
             throw error;
         }
         console.log(`Bruger med mobilnummeret ${activePhone} er blevet slettet.`);
-        request.session.phone = null;
-        request.session.loggedin = null;
+        request.session.phone = undefined;
+        request.session.loggedin = undefined;
         response.redirect('/');
         response.end();
     }
