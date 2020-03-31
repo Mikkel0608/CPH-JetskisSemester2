@@ -28,7 +28,6 @@ module.exports = function (request, response){
     const password = request.body.password;
     console.log(customerName, streetName, streetNumber, postalCode, city, phone, email, password);
 
-    //Dette kode virker ikke helt endnu
     //Making sure that it is not possible to register the same email or phone number
     var form_valid = true;
     var responseText = "";

@@ -12,7 +12,7 @@ class Customer {
         this.password = password;
     }
 }
-
+var xhr = new XMLHttpRequest();
 
 /*MD:
 The purpose of the code is validate the input in the registration form. We achieve this by using a boolean value
@@ -102,14 +102,13 @@ The method .push is used to introduce a new customer object into the back of the
 */
 
     if (form_valid) {
-        return true;
-        /*var userArray = JSON.parse(localStorage.getItem('userArray'));
-        userArray.push(new Customer(customerName, streetName, streetNumber, postalCode, city, phone, email, password));
+        const customer = new Customer(customerName, streetName, streetNumber, postalCode, city, phone, email, password);
+        xhr.open("POST", 'http://localhost:3000/register', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify(customer));
 
-        localStorage.setItem("userArray", JSON.stringify(userArray));
-        alert("Ny bruger er blevet oprettet");
-        window.location = "Loginpage.html";
-*/
+        return true;
+
     } else {
         alert(validation_message);
         return false;

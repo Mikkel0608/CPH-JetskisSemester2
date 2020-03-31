@@ -73,13 +73,6 @@ app.post('/register', registerFunction);
 const createOrder = require('./order.js');
 app.post('/createOrder', createOrder);
 
-app.post('/', (req, res) =>{
-    console.log('request accept');
-    console.log(req.body);
-    res.end();
-});
-
-
 
 
 
