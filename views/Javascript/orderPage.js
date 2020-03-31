@@ -145,6 +145,8 @@ function confirmTime() {
     }
 }
 */
+
+// TODO HorsePower skal fjernes fra JetSki klassen
 //MM: The Jetski class is created. For now, only the price property is used in the code.
 class Jetski {
     constructor(model, price, HorsePower) {
