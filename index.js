@@ -5,6 +5,8 @@ const path = require('path');
 const app = express();
 module.exports = app;
 
+app.use(express.json());
+
 app.use(express.static('views'));
 app.listen(3000, ()=>{
     console.log("App listening on port 3000")
@@ -69,6 +71,11 @@ app.post('/register', registerFunction);
 const createOrder = require('./order.js');
 app.post('/createOrder', createOrder);
 
+app.post('/Loginpage.html', (req, res) =>{
+    console.log('request accept');
+    console.log(req.body);
+    res.end();
+});
 
 
 
