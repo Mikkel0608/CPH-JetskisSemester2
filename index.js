@@ -2,9 +2,11 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 module.exports = app;
 
+app.use(cors());
 app.use(express.json());
 
 app.use(express.static('views'));
@@ -71,7 +73,7 @@ app.post('/register', registerFunction);
 const createOrder = require('./order.js');
 app.post('/createOrder', createOrder);
 
-app.post('/Loginpage.html', (req, res) =>{
+app.post('/', (req, res) =>{
     console.log('request accept');
     console.log(req.body);
     res.end();
