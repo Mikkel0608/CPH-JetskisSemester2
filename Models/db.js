@@ -11,47 +11,50 @@ module.exports = pool;
 //Opretter tabeller med udgangspunkt i E/R
 const createTables = () =>{
     const queryText = `CREATE TABLE IF NOT EXISTS
-                        customers(
-                            customerId SERIAL PRIMARY KEY,
-                            customerName VARCHAR(50),
+                        users(
+                            userId SERIAL PRIMARY KEY,
+                            userTypeId INT REFERENCES userType(userTypeId),
+                            userName VARCHAR(50),
                             streetName VARCHAR(50),
                             streetNumber INT,
                             postalCode INT,
                             city VARCHAR(50),
                             phone INT,
                             email VARCHAR(50),
-                            password VARCHAR(50) 
+                            password VARCHAR(50),
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             );
                             
                             CREATE TABLE IF NOT EXISTS
-                            products(
+                            Product(
                             productId SERIAL PRIMARY KEY,
-                            price INT,
+                            price FLOAT,
                             modelName VARCHAR(50)
                             );
                             
                             CREATE TABLE IF NOT EXISTS
                             orders(
                             orderId SERIAL PRIMARY KEY,
-                            customerId int REFERENCES customers(customerId),
+                            userId INT REFERENCES users(userId),
                             orderDay INT,
                             orderMonth INT,
                             orderYear INT,
                             timePeriod VARCHAR(50),
-                            orderPrice INT);
+                            orderPrice INT,
+                            order_placed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                            );
                             
                             CREATE TABLE IF NOT EXISTS 
-                            orderProduct(
+                           orderProduct(
                             orderProductId SERIAL PRIMARY KEY,
-                            productId int REFERENCES Products(productId),
-                            orderId int REFERENCES Orders(orderId));
+                            productId INT REFERENCES Product(productId),
+                            orderId INT REFERENCES Orders(orderId));
                             
                             
                             CREATE TABLE IF NOT EXISTS
-                            admin(
-                            adminId SERIAL PRIMARY KEY,
-                            userName VARCHAR(50),
-                            password VARCHAR(50));`;
+                            userType(
+                            userTypeId SERIAL PRIMARY KEY,
+                            type VARCHAR(5))`;
 
    pool.query(queryText)
         .then(()=>{
