@@ -32,13 +32,13 @@ module.exports = function (request, response){
     //Making sure that it is not possible to register the same email or phone number
     var form_valid = true;
     var responseText = "";
-    pool.query(`SELECT * FROM customers WHERE phone = $1`, [phone], function (error, results, fields) {
+    pool.query(`SELECT * FROM users WHERE phone = $1`, [phone], function (error, results, fields) {
         if (results.rows.length > 0) {
             form_valid = false;
             responseText+='Mobilnummeret er allerede registreret\n';
         }
 
-        pool.query(`SELECT * FROM customers WHERE email = $1`, [email], function (error, results, fields) {
+        pool.query(`SELECT * FROM users WHERE email = $1`, [email], function (error, results, fields) {
             if (results.rows.length > 0) {
                 form_valid = false;
                 responseText+='Email-addressen er allerede registreret';
@@ -47,8 +47,8 @@ module.exports = function (request, response){
                 response.send(responseText);
             }
             if (form_valid === true){
-                pool.query(`INSERT INTO customers(
-                customerName, 
+                pool.query(`INSERT INTO users(
+                userName, 
                 streetName,
                 streetNumber,
                 postalCode,

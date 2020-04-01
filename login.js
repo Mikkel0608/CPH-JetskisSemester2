@@ -26,7 +26,7 @@ function loginFunc (request, response) {
     var password = request.body.password;
     console.log(phone, password);
     if (phone && password) {
-        pool.query(`SELECT * FROM customers WHERE phone = $1 AND password = $2`, [phone, password], function (error, results, fields) {
+        pool.query(`SELECT * FROM users WHERE phone = $1 AND password = $2`, [phone, password], function (error, results, fields) {
             //console.log(error);
             //console.log(results);
             //The results from the query contain a rows object, which has an array of the results
@@ -70,7 +70,7 @@ request.session.phone = undefined;
 function deleteUser(request, response){
     const activePhone = request.session.phone;
     console.log(activePhone);
-    pool.query(`DELETE FROM customers where phone = $1`, [activePhone], function (error, results){
+    pool.query(`DELETE FROM users where phone = $1`, [activePhone], function (error, results){
         if (error){
             throw error;
         }
