@@ -26,7 +26,7 @@ const createTables = () =>{
                             );
                             
                             CREATE TABLE IF NOT EXISTS
-                            Product(
+                            products(
                             productId SERIAL PRIMARY KEY,
                             price FLOAT,
                             modelName VARCHAR(50)
@@ -47,7 +47,7 @@ const createTables = () =>{
                             CREATE TABLE IF NOT EXISTS 
                            orderProduct(
                             orderProductId SERIAL PRIMARY KEY,
-                            productId INT REFERENCES Product(productId),
+                            productId INT REFERENCES products(productId),
                             orderId INT REFERENCES Orders(orderId));
                             
                             
