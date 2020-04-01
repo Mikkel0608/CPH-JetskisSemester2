@@ -106,7 +106,7 @@ The method .push is used to introduce a new customer object into the back of the
         xhr.open("POST", 'http://localhost:3000/register', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify(customer));
-
+        window.location = "http://localhost:3000/register";
         return true;
 
     } else {
