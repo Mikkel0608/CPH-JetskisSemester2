@@ -69,7 +69,7 @@ const registerFunction = require('./registerCustomer');
 //register new customer
 app.post('/register', registerFunction);
 
-
+// creating new order
 const createOrder = require('./order.js');
 app.post('/createOrder', createOrder);
 
