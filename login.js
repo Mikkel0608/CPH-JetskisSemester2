@@ -62,7 +62,7 @@ function logOut (request, response){
 request.session.loggedin = false;
 request.session.phone = undefined;
     console.log("Du har logget ud");
-    response.redirect('loginpage.html');
+    response.redirect('/loginpage.html');
     response.end();
 }
 

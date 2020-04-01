@@ -53,16 +53,16 @@ app.get('/Calendar.html',(req,res)=>{
 //require functions from login.js
 const loginFunction = require('./login.js');
 //login validation
-app.post('/auth', loginFunction.loginFunc);
+app.post('/loginpage/auth', loginFunction.loginFunc);
 
 //Checks that the user is logged in before viewing page
 app.get('/checklogin', loginFunction.checkLogin);
 
 //logs user out
-app.get('/logout', loginFunction.logOut);
+app.get('/profile/logout', loginFunction.logOut);
 
 //deletes the customer-user that is logged in
-app.get('/deleteuser', loginFunction.deleteUser);
+app.get('/profile/deleteuser', loginFunction.deleteUser);
 
 
 const registerFunction = require('./registerCustomer');

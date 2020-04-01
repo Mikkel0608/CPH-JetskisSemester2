@@ -28,6 +28,7 @@ module.exports = function (request, response){
     const password = request.body.password;
     console.log(customerName, streetName, streetNumber, postalCode, city, phone, email, password);
 
+
     //Making sure that it is not possible to register the same email or phone number
     var form_valid = true;
     var responseText = "";
@@ -37,7 +38,6 @@ module.exports = function (request, response){
             responseText+='Mobilnummeret er allerede registreret\n';
         }
 
-
         pool.query(`SELECT * FROM customers WHERE email = $1`, [email], function (error, results, fields) {
             if (results.rows.length > 0) {
                 form_valid = false;
@@ -46,7 +46,6 @@ module.exports = function (request, response){
             if(form_valid === false) {
                 response.send(responseText);
             }
-
             if (form_valid === true){
                 pool.query(`INSERT INTO customers(
                 customerName, 
