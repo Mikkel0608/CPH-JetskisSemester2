@@ -22,19 +22,20 @@ app.use(bodyParser.json());
 function loginFunc (request, response) {
     var fiveHours = 18000000;
     request.session.cookie.maxAge = fiveHours;
-    var phone = request.body.phone;
+    var email = request.body.email;
+    //var phone = request.body.phone;
     var password = request.body.password;
-    console.log(phone, password);
-    if (phone && password) {
-        pool.query(`SELECT * FROM users WHERE phone = $1 AND password = $2`, [phone, password], function (error, results, fields) {
+    console.log(email, password);
+    if (email && password) {
+        pool.query(`SELECT usertypeid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
             //console.log(error);
             //console.log(results);
             //The results from the query contain a rows object, which has an array of the results
-            //If the row has a length of more than 0 there is a match
+            //Mangler noget kode der sender en customer til forsiden, mens en admin bliver sendt til admin-side.
             if (results.rows.length > 0) {
                 console.log(results.rows);
                 request.session.loggedin = true;
-                request.session.phone = phone;
+                request.session.email = email;
                 response.redirect('/');
             } else {
                 response.send('Incorrect phone and/or password');
@@ -60,22 +61,21 @@ function checkLogin (request, response){
 
 function logOut (request, response){
 request.session.loggedin = false;
-request.session.phone = undefined;
+request.session.email = undefined;
     console.log("Du har logget ud");
     response.redirect('/loginpage.html');
     response.end();
 }
 
-//Denne kode virker ikke helt endnu
 function deleteUser(request, response){
-    const activePhone = request.session.phone;
-    console.log(activePhone);
-    pool.query(`DELETE FROM users where phone = $1`, [activePhone], function (error, results){
+    const activeEmail = request.session.email;
+    console.log(activeEmail);
+    pool.query(`DELETE FROM users where email = $1`, [activeEmail], function (error, results){
         if (error){
             throw error;
         }
-        console.log(`Bruger med mobilnummeret ${activePhone} er blevet slettet.`);
-        request.session.phone = undefined;
+        console.log(`Bruger med E-mail ${activeEmail} er blevet slettet.`);
+        request.session.email = undefined;
         request.session.loggedin = undefined;
         response.redirect('/');
         response.end();
