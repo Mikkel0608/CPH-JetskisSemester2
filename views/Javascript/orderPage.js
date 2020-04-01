@@ -146,19 +146,17 @@ function confirmTime() {
 }
 */
 
-// TODO HorsePower skal fjernes fra JetSki klassen
 //MM: The Jetski class is created. For now, only the price property is used in the code.
 class Jetski {
     constructor(model, price, HorsePower) {
         this.model = model;
         this.price = price;
-        this.HorsePower = HorsePower;
     }
 }
 //MM: Objects are created from the Jetski class, representing the different jetski models.
-var jetski1= new Jetski('Sea Doo Spark', 300, 60)
-var jetski2= new Jetski('Yamaha Waverunner VX', 500, 125);
-var jetski3= new Jetski('Kawasaki STX 15F', 600, 160);
+var jetski1= new Jetski('Sea Doo Spark', 300)
+var jetski2= new Jetski('Yamaha Waverunner VX', 500);
+var jetski3= new Jetski('Kawasaki STX 15F', 600);
 //the Object.freeze is used to make sure customers can't change the price property of the objects.
 Object.freeze(jetski1);
 Object.freeze(jetski2);
