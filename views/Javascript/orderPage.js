@@ -4,15 +4,22 @@ in localStorage (here we use the 'phone' key), and checks if there are is any va
 is redirected to the login page. In addition, the function also inserts the users phone number in the navibar as text.
  */
 //Function written by: MM
-/*
-window.onload = function checkLoginButton() {
-    document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + localStorage.getItem('phone');
 
+window.onload = function checkLoginButton() {
+    var xmr = new XMLHttpRequest();
+    xmr.open('GET', 'http://localhost:3000/register');
+    xmr.onload = function() {
+        console.log(xmr.response);
+        document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + xmr.response;
+    }
     //checks if the user is logged in and redirects to loginpage if not
     // (this is used if the user is linked directly to this page and have not logged in or registered before.)
+    /*
     if (localStorage.getItem('phone') == null) {
         window.location = "Loginpage.html"
     }
+
+     */
 }
 //MK: The purpose of this function is to make sure that the user of the website cannot enter the orderPage if the user is not logged in.
 //This function uses the same if statement as the function above but here it is an if else statement. The difference is mainly that this function is activated when a button is clicked.
@@ -146,6 +153,7 @@ function confirmTime() {
 }
 */
 
+
 //MM: The Jetski class is created. For now, only the price property is used in the code.
 class Jetski {
     constructor(model, price, HorsePower) {
@@ -175,7 +183,6 @@ function calculatePrice() {
     var orderAmount3JS = document.getElementById('orderAmount3').value;
     var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
     document.getElementById('totalPrice').innerHTML = "Samlet Pris: " + finalPrice + " kr.";
-    document.getElementById('totalPriceHidden').value = finalPrice;
     document.getElementById('basketDivFull').style.display = "";
 
     //MM:Checks if all order amounts are 0, then the basket should be hidden
@@ -245,18 +252,17 @@ function storeOrder() {
     // MK/MM: A variable is created to calculate the final price of the order.
     // MK: Totalprice = Amount picked of jetski1 * jetski1's price + Amount picked of jetski2 * jetski2's price and so on...
     var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
-    //MK: A orderId is created to the order. The purpose of this is to make a unique ID for every order. This variable picks a random number up to 999.999.
-    var orderId = Math.floor(Math.random()*10000) + 99999;
 
     /* MM: The orderArray is retrieved from local storage by using JSON.parse.
     The values of the new order is collected from variables used earlier, and from HTML elements by using getElementById().
     The new order is pushed onto the retrieved orderArray, and the entire updated array is saved to local storage by using
     JSON.stringify() and localStorage.setItem().
      */
-    var orderArray = JSON.parse(localStorage.getItem('orderArray'));
-    orderArray.push(new Order(localStorage.getItem('phone'), orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice, orderId));
 
-    localStorage.setItem('orderArray', JSON.stringify(orderArray));
-    window.location = "orderConfirmation.html";
+
+    const newOrder = new Order("", orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    xhr.open("POST", 'http://localhost:3000/createOrder', true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify(newOrder));
+    window.location = "http://localhost:3000/orderconfirmation.html";
 }
-

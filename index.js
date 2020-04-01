@@ -73,6 +73,10 @@ app.post('/register', registerFunction);
 const createOrder = require('./order.js');
 app.post('/createOrder', createOrder);
 
+// getting the active phone number from the API to the frontend
+const getPhone = require('./getphone.js');
+app.get('/getphone', getPhone);
+
 
 
 
