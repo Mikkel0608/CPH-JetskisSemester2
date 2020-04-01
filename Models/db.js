@@ -12,7 +12,7 @@ module.exports = pool;
 const createTables = () =>{
     const queryText =   `CREATE TABLE IF NOT EXISTS
                            userType(
-                           userTypeId int PRIMARY KEY,
+                           userTypeId SERIAL PRIMARY KEY,
                            type VARCHAR(50));
                            
     
