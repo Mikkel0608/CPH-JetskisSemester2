@@ -10,7 +10,12 @@ module.exports = pool;
 
 //Opretter tabeller med udgangspunkt i E/R
 const createTables = () =>{
-    const queryText = `CREATE TABLE IF NOT EXISTS
+    const queryText =   `CREATE TABLE IF NOT EXISTS
+                           userType(
+                           userTypeId SERIAL PRIMARY KEY,
+                           type VARCHAR(5));
+    
+                        CREATE TABLE IF NOT EXISTS
                         users(
                             userId SERIAL PRIMARY KEY,
                             userTypeId INT REFERENCES userType(userTypeId),
@@ -48,13 +53,8 @@ const createTables = () =>{
                            orderProduct(
                             orderProductId SERIAL PRIMARY KEY,
                             productId INT REFERENCES products(productId),
-                            orderId INT REFERENCES Orders(orderId));
-                            
-                            
-                            CREATE TABLE IF NOT EXISTS
-                            userType(
-                            userTypeId SERIAL PRIMARY KEY,
-                            type VARCHAR(5))`;
+                            orderId INT REFERENCES Orders(orderId));`;
+
 
    pool.query(queryText)
         .then(()=>{
