@@ -73,7 +73,7 @@ module.exports = function (request, response){
                 VALUES(
                 $1, $2, $3, $4, $5, $6, $7, $8, $9);
                 `, [usertypeid, name, streetName, streetNumber, postalCode, city, phone, email, password]);
-                response.redirect('/Loginpage.html');
+                //response.redirect('/Loginpage.html');
                 }
             }
             response.end();

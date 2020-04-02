@@ -75,11 +75,7 @@ function createData(){
                        values(2, 500, 'Yamaha Waverunner VX');
                        INSERT INTO products(productId, price, modelName)
                        values(3, 600, 'Kawasaki STF-15F');
-                       
-                       
-                       INSERT INTO users (username, email, password)
-                       VALUES ('admin', 'admin@admin.com', 'admin');`;
-
+                       `;
 
     pool.query(queryText)
         .then(()=>{
@@ -90,6 +86,9 @@ function createData(){
         });
 }
 //createData();
+
+
+
 // Funktion der pusher producter ind i product tabel
  const pushProducts = () =>{
 
