@@ -209,7 +209,7 @@ MM: The deleteUser function deletes the current user from the userArray.
  */
 //Function written by Morten Dyberg
 function deleteUser() {
-    var userArray = JSON.parse(localStorage.getItem("userArray"));
+    //var userArray = JSON.parse(localStorage.getItem("userArray"));
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
     if (choice == true) {
         /*
@@ -218,6 +218,8 @@ function deleteUser() {
         again saved to local storage using the JSON.stringify method. The user is linked to the login page using window.location,
         and the logOut() function and deleteOrder() functions are called.
          */
+        window.location = '/profile/deleteuser';
+        /*
         for (var i = 0; i <= userArray.length; i++) {
             if (localStorage.getItem("phone") == userArray[i].phone) {
                 alert("Bruger er blevet slettet");
@@ -228,8 +230,8 @@ function deleteUser() {
                 localStorage.setItem('userArray', userArrayString);
                 logOut();
                 deleteOrder();
-
             }
         }
+         */
     }
 }

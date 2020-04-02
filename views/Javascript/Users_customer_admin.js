@@ -1,17 +1,24 @@
-//MD: A class is created. Classes can in JavaScript be used for creating objects (instantiation)
-//Written by Morten Dyberg/Markus Kronborg
-class Customer {
-    constructor(customerName, streetName, streetNumber, postalCode, city, phone, email, password){
-        this.customerName = customerName;
+class User {
+    constructor(name, email, password){
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+}
+
+
+
+class Customer extends User{
+    constructor(name, streetName, streetNumber, postalCode, city, phone, email, password){
+        super(name, email, password);
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
         this.city = city;
         this.phone = phone;
-        this.email = email;
-        this.password = password;
     }
 }
+const customer1 = new Customer("morten")
 var xhr = new XMLHttpRequest();
 
 /*MD:
@@ -20,7 +27,7 @@ that returns false if some of the text fields are invalid.
  */
 //This code is written by Morten Dyberg
 function register() {
-    var customerName = document.getElementById("customerName").value;
+    var name = document.getElementById("customerName").value;
     var streetName = document.getElementById("streetName").value;
     var streetNumber = document.getElementById("streetNumber").value;
     var postalCode = document.getElementById("postalCode").value;
@@ -102,7 +109,7 @@ The method .push is used to introduce a new customer object into the back of the
 */
 
     if (form_valid) {
-        const customer = new Customer(customerName, streetName, streetNumber, postalCode, city, phone, email, password);
+        const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
         xhr.open("POST", 'http://localhost:3000/register', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify(customer));
@@ -179,13 +186,12 @@ function loginVal() {
 
 //A class is created for the admin. The only properties in this class are username and password.
 //Class written by Markus Kronborg
-class Admin {
-    constructor(username, password) {
-        this.username = username;
-        this.password = password;
+class Admin extends User{
+    constructor(name, email, password) {
+        super(name, email, password);
     }
     logIn(){
-        console.log(this.username, "har lige logget ind");
+        console.log(this.name, "har lige logget ind");
     }
 }
 //We make an instance of this class by creating an object.

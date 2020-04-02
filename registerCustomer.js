@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 module.exports = function (request, response){
-    const customerName = request.body.customerName;
+    const name = request.body.name;
     const streetName = request.body.streetName;
     const streetNumber = request.body.streetNumber;
     const postalCode = request.body.postalCode;
@@ -26,7 +26,7 @@ module.exports = function (request, response){
     const phone = request.body.phone;
     const email = request.body.email;
     const password = request.body.password;
-    console.log(customerName, streetName, streetNumber, postalCode, city, phone, email, password);
+    console.log(name, streetName, streetNumber, postalCode, city, phone, email, password);
 
 
     //Making sure that it is not possible to register the same email or phone number
@@ -58,7 +58,7 @@ module.exports = function (request, response){
                 password)
                 VALUES(
                 $1, $2, $3, $4, $5, $6, $7, $8);
-                `, [customerName, streetName, streetNumber, postalCode, city, phone, email, password]);
+                `, [name, streetName, streetNumber, postalCode, city, phone, email, password]);
                 response.redirect('/Loginpage.html');
             }
             response.end();

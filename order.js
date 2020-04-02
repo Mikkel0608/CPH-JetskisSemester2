@@ -28,17 +28,18 @@ module.exports = function (request, response) {
     var totalPrice = request.body.totalPriceHidden;
 
     //If no phone is registered, an error is shown:
-    if (request.session.phone === undefined) {
+    if (request.session.email === undefined) {
         response.send("Session timed out. Please login again and resubmit your order. <br><br><br> <a href='/loginpage.html'>Click here to go to the login page</a>");
     }
 
     // The following section uses the phone stored in the session to find the corresponding customerid in the database
-    var customerID = null;
-    pool.query(`SELECT customerid FROM customers WHERE phone =$1`, [request.session.phone], function (error, results) {
+    var userid = null;
+    pool.query(`SELECT userid FROM users WHERE email =$1`, [request.session.email], function (error, results) {
         if(error) {
             throw error;
         } else {
-            customerID = results.rows[0].customerid;
+            console.log(results.rows);
+            userid = results.rows[0].userid;
             createOrder();
         }
     });
@@ -55,14 +56,14 @@ module.exports = function (request, response) {
     var orderId = null;
     function createOrder() {
         pool.query(`INSERT INTO orders(
-        customerid, 
+        userid, 
         orderday, 
         ordermonth, 
         orderyear, 
         timeperiod, 
         orderprice) 
         VALUES($1, $2, $3, $4, $5, $6) RETURNING orderid;
-        `, [customerID, rentDay, rentMonth, rentYear, rentTime, totalPrice], function (error, result) {
+        `, [userid, rentDay, rentMonth, rentYear, rentTime, totalPrice], function (error, result) {
             if(error) {
                 throw error;
             } else {
@@ -99,6 +100,7 @@ module.exports = function (request, response) {
             orderid)
             VALUES($1, $2);
             `, [3, orderId])
+
             }
         }
     }
