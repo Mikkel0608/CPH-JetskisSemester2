@@ -22,6 +22,8 @@ app.use(bodyParser.json());
 function loginFunc (request, response) {
     var fiveHours = 18000000;
     request.session.cookie.maxAge = fiveHours;
+
+
     var email = request.body.email;
     //var phone = request.body.phone;
     var password = request.body.password;
