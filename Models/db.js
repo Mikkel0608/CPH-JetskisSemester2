@@ -14,7 +14,6 @@ const createTables = () =>{
                            userType(
                            userTypeId SERIAL PRIMARY KEY,
                            type VARCHAR(50));
-                           
     
                         CREATE TABLE IF NOT EXISTS
                         users(
