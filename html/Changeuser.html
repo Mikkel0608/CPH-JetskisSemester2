@@ -89,10 +89,10 @@
                 usersArray = json;
 
                 for (let i=0; i < usersArray.length; i++){
-                    var allUsers = document.createElement("option");
-                    allUsers.innerHTML = usersArray[i].phone;
+                    var option = document.createElement("option");
+                    option.innerHTML = usersArray[i].phone;
 
-                    document.getElementById("phoneSelect").appendChild(allUsers);
+                    document.getElementById("phoneSelect").appendChild(option);
                 }
             })
         };
