@@ -66,6 +66,28 @@ const createTables = () =>{
 };
 createTables();
 
+//Kør denne funktion for at oprette lidt data
+function createData(){
+    const queryText = `INSERT INTO products(productId, price, modelName)
+                       values(1, 300, 'Sea Doo Spark');
+                       INSERT INTO products(productId, price, modelName)
+                       values(2, 500, 'Yamaha Waverunner VX');
+                       INSERT INTO products(productId, price, modelName)
+                       values(3, 600, 'Kawasaki STF-15F');
+                       `;
+
+    pool.query(queryText)
+        .then(()=>{
+        })
+        .catch((err)=>{
+            console.log(err);
+            pool.end();
+        });
+}
+//createData();
+
+
+
 // Funktion der pusher producter ind i product tabel
  const pushProducts = () =>{
 
