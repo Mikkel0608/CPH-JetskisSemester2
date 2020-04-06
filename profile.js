@@ -9,15 +9,6 @@ app.use(bodyParser.json());
 
 
 
-
-function showInfo (req, res){
-    pool.query(`SELECT * FROM users WHERE userid = $1`,
-        [req.params.userid]).then(result =>{
-        res.json(result.rows);
-    })
-}
-
-
 function deleteUser(request, response){
     var usertypeid = null;
     const activeEmail = request.session.email;
@@ -53,15 +44,30 @@ function updatePassword(req, res){
 }
 
 
+function infoMW (req, res, next){
+    if (req.session.loggedin === true){
+        pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
+                    city, phone, email, created_at FROM users WHERE userid = $1`,
+                    [req.session.userid]).then(result =>{
+                        req.user = result.rows[0];
+                        next();
+        });
+    } else {
+        next();
+    }
+}
 
-
+function showInfo (req, res){
+    res.json(req.user)
+}
 
 
 
 module.exports = {
     deleteUser,
+    updatePassword,
     showInfo,
-    updatePassword
+    infoMW
 };
 
 
