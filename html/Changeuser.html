@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <title>CPH Jetskis-admin</title>
     <link rel="stylesheet" type="text/css" href="../CSS/Adminstyle.css">
+    <script type="text/javascript" src="Javascript/orderPage.js"></script>
 </head>
 
 <body style="background-color:rgb(245, 246, 250)">
+<script src="Javascript/Users_customer_admin.js">
+
+</script>
 
 <!-- Name and logo -->
 <div>
@@ -27,13 +31,18 @@
 <select id="phoneSelect">
     <option selected disabled id="optionTlf"> -Tlf- </option>
 </select>
-<button id=showinfo onclick="showInfo(), showOrder()">Vis brugeroplysninger</button>
+<!--<button id=showinfo onclick="showInfo(), showOrder()">Vis brugeroplysninger</button>-->
 
+<button type="button" onclick="showInfo()">Submit</button>
 <br>
 <br>
 
  <div style="float: left">
      <h4>Brugerinformation</h4>
+     <h5>User id</h5> <p id="userid"></p>
+
+     <h5>User type id</h5> <p id="usertypeid"></p>
+
      <h5>Navn</h5> <p id="customerName"></p>
 
      <h5>Vejnavn</h5> <p id="customerStreetName"></p>
@@ -48,7 +57,10 @@
 
      <h5>Email</h5><p id="customerEmail"></p>
 
-</div>
+     <h5>Dato for oprettelse</h5> <p id="created_at"></p>
+
+
+ </div>
 
 <div style="position: absolute; top: 184px; left: 200px; z-index: 1;" id="orderArea">
     <div id="orderDetails" style="height: 500px; width: 300px; border: solid black 2px; overflow: scroll;">
@@ -64,8 +76,54 @@
         <p id="orderId"></p>-->
 </div>
 
+<script>
+   var selection = document.getElementById("phoneSelect");
+    window.onload = function () {
+        var usersArray = null;
+
+        fetch('/adminpage/allusers')
+            .then(response =>
+                response.json())
+            .then(json => {
+                console.log(json);
+                usersArray = json;
+
+                for (let i=0; i < usersArray.length; i++){
+                    var option = document.createElement("option");
+                    option.innerHTML = usersArray[i].phone;
+
+                    document.getElementById("phoneSelect").appendChild(option);
+                }
+            })
+        };
+
+    function showInfo (){
+        var usersArray = null;
+        fetch('/adminpage/allusers')
+            .then(response =>
+                response.json())
+            .then(json => {
+                usersArray = json;
+
+                for (let i = 0; i < usersArray.length; i++) {
+                    if (selection.value == usersArray[i].phone) {
+                        document.getElementById("userid").innerHTML = usersArray[i].userid;
+                        document.getElementById("usertypeid").innerHTML = usersArray[i].usertypeid;
+                        document.getElementById("customerName").innerHTML = usersArray[i].username;
+                        document.getElementById("customerStreetName").innerHTML = usersArray[i].streetname;
+                        document.getElementById("customerStreetNumber").innerHTML = usersArray[i].streetnumber;
+                        document.getElementById("customerPostalCode").innerHTML = usersArray[i].postalcode;
+                        document.getElementById("customerCity").innerHTML = usersArray[i].city;
+                        document.getElementById("customerPhone").innerHTML = usersArray[i].phone;
+                        document.getElementById("customerEmail").innerHTML = usersArray[i].email;
+                        document.getElementById("created_at").innerHTML = usersArray[i].created_at;
+                    }
+                }
+            });
+    }
+</script>
+
 
 </body>
-<script type="text/javascript" src="Javascript/Users_customer_admin.js"></script>
-<script type="text/javascript" src="Javascript/orderPage.js"></script>
+
 </html>

@@ -253,6 +253,10 @@ phone number from userArray then the function shows the rest of the information 
 .innerHTML method to manipulate the HTML document.
 */
 //Function written by Markus Kronborg
+
+
+
+
 function showInfo () {
     var userArray = JSON.parse(localStorage.getItem('userArray'));
     for (let i = 0; i < userArray.length; i++) {

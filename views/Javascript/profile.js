@@ -21,6 +21,7 @@ function checkLoginProfilePage() {
 }
  */
 
+
 /* MM: The logOut function removes the specified keys from the local storage. By removing the keys, the user is seen as
 logged out by the system.
  */
