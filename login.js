@@ -29,7 +29,7 @@ function loginFunc (request, response) {
     var password = request.body.password;
     console.log(email, password);
     if (email && password) {
-        pool.query(`SELECT usertypeid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
+        pool.query(`SELECT usertypeid, userid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
             //console.log(error);
             //console.log(results);
             //The results from the query contain a rows object, which has an array of the results
@@ -37,6 +37,7 @@ function loginFunc (request, response) {
             if (results.rows.length > 0) {
                 console.log(results.rows);
                 request.session.loggedin = true;
+                request.session.userid = results.rows[0].userid;
                 request.session.email = email;
                 response.redirect('/');
             } else {
@@ -69,7 +70,7 @@ request.session.email = undefined;
     response.end();
 }
 
-function deleteUser(request, response){
+/*function deleteUser(request, response){
     const activeEmail = request.session.email;
     console.log(activeEmail);
     pool.query(`DELETE FROM users where email = $1`, [activeEmail], function (error, results){
@@ -84,7 +85,7 @@ function deleteUser(request, response){
     }
 
     )
-}
+}*/
 
 
 
@@ -92,8 +93,7 @@ function deleteUser(request, response){
 module.exports = {
     loginFunc,
     checkLogin,
-    logOut,
-    deleteUser
+    logOut
 };
 
 
