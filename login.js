@@ -30,7 +30,7 @@ function loginFunc (request, response) {
     var password = request.body.password;
     console.log(email, password);
     if (email && password) {
-        pool.query(`SELECT usertypeid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
+        pool.query(`SELECT usertypeid, userid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
            var usertypeid = results.rows[0].usertypeid;
             if (results.rows.length > 0) {
                 console.log(results.rows);
