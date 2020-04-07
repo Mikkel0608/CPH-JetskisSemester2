@@ -64,10 +64,9 @@ const createTables = () =>{
             pool.end();
         });
 };
-createTables();
 
 //Kør denne funktion for at oprette lidt data
-function createData(){
+function createProducts(){
     const queryText = `INSERT INTO products(productId, price, modelName)
                        values(1, 300, 'Sea Doo Spark');
                        INSERT INTO products(productId, price, modelName)
@@ -84,7 +83,27 @@ function createData(){
             pool.end();
         });
 }
-//createData();
+
+
+function createAdmin(){
+    var usertypeid = null;
+    const type = "adm";
+    pool.query(`INSERT INTO usertype(type) VALUES ($1) RETURNING userTypeId;`, [type], function (error, results) {
+        if (error){
+            throw error;
+        } else{
+            usertypeid = results.rows[0].usertypeid;
+            console.log(usertypeid);
+            insertAdmin();
+        }
+    });
+
+    function insertAdmin(){
+        pool.query(`INSERT INTO users(
+                    usertypeid, userName, email, password)
+                    VALUES($1, 'admin', 'admin@admin.com', 'admin');`, [usertypeid]);
+    }
+}
 
 
 
@@ -98,6 +117,14 @@ Dette skyldes vi benytter "Create table if not exist"
 Drop tabels og derefter refresh.
  */
 
+
+
+
+//kør disse funktioner for at få noget data i databasen
+
+createTables();
+//createData();
+//createProducts();
 
 
 

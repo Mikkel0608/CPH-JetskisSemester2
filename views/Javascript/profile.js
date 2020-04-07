@@ -47,25 +47,23 @@ window.onload = function getCustomerInfo() {
     The code retrieves information from local storage by using the "getItem" command, and specifying the key that the
     information should be retrieved from. This retrieved information is then saved to the newly created variables.
      */
-    var storedName = localStorage.getItem('customerName');
-    var storedStreetName = localStorage.getItem('streetName');
-    var storedStreetNumber = localStorage.getItem('streetNumber');
-    var storedPostalCode = localStorage.getItem('postalCode');
-    var storedCity = localStorage.getItem('city');
-    var storedPhone = localStorage.getItem('phone');
-    var storedEmail = localStorage.getItem('email');
 
-    /*
-    MM: Inserts the value of the variables created above into the innerHTML of a set of <p> tags.
-     */
-    document.getElementById('customerName').innerHTML=storedName;
-    document.getElementById('customerStreetName').innerHTML=storedStreetName;
-    document.getElementById('customerStreetNumber').innerHTML=storedStreetNumber;
-    document.getElementById('customerPostalCode').innerHTML=storedPostalCode;
-    document.getElementById('customerCity').innerHTML=storedCity;
-    document.getElementById('customerPhone').innerHTML=storedPhone;
-    document.getElementById('customerEmail').innerHTML=storedEmail;
+    fetch('/profile/userinfo')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
 
+            document.getElementById('userid').innerHTML=json.userid;
+            document.getElementById('customerName').innerHTML=json.username;
+            document.getElementById('customerStreetName').innerHTML=json.streetname;
+            document.getElementById('customerStreetNumber').innerHTML=json.streetnumber;
+            document.getElementById('customerPostalCode').innerHTML=json.postalcode;
+            document.getElementById('customerCity').innerHTML=json.city;
+            document.getElementById('customerPhone').innerHTML=json.phone;
+            document.getElementById('customerEmail').innerHTML=json.email;
+            document.getElementById('created_at').innerHTML=json.created_at;
+
+        });
     /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
     links the user to the login page.
      */
@@ -123,7 +121,9 @@ window.onload = function getCustomerInfo() {
             document.getElementById('noOrders').innerHTML = "";
         }
     }
-}
+};
+
+
 /*
 MM: Two variables are created. The "selection" variable is set equal to the HTML select tag with the ID "orderID".
 The "option" variable is set equal to the options of the "selection" variable.

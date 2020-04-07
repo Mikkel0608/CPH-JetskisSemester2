@@ -68,7 +68,9 @@ const profileFunctions = require('./profile.js');
 //deletes the customer-user that is logged in
 app.get('/profile/deleteuser', profileFunctions.deleteUser);
 
-app.get('/profile/:userid', profileFunctions.showInfo);
+app.use(profileFunctions.infoMW);
+
+app.get('/profile/userinfo', profileFunctions.showInfo);
 
 app.post('/profile/updatepassword/update', profileFunctions.updatePassword);
 

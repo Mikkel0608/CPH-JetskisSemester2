@@ -10,7 +10,8 @@ const app = require('./index.js');
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie  : { maxAge  : new Date(Date.now() + (60 * 1000 * 30)) }
 }));
 
 //the bodyParser extracts the form data from our Loginpage.html file.
@@ -30,10 +31,7 @@ function loginFunc (request, response) {
     console.log(email, password);
     if (email && password) {
         pool.query(`SELECT usertypeid, userid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
-            //console.log(error);
-            //console.log(results);
-            //The results from the query contain a rows object, which has an array of the results
-            //Mangler noget kode der sender en customer til forsiden, mens en admin bliver sendt til admin-side.
+           var usertypeid = results.rows[0].usertypeid;
             if (results.rows.length > 0) {
                 console.log(results.rows);
                 request.session.loggedin = true;
@@ -70,22 +68,6 @@ request.session.email = undefined;
     response.end();
 }
 
-/*function deleteUser(request, response){
-    const activeEmail = request.session.email;
-    console.log(activeEmail);
-    pool.query(`DELETE FROM users where email = $1`, [activeEmail], function (error, results){
-        if (error){
-            throw error;
-        }
-        console.log(`Bruger med E-mail ${activeEmail} er blevet slettet.`);
-        request.session.email = undefined;
-        request.session.loggedin = undefined;
-        response.redirect('/');
-        response.end();
-    }
-
-    )
-}*/
 
 
 
