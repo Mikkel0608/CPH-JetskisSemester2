@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-module.exports = function submitOrder (request, response) {
+function submitOrder (request, response) {
     var rentDay = request.body.orderDay;
     var rentMonth = request.body.orderMonth;
     var rentYear = request.body.orderYear;
@@ -94,29 +94,7 @@ module.exports = function submitOrder (request, response) {
             }
         }
     }
-
-
-
-/*
-    //For at lave produkterne (kør kun hvis de ikke eksisterer)
-    pool.query(`INSERT INTO products(
-                price, 
-                modelname)
-                VALUES(
-                $1, $2);
-                `, [300, "Sea Doo Spark"]);
-    pool.query(`INSERT INTO products(
-                price, 
-                modelname)
-                VALUES(
-                $1, $2);
-                `, [500, "Yamaha Waverunner VX"]);
-    pool.query(`INSERT INTO products(
-                price, 
-                modelname)
-                VALUES(
-                $1, $2);
-                `, [600, "Kawasaki STF-15F"]);
-
- */
 }
+module.exports = {
+    submitOrder
+};

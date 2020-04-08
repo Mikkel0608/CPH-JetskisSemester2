@@ -47,9 +47,11 @@ function checkLoginProfilePage() {
 2. It checks if there already are reservations for the given time/date, and adjusts the amount of jetskis shown.
  */
 //Function written by: MM
-/*
+
 function confirmTime() {
     /* MK/MM Creating variables that represent the user selection of date and time we assign the variable to the different elementID's from our HTML
+
+     */
 
     var rentDayID = document.getElementById("rentDay");
     var rentDayValue = rentDayID.options[rentDayID.selectedIndex].value;
@@ -77,8 +79,10 @@ function confirmTime() {
     } else { //MM: If the user has not filled out alle the date/time fields, an error is shown:
         alert("Udfyld venligst alle felter.");
     }
-       MM:
+       /*MM:
        Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
+
+        */
 
     var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;
     var orderArray = JSON.parse(localStorage.getItem('orderArray'));
@@ -91,6 +95,12 @@ function confirmTime() {
     The purpose of this loop is that only available jetskis are shown, and that jetskis that are already reserved are hidden.
     The loop uses the orderAmount and the orderArray variables.
 
+     */
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", 'http://localhost:3000/getOrders', true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    console.log(xhr.response);
+/*
     for (var i = 0; i < orderAmount; i++) {
         if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
             //MM:Counts the amount of jetski1 reserved and adds to the var
@@ -150,8 +160,9 @@ function confirmTime() {
     } else if (occupiedAmount3 >= 3) {
         document.getElementById("modelContainer3").style.display = "none";
     }
+
+ */
 }
-*/
 
 
 //MM: The Jetski class is created. For now, only the price property is used in the code.

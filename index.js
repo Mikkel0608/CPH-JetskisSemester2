@@ -88,8 +88,8 @@ const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
 
 // creating new order
-const submitOrder = require('./order.js');
-app.post('/submitOrder', submitOrder);
+const orderFunction = require('./order.js');
+app.post('/submitOrder', orderFunction.submitOrder);
 
 //adminpage
 const getUser = require ('./admin_users.js');
