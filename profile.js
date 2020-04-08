@@ -47,7 +47,7 @@ function updatePassword(req, res){
 function infoMW (req, res, next){
     if (req.session.loggedin === true){
         pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
-                    city, phone, email, created_at FROM users WHERE userid = $1`,
+                    city, phone, email, created_at FROM users WHERE userid = $1;`,
                     [req.session.userid]).then(result =>{
                         req.user = result.rows[0];
                         next();
@@ -62,12 +62,31 @@ function showInfo (req, res){
 }
 
 
+function orderMW (req, res, next){
+    if (req.session.loggedin === true){
+        pool.query(`SELECT orderid, orderday, ordermonth, timeperiod, orderprice, order_placed_at
+                    FROM orders WHERE userid = $1;`,
+                    [req.session.userid]).then(result =>{
+                        req.order = result.rows;
+                        next();
+                    });
+    } else {
+        next();
+    }
+}
+
+function showOrder (req, res){
+    res.json(req.order);
+}
+
 
 module.exports = {
     deleteUser,
     updatePassword,
     showInfo,
-    infoMW
+    infoMW,
+    orderMW,
+    showOrder
 };
 
 

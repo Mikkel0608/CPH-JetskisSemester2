@@ -33,7 +33,7 @@ app.get('/profile.html',(req,res)=>{
 });
 app.get('/profile/updatePassword', (req, res)=>{
     res.sendFile(path.resolve(__dirname, 'html/updatePassword.html'))
-})
+});
 app.get('/orderConfirmation.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/orderConfirmation.html'))
 });
@@ -68,9 +68,14 @@ const profileFunctions = require('./profile.js');
 //deletes the customer-user that is logged in
 app.get('/profile/deleteuser', profileFunctions.deleteUser);
 
+//the use of middleware ensures that the active customer only can see information about themselves.
 app.use(profileFunctions.infoMW);
 
 app.get('/profile/userinfo', profileFunctions.showInfo);
+
+app.use(profileFunctions.orderMW);
+
+app.get('/profile/orderinfo', profileFunctions.showOrder);
 
 app.post('/profile/updatepassword/update', profileFunctions.updatePassword);
 
