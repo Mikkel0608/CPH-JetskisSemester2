@@ -19,7 +19,7 @@
 
 <!-- Navigation bar and navigation buttons -->
 <div id="naviBar">
-    <a href="Adminpage.html"><button id="buttonStyle"> Tilbage til forsiden </button></a>
+    <a href="/Adminpage"><button id="buttonStyle"> Tilbage til forsiden </button></a>
 
 </div>
 <h2> style="font-family: modernSansLight; font-size: 30px;"> Brugerprofil </h2>
@@ -89,10 +89,12 @@
                 usersArray = json;
 
                 for (let i=0; i < usersArray.length; i++){
-                    var option = document.createElement("option");
-                    option.innerHTML = usersArray[i].phone;
+                    if (usersArray[i].phone !== null || undefined) {
+                        var option = document.createElement("option");
+                        option.innerHTML = usersArray[i].phone;
 
-                    document.getElementById("phoneSelect").appendChild(option);
+                        document.getElementById("phoneSelect").appendChild(option);
+                    }
                 }
             })
         };

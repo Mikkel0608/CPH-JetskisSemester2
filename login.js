@@ -30,14 +30,23 @@ function loginFunc (request, response) {
     var password = request.body.password;
     console.log(email, password);
     if (email && password) {
-        pool.query(`SELECT usertypeid, userid FROM users WHERE email = $1 AND password = $2`, [email, password], function (error, results, fields) {
-           var usertypeid = results.rows[0].usertypeid;
-            if (results.rows.length > 0) {
+        pool.query(`select u.userid, u.email, ut.type
+                    from users u JOIN usertype ut
+                    on u.usertypeid = ut.usertypeid
+                    where email = $1 AND password = $2;`,
+            [email, password], function (error, results, fields) {
+            if (results.rows.length > 0 && results.rows[0].type === 'cus') {
                 console.log(results.rows);
                 request.session.loggedin = true;
                 request.session.userid = results.rows[0].userid;
                 request.session.email = email;
                 response.redirect('/');
+            } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
+                console.log(results.rows);
+                request.session.adminloggedin = true;
+                request.session.userid = results.rows[0].userid;
+                request.session.email = email;
+                response.redirect('/adminpage');
             } else {
                 response.send('Incorrect phone and/or password');
             }
