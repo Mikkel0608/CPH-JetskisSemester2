@@ -96,10 +96,19 @@ function confirmTime() {
     The loop uses the orderAmount and the orderArray variables.
 
      */
+    class OrderDate {
+        constructor(orderDay, orderMonth, orderYear, timePeriod) {
+            this.orderDay = orderDay;
+            this.orderMonth = orderMonth;
+            this.orderYear = orderYear;
+            this.timePeriod = timePeriod;
+        }
+    }
+    const newOrderDate = new OrderDate(rentDayValue, rentMonthValue, rentYearValue, rentTimeValue);
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", 'http://localhost:3000/getOrders', true);
+    xhr.open("POST", 'http://localhost:3000/orderPage/getOrders', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    console.log(xhr.response);
+    xhr.send(JSON.stringify(newOrderDate));
 /*
     for (var i = 0; i < orderAmount; i++) {
         if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {

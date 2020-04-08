@@ -90,6 +90,7 @@ app.post('/register', registerFunction);
 // creating new order
 const orderFunction = require('./order.js');
 app.post('/submitOrder', orderFunction.submitOrder);
+app.post('/orderPage/getOrders', orderFunction.getOrders);
 
 //adminpage
 const getUser = require ('./admin_users.js');

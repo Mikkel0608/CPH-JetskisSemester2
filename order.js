@@ -7,6 +7,26 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+function getOrders (request, response) {
+    var rentDay = request.body.orderDay;
+    var rentMonth = request.body.orderMonth;
+    var rentYear = request.body.orderYear;
+    var rentTime = request.body.timePeriod;
+
+    var orderid = null;
+    pool.query(`SELECT orderid FROM orders WHERE orderday =$1 AND ordermonth =$2 AND orderyear =$3 AND timeperiod =$4`,
+        [rentDay, rentMonth, rentYear, rentTime], function (error, results) {
+        if(error) {
+            throw error;
+        } else {
+            console.log(results.rows);
+            for (let i=0; i<results.rows.length; i++)
+                pool.query(`SELECT orderproductid FROM orderproduct WHERE `)
+            orderid = results.rows[0].orderid;
+        }
+        });
+}
+
 function submitOrder (request, response) {
     var rentDay = request.body.orderDay;
     var rentMonth = request.body.orderMonth;
