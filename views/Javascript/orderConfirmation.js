@@ -1,6 +1,11 @@
 window.onload = function getOrderInfo() {
     //MM: Inserts the user ID in the navibar
-    document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + localStorage.getItem('phone');
+    fetch('/profile/userinfo')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.phone;
+        });
     //MM: Creates variables that represent the order array and the length of the order array
     var orderArray = JSON.parse(localStorage.getItem('orderArray'));
     var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;

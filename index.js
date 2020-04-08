@@ -88,14 +88,8 @@ const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
 
 // creating new order
-//const createOrder = require('./order.js');
-//app.post('/createOrder', createOrder);
-
-// getting the active phone number from the API to the frontend
-const getPhone = require('./getphone.js');
-app.get('/getphone', getPhone);
-
-
+const submitOrder = require('./order.js');
+app.post('/submitOrder', submitOrder);
 
 //adminpage
 const getUser = require ('./admin_users.js');

@@ -7,15 +7,15 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-function createOrder (request, response) {
-    var rentDay = request.body.rentDay;
-    var rentMonth = request.body.rentMonth;
-    var rentYear = request.body.rentYear;
-    var rentTime = request.body.rentTime;
-    var orderAmount1 = request.body.orderAmount1;
-    var orderAmount2 = request.body.orderAmount2;
-    var orderAmount3 = request.body.orderAmount3;
-    var totalPrice = request.body.totalPriceHidden;
+module.exports = function submitOrder (request, response) {
+    var rentDay = request.body.orderDay;
+    var rentMonth = request.body.orderMonth;
+    var rentYear = request.body.orderYear;
+    var rentTime = request.body.timePeriod;
+    var orderAmount1 = request.body.amount1;
+    var orderAmount2 = request.body.amount2;
+    var orderAmount3 = request.body.amount3;
+    var totalPrice = request.body.orderPrice;
 
     //If no phone is registered, an error is shown:
     if (request.session.email === undefined) {
@@ -97,8 +97,8 @@ function createOrder (request, response) {
 
 
 
-
-    /* For at lave produkterne (kør kun hvis de ikke eksisterer)
+/*
+    //For at lave produkterne (kør kun hvis de ikke eksisterer)
     pool.query(`INSERT INTO products(
                 price, 
                 modelname)
@@ -118,5 +118,5 @@ function createOrder (request, response) {
                 $1, $2);
                 `, [600, "Kawasaki STF-15F"]);
 
-     */
+ */
 }

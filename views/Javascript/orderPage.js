@@ -210,8 +210,7 @@ function calculatePrice() {
 
 //MM: A class is created to represent order data.
 class Order {
-    constructor(phone, amount1, amount2, amount3, orderDay, orderMonth, orderYear, timePeriod, orderPrice, orderId) {
-        this.phone = phone;
+    constructor(amount1, amount2, amount3, orderDay, orderMonth, orderYear, timePeriod, orderPrice, orderId) {
         this.amount1 = amount1;
         this.amount2 = amount2;
         this.amount3 = amount3;
@@ -229,6 +228,7 @@ class Order {
 MM: If no orderArray exists in localStorage, an orderArray with predefined users is pushed to localStorage using JSON.stringify.
  */
 //Statements written by: MD
+/*
 var orderArray;
 if (localStorage.getItem('orderArray')==null) {
     orderArray = [];
@@ -241,6 +241,8 @@ if (localStorage.getItem('orderArray')==null) {
     var orderArrayString = JSON.stringify(orderArray);
     localStorage.setItem('orderArray', orderArrayString);
 }
+
+ */
 
 //MK: This function's purpose is to store the created order in the orderArray in localStorage.
 //Function written by: MM & MD
@@ -260,8 +262,9 @@ function storeOrder() {
      */
 
 
-    const newOrder = new Order("", orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
-    xhr.open("POST", 'http://localhost:3000/createOrder', true);
+    const newOrder = new Order(orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'http://localhost:3000/submitOrder', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(newOrder));
     window.location = "http://localhost:3000/orderconfirmation.html";
