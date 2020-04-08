@@ -162,7 +162,7 @@ class Jetski {
     }
 }
 //MM: Objects are created from the Jetski class, representing the different jetski models.
-var jetski1= new Jetski('Sea Doo Spark', 300)
+var jetski1= new Jetski('Sea Doo Spark', 300);
 var jetski2= new Jetski('Yamaha Waverunner VX', 500);
 var jetski3= new Jetski('Kawasaki STX 15F', 600);
 //the Object.freeze is used to make sure customers can't change the price property of the objects.
@@ -260,8 +260,6 @@ function storeOrder() {
     The new order is pushed onto the retrieved orderArray, and the entire updated array is saved to local storage by using
     JSON.stringify() and localStorage.setItem().
      */
-
-
     const newOrder = new Order(orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'http://localhost:3000/submitOrder', true);

@@ -54,7 +54,29 @@ const createTables = () =>{
                            orderProduct(
                             orderProductId SERIAL PRIMARY KEY,
                             productId INT REFERENCES products(productId),
-                            orderId INT REFERENCES Orders(orderId));`;
+                            orderId INT REFERENCES Orders(orderId));
+                            
+                            INSERT INTO products(
+                            productId,
+                            price, 
+                            modelName)
+                            VALUES(
+                            1, 300, 'Sea Doo Spark') ON CONFLICT (productId) DO NOTHING;
+                            
+                            INSERT INTO products(
+                            productId,
+                            price, 
+                            modelName)
+                            VALUES(
+                            2, 500, 'Yamaha Waverunner VX') ON CONFLICT (productId) DO NOTHING;
+                            
+                            INSERT INTO products(
+                            productId,
+                            price, 
+                            modelName)
+                            VALUES(
+                            3, 600, 'Kawasaki STF-15F') ON CONFLICT (productId) DO NOTHING;
+                            `;
 
 
    pool.query(queryText)
