@@ -1,23 +1,13 @@
-const session = require('express-session');
-const bodyParser = require('body-parser');
-
 //Importing the database connection
 const pool = require('./Models/db');
-//Importing the express server
+
 const app = require('./index.js');
 
-//Ved ikke lige hvad det her gør lol
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-
-//the bodyParser extracts the form data from our html file.
-app.use(bodyParser.urlencoded({extended : true}));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-module.exports = function (request, response) {
+function createOrder (request, response) {
     var rentDay = request.body.rentDay;
     var rentMonth = request.body.rentMonth;
     var rentYear = request.body.rentYear;
@@ -32,7 +22,7 @@ module.exports = function (request, response) {
         response.send("Session timed out. Please login again and resubmit your order. <br><br><br> <a href='/loginpage.html'>Click here to go to the login page</a>");
     }
 
-    // The following section uses the phone stored in the session to find the corresponding customerid in the database
+    // The following section uses the email stored in the session to find the corresponding customerid in the database
     var userid = null;
     pool.query(`SELECT userid FROM users WHERE email =$1`, [request.session.email], function (error, results) {
         if(error) {

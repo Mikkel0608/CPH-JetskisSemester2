@@ -58,8 +58,11 @@ const loginFunction = require('./login.js');
 //login validation
 app.post('/loginpage/auth', loginFunction.loginFunc);
 
-//Checks that the user is logged in before viewing page
-app.get('/checklogin', loginFunction.checkLogin);
+//Checks that the user is logged in before viewing profile page
+app.get('/checkloginProfile', loginFunction.checkLoginProfile);
+
+//Checks that the user is logged in before viewing order page
+app.get('/checkloginOrder', loginFunction.checkLoginOrder);
 
 //logs user out
 app.get('/profile/logout', loginFunction.logOut);
@@ -85,8 +88,8 @@ const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
 
 // creating new order
-const createOrder = require('./order.js');
-app.post('/createOrder', createOrder);
+//const createOrder = require('./order.js');
+//app.post('/createOrder', createOrder);
 
 // getting the active phone number from the API to the frontend
 const getPhone = require('./getphone.js');
@@ -97,8 +100,6 @@ app.get('/getphone', getPhone);
 //adminpage
 const getUser = require ('./admin_users.js');
 app.get('/adminpage/allusers/', getUser.getUsers);
-
-
 
 
 

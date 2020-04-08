@@ -5,13 +5,14 @@ is redirected to the login page. In addition, the function also inserts the user
  */
 //Function written by: MM
 
-window.onload = function checkLoginButton() {
-    var xmr = new XMLHttpRequest();
-    xmr.open('GET', 'http://localhost:3000/register');
-    xmr.onload = function() {
-        console.log(xmr.response);
-        document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + xmr.response;
-    }
+window.onload = function getActivePhone() {
+    fetch('/profile/userinfo')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.phone;
+        });
+}
     //checks if the user is logged in and redirects to loginpage if not
     // (this is used if the user is linked directly to this page and have not logged in or registered before.)
     /*
@@ -19,7 +20,6 @@ window.onload = function checkLoginButton() {
         window.location = "Loginpage.html"
     }
 
-     */
 }
 //MK: The purpose of this function is to make sure that the user of the website cannot enter the orderPage if the user is not logged in.
 //This function uses the same if statement as the function above but here it is an if else statement. The difference is mainly that this function is activated when a button is clicked.

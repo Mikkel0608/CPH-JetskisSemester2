@@ -59,9 +59,19 @@ function loginFunc (request, response) {
 }
 
 
-function checkLogin (request, response){
+function checkLoginProfile (request, response){
     if (request.session.loggedin) {
         response.redirect('/profile.html');
+    } else {
+        response.redirect('/loginpage.html');
+        console.log("Venligst log ind");
+    }
+    response.end();
+}
+
+function checkLoginOrder (request, response){
+    if (request.session.loggedin) {
+        response.redirect('/orderPage.html');
     } else {
         response.redirect('/loginpage.html');
         console.log("Venligst log ind");
@@ -83,7 +93,8 @@ request.session.email = undefined;
 
 module.exports = {
     loginFunc,
-    checkLogin,
+    checkLoginProfile,
+    checkLoginOrder,
     logOut
 };
 
