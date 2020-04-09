@@ -79,10 +79,10 @@ function confirmTime() {
     } else { //MM: If the user has not filled out alle the date/time fields, an error is shown:
         alert("Udfyld venligst alle felter.");
     }
-       /*MM:
-       Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
+    /*MM:
+    Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
 
-        */
+     */
 
     var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;
     var orderArray = JSON.parse(localStorage.getItem('orderArray'));
@@ -107,74 +107,100 @@ function confirmTime() {
             this.amount3 = amount3;
         }
     }
+
+    var occupiedAmount1 = 0;
+    var occupiedAmount2 = 0;
+    var occupiedAmount3 = 0;
     const newOrderDate = new OrderDate(rentDayValue, rentMonthValue, rentYearValue, rentTimeValue, 0, 0, 0);
-    var xhr = new XMLHttpRequest();
+    fetch('http://localhost:3000/orderPage/getOrders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newOrderDate)
+    }).then(response => response.json())
+        .then(json => {
+            if (!json.ok) {
+                console.log(json);
+                occupiedAmount1 = json.amount1;
+                occupiedAmount2 = json.amount2;
+                occupiedAmount3 = json.amount3;
+                console.log([occupiedAmount1, occupiedAmount2, occupiedAmount3]);
+                correctAmountShown();
+            } else if (json.ok === true) {
+                console.log(json.ok);
+            }
+        });
+    /*var xhr = new XMLHttpRequest();
     xhr.open("POST", '/orderPage/getOrders', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(newOrderDate));
     console.log(xhr.response);
-/*
-    for (var i = 0; i < orderAmount; i++) {
-        if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
-            //MM:Counts the amount of jetski1 reserved and adds to the var
-            if (orderArray[i].amount1 == 1) {
-                occupiedAmount1++;
-            } else if (orderArray[i].amount1 == 2) {
-                occupiedAmount1+=2;
-            } else if (orderArray[i].amount1 == 3) {
-                occupiedAmount1+=3;
-            }
-            //MM:Counts the amount of jetski2 reserved and adds to the var
-            if (orderArray[i].amount2 == 1) {
-                occupiedAmount2++;
-            } else if (orderArray[i].amount2 == 2) {
-                occupiedAmount2+=2;
-            } else if (orderArray[i].amount2 == 3) {
-                occupiedAmount2+=3;
-            }
-            //MM:Counts the amount of jetski3 reserved and adds to the var
-            if (orderArray[i].amount3 == 1) {
-                occupiedAmount3++;
-            } else if (orderArray[i].amount3 == 2) {
-                occupiedAmount3+=2;
-            } else if (orderArray[i].amount3 == 3) {
-                occupiedAmount3+=3;
+
+     */
+    /*
+        for (var i = 0; i < orderAmount; i++) {
+            if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
+                //MM:Counts the amount of jetski1 reserved and adds to the var
+                if (orderArray[i].amount1 == 1) {
+                    occupiedAmount1++;
+                } else if (orderArray[i].amount1 == 2) {
+                    occupiedAmount1+=2;
+                } else if (orderArray[i].amount1 == 3) {
+                    occupiedAmount1+=3;
+                }
+                //MM:Counts the amount of jetski2 reserved and adds to the var
+                if (orderArray[i].amount2 == 1) {
+                    occupiedAmount2++;
+                } else if (orderArray[i].amount2 == 2) {
+                    occupiedAmount2+=2;
+                } else if (orderArray[i].amount2 == 3) {
+                    occupiedAmount2+=3;
+                }
+                //MM:Counts the amount of jetski3 reserved and adds to the var
+                if (orderArray[i].amount3 == 1) {
+                    occupiedAmount3++;
+                } else if (orderArray[i].amount3 == 2) {
+                    occupiedAmount3+=2;
+                } else if (orderArray[i].amount3 == 3) {
+                    occupiedAmount3+=3;
+                }
             }
         }
-    }
+        */
 
     //MK: This if statement corrects the amount of jetski 1 if there are any reserved
-    if (occupiedAmount1 == 1) {
-        document.getElementById('jetski1Amount3').style.display = "none";
-    } else if (occupiedAmount1 == 2) {
-        document.getElementById('jetski1Amount3').style.display = "none";
-        document.getElementById('jetski1Amount2').style.display = "none";
-        //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
-    } else if (occupiedAmount1 >= 3) {
-        document.getElementById("modelContainer1").style.display = "none";
+    function correctAmountShown() {
+        if (occupiedAmount1 == 1) {
+            document.getElementById('jetski1Amount3').style.display = "none";
+        } else if (occupiedAmount1 == 2) {
+            document.getElementById('jetski1Amount3').style.display = "none";
+            document.getElementById('jetski1Amount2').style.display = "none";
+            //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
+        } else if (occupiedAmount1 >= 3) {
+            document.getElementById("modelContainer1").style.display = "none";
+        }
+        //MK: This if statement corrects the amount of jetski 2 if there are any reserved
+        if (occupiedAmount2 == 1) {
+            document.getElementById('jetski2Amount3').style.display = "none";
+        } else if (occupiedAmount2 == 2) {
+            document.getElementById('jetski2Amount3').style.display = "none";
+            document.getElementById('jetski2Amount2').style.display = "none";
+            //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
+        } else if (occupiedAmount2 >= 3) {
+            document.getElementById("modelContainer2").style.display = "none";
+        }
+        //MK: This if statement corrects the amount of jetski 3 if there are any reserved
+        if (occupiedAmount3 == 1) {
+            document.getElementById('jetski3Amount3').style.display = "none";
+        } else if (occupiedAmount3 == 2) {
+            document.getElementById('jetski3Amount3').style.display = "none";
+            document.getElementById('jetski3Amount2').style.display = "none";
+            //MM: The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
+        } else if (occupiedAmount3 >= 3) {
+            document.getElementById("modelContainer3").style.display = "none";
+        }
     }
-    //MK: This if statement corrects the amount of jetski 2 if there are any reserved
-    if (occupiedAmount2 == 1) {
-        document.getElementById('jetski2Amount3').style.display = "none";
-    } else if (occupiedAmount2== 2) {
-        document.getElementById('jetski2Amount3').style.display = "none";
-        document.getElementById('jetski2Amount2').style.display = "none";
-        //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
-    } else if (occupiedAmount2 >= 3) {
-        document.getElementById("modelContainer2").style.display = "none";
-    }
-    //MK: This if statement corrects the amount of jetski 3 if there are any reserved
-    if (occupiedAmount3 == 1) {
-        document.getElementById('jetski3Amount3').style.display = "none";
-    } else if (occupiedAmount3 == 2) {
-        document.getElementById('jetski3Amount3').style.display = "none";
-        document.getElementById('jetski3Amount2').style.display = "none";
-        //MM: The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
-    } else if (occupiedAmount3 >= 3) {
-        document.getElementById("modelContainer3").style.display = "none";
-    }
-
- */
 }
 
 

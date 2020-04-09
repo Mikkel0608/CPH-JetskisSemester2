@@ -58,8 +58,9 @@ function getOrders (request, response) {
                                 amount3 += results.rows.length;
                                 console.log("Counted the third amount: " + amount3);
                                 console.log("Counted the following reservations: Amount1:" + amount1 + ", Amount2:" + amount2 + ", Amount3:" + amount3);
-                                response.send([amount1, amount2, amount3]);
-                                response.end;
+                                var occupiedAmount = {amount1: amount1, amount2: amount2, amount3: amount3};
+                                response.send(JSON.stringify(occupiedAmount));
+                                response.end();
                             }
                         }
                     );
