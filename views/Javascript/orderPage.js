@@ -97,18 +97,22 @@ function confirmTime() {
 
      */
     class OrderDate {
-        constructor(orderDay, orderMonth, orderYear, timePeriod) {
+        constructor(orderDay, orderMonth, orderYear, timePeriod, amount1, amount2, amount3) {
             this.orderDay = orderDay;
             this.orderMonth = orderMonth;
             this.orderYear = orderYear;
             this.timePeriod = timePeriod;
+            this.amount1 = amount1;
+            this.amount2 = amount2;
+            this.amount3 = amount3;
         }
     }
-    const newOrderDate = new OrderDate(rentDayValue, rentMonthValue, rentYearValue, rentTimeValue);
+    const newOrderDate = new OrderDate(rentDayValue, rentMonthValue, rentYearValue, rentTimeValue, 0, 0, 0);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'http://localhost:3000/orderPage/getOrders', true);
+    xhr.open("POST", '/orderPage/getOrders', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(newOrderDate));
+    console.log(xhr.response);
 /*
     for (var i = 0; i < orderAmount; i++) {
         if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
