@@ -98,16 +98,10 @@ app.post('/submitOrder', orderFunction.submitOrder);
 app.post('/orderPage/getOrders', orderFunction.getOrders);
 
 //adminpage
-const getUser = require ('./admin_users.js');
+const getUser = require ('./admin.js');
 app.get('/adminpage/allusers/', getUser.getUsers);
 
-/*
-app.post('/test', (req, res) =>{
-   console.log(req.body);
-   res.send(req.body);
-   //res.redirect('http://localhost:3000/loginpage.html')
-});
-*/
+
 
 
 

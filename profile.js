@@ -37,11 +37,11 @@ function updatePassword(req, res){
         [req.body.password, req.params.id], function (error, results) {
             if (error){
                 throw error;
+            } else {
+                console.log(results.rows);
+                res.send(JSON.stringify('ok'));
+                //res.end();
             }
-            console.log(results.rows);
-            res.send(req.body);
-            //res.redirect('/');
-            //res.end();
         })
 }
 
