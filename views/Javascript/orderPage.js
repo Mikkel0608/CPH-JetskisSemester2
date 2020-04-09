@@ -67,6 +67,17 @@ function confirmTime() {
     //MM: If the variables have been set, it changes the display property from "none" to "", showing all the jetski models
     //and all the jetski amounts.
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
+        fetch('/orderPage/products')
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                console.log(json.length);
+                for (let i = 1; i<json.length; i++) {
+                    var container = document.getElementById("modelContainer1");
+                    var clone = container.cloneNode(true);
+                    document.getElementById("productContainer").appendChild(clone);
+                }
+            });
         document.getElementById("modelContainer1").style.display = '';
         document.getElementById("modelContainer2").style.display = '';
         document.getElementById("modelContainer3").style.display = '';

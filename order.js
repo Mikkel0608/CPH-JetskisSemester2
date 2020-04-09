@@ -7,6 +7,17 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+function getProducts (request, response) {
+    pool.query(`SELECT productid, price, modelname, modeldescription, maxamount, imagesrc FROM products`,
+        function (error, results) {
+        if(error) {
+            throw error;
+        } else {
+            response.send(results.rows);
+        }
+    })
+}
+
 function getOrders (request, response) {
     var rentDay = request.body.orderDay;
     var rentMonth = request.body.orderMonth;
@@ -159,5 +170,6 @@ function submitOrder (request, response) {
 }
 module.exports = {
     submitOrder,
-    getOrders
+    getOrders,
+    getProducts
 };
