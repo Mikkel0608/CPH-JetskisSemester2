@@ -6,6 +6,9 @@ const cors = require('cors');
 const app = express();
 module.exports = app;
 
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+
 app.use(cors());
 app.use(express.json());
 
@@ -80,7 +83,9 @@ app.use(profileFunctions.orderMW);
 
 app.get('/profile/orderinfo', profileFunctions.showOrder);
 
-app.post('/profile/updatepassword/update', profileFunctions.updatePassword);
+/*app.post('/profile/updatepassword/update', profileFunctions.updatePassword);*/
+
+app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
 
 
 const registerFunction = require('./registerCustomer');
@@ -96,6 +101,13 @@ app.post('/orderPage/getOrders', orderFunction.getOrders);
 const getUser = require ('./admin_users.js');
 app.get('/adminpage/allusers/', getUser.getUsers);
 
+/*
+app.post('/test', (req, res) =>{
+   console.log(req.body);
+   res.send(req.body);
+   //res.redirect('http://localhost:3000/loginpage.html')
+});
+*/
 
 
 

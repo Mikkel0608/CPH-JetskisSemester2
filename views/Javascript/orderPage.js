@@ -10,7 +10,7 @@ window.onload = function getActivePhone() {
         .then(response => response.json())
         .then(json => {
             console.log(json);
-            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.phone;
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
         });
 }
     //checks if the user is logged in and redirects to loginpage if not

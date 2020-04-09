@@ -63,7 +63,7 @@ window.onload = function getCustomerInfo() {
             document.getElementById('customerEmail').innerHTML=json.email;
             document.getElementById('created_at').innerHTML=json.created_at;
 
-            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.phone;
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
 
         });
     /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it

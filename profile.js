@@ -32,14 +32,16 @@ function deleteUser(request, response){
 }
 
 function updatePassword(req, res){
+    console.log(req.body);
     pool.query(`UPDATE users SET password = $1 WHERE userid = $2 `,
-        [req.body.newPassword, req.session.userid], function (error, results) {
+        [req.body.password, req.params.id], function (error, results) {
             if (error){
                 throw error;
             }
-            //console.log(results.rows);
-            res.redirect('/');
-            res.end();
+            console.log(results.rows);
+            res.send(req.body);
+            //res.redirect('/');
+            //res.end();
         })
 }
 
@@ -53,6 +55,7 @@ function infoMW (req, res, next){
                         next();
         });
     } else {
+        req.user = JSON.stringify(0);
         next();
     }
 }

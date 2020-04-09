@@ -18,8 +18,7 @@ class Customer extends User{
         this.phone = phone;
     }
 }
-const customer1 = new Customer("morten")
-var xhr = new XMLHttpRequest();
+//var xhr = new XMLHttpRequest();
 
 /*MD:
 The purpose of the code is validate the input in the registration form. We achieve this by using a boolean value
@@ -110,11 +109,27 @@ The method .push is used to introduce a new customer object into the back of the
 
     if (form_valid) {
         const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
-        xhr.open("POST", 'http://localhost:3000/register', true);
+        fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(customer)
+        }).then(response => response.json())
+            .then(json => {
+                if (!json.ok){
+                    console.log(json);
+                    alert(json);
+                } else if (json.ok === true){
+                    console.log(json.ok);
+                    window.location = 'http://localhost:3000/loginpage.html';
+                }
+            });
+        /*xhr.open("POST", 'http://localhost:3000/register', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify(customer));
         //window.location = "http://localhost:3000/register";
-        window.location = "/loginpage.html";
+        //window.location = "/loginpage.html";*/
         return true;
 
     } else {
