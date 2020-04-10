@@ -46,7 +46,8 @@ function checkLoginProfilePage() {
      */
 //MM: The Product class is created. For now, only the price property is used in the code.
 class Product {
-    constructor(price, modelName, modelDescription, maxAmount, imageSRC) {
+    constructor(productId, price, modelName, modelDescription, maxAmount, imageSRC) {
+        this.productId = productId;
         this.price = price;
         this.modelName = modelName;
         this.modelDescription = modelDescription;
@@ -105,10 +106,10 @@ function confirmTime() {
                         //Inserts each product clone onto the "productContainer" node
                         document.getElementById("productContainer").appendChild(clone);
                         //Creates a new Product object and pushes it to the storedProducts array
-                        var newProduct = new Product(json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
+                        var newProduct = new Product(json[i].productid, json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
                         storedProducts.push(newProduct);
                     }
-                    //Corrects the information for each created product
+                    //Corrects the product information for each created product to the fetched info form the database
                     for (let i = 0; i < json.length; i++) {
                         //Inserts product title
                         document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
@@ -116,7 +117,7 @@ function confirmTime() {
                         document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
                         //Inserts product description
                         document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
-                        //Inserts maximum amount of vacant jetskis
+                        //Inserts maximum amount of available products
                         var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
                         for (let x = 0; x < json[i].maxamount; x++) {
                             selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
@@ -298,7 +299,9 @@ function calculatePrice() {
     If the order amount is 0, it empties the <p> so that the element is hidden in the basket
 
      */
+
     for (let x=0; x<storedProducts.length; x++) {
+        //Goes through all the "select" elements and clones the "basketProduct" div for the amount of selected products
         var selectElement2 = document.getElementById("modelContainer" + [x]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
         if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) == null) {
             //Creates a clone of the "basketProduct" div
@@ -313,8 +316,12 @@ function calculatePrice() {
 
             //Inserts all the product information
             document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
+
+            //If the "select" element is changed to "0", it hides the element from the basket:
         } else if (selectElement2.options[selectElement2.selectedIndex].value == 0 && document.getElementById("basketProduct"+[x]) != null) {
             document.getElementById("basketProduct"+[x]).style.display = "none";
+
+            //If the "select" element already exists, but has been hidden previously, it makes the div visible and updates the div with correct amount/price:
         } else if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) != null) {
             document.getElementById("basketProduct"+[x]).style.display = "initial";
             document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
