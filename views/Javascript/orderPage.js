@@ -261,7 +261,18 @@ Object.freeze(jetski3);
 3. It shows the name of the jetski, the photo, and the price of the selected jetskis in the basket.
  */
 //Function written by: MM
+var finalPrice;
 function calculatePrice() {
+    //Goes through all the stored products and adds their individual prices and quantities to the finalPrice var
+    finalPrice = 0;
+    for (let i=0; i<storedProducts.length; i++) {
+        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+        finalPrice += selectElement.options[selectElement.selectedIndex].value * storedProducts[i].price;
+    }
+    document.getElementById('totalPrice').innerHTML = "Samlet Pris: " + finalPrice + " kr.";
+    document.getElementById('basketDivFull').style.display = "initial";
+
+/*
     var orderAmount1JS = document.getElementById('orderAmount1').value;
     var orderAmount2JS = document.getElementById('orderAmount2').value;
     var orderAmount3JS = document.getElementById('orderAmount3').value;
@@ -272,9 +283,34 @@ function calculatePrice() {
     //MM:Checks if all order amounts are 0, then the basket should be hidden
     if (orderAmount1JS == 0 && orderAmount2JS == 0 && orderAmount3JS == 0)
         document.getElementById('basketDivFull').style.display = "none";
-
+*/
     /* MM: Checks if the order amount if above 0, and if so, it adds the jetski name, photo, price and amount to the <p> in the basket.
-    If the order amount is 0, it empties the <p> so that the element is hidden in the basket */
+    If the order amount is 0, it empties the <p> so that the element is hidden in the basket
+
+     */
+    for (let x=0; x<storedProducts.length; x++) {
+        var selectElement2 = document.getElementById("modelContainer" + [x]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+        if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) == null) {
+            //Creates a clone of the "basketProduct" div
+            var basketProduct = document.getElementById("basketProduct");
+            var clone = basketProduct.cloneNode(true);
+            //Gives each product clone its own id
+            clone.id = "basketProduct" + [x];
+            //Makes each product clone visible
+            clone.style.display = "initial";
+            //Inserts each product clone onto the "productContainer" node
+            document.getElementById("basketDivMain").appendChild(clone);
+
+            //Inserts all the product information
+            document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
+        } else if (selectElement2.options[selectElement2.selectedIndex].value === 0) {
+            document.getElementById("basketProduct"+[x]).style.display = "none";
+        } else if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) != null) {
+            document.getElementById("basketProduct"+[x]).style.display = "initial";
+        }
+    }
+    /*
+
     if (orderAmount1JS > 0) {
         document.getElementById('basketJetski1').innerHTML = "<img style=\"width:30%; float:left; \" src=\"images/sea-doo-spark.jpg\"> Sea Doo Spark <br> Antal: " + orderAmount1JS + "<br> Pris: " + orderAmount1JS * jetski1.price + " kr.";
     } else {
@@ -290,6 +326,8 @@ function calculatePrice() {
     } else {
         document.getElementById('basketJetski3').innerHTML = "";
     }
+
+     */
 }
 
 //MM: A class is created to represent order data.
@@ -337,7 +375,7 @@ function storeOrder() {
     var orderAmount3JS = document.getElementById('orderAmount3').value;
     // MK/MM: A variable is created to calculate the final price of the order.
     // MK: Totalprice = Amount picked of jetski1 * jetski1's price + Amount picked of jetski2 * jetski2's price and so on...
-    var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
+    //var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
 
     /* MM: The orderArray is retrieved from local storage by using JSON.parse.
     The values of the new order is collected from variables used earlier, and from HTML elements by using getElementById().
