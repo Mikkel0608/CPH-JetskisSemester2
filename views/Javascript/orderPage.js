@@ -280,6 +280,9 @@ function calculatePrice() {
     }
     document.getElementById('totalPrice').innerHTML = "Samlet Pris: " + finalPrice + " kr.";
     document.getElementById('basketDivFull').style.display = "initial";
+    if (finalPrice === 0) {
+        document.getElementById('basketDivFull').style.display = "none";
+    }
 
 /*
     var orderAmount1JS = document.getElementById('orderAmount1').value;
@@ -348,16 +351,13 @@ function calculatePrice() {
 
 //MM: A class is created to represent order data.
 class Order {
-    constructor(amount1, amount2, amount3, orderDay, orderMonth, orderYear, timePeriod, orderPrice, orderId) {
-        this.amount1 = amount1;
-        this.amount2 = amount2;
-        this.amount3 = amount3;
+    constructor(selectedProducts, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
+        this.selectedProducts = selectedProducts;
         this.orderDay = orderDay;
         this.orderMonth = orderMonth;
         this.orderYear = orderYear;
         this.timePeriod = timePeriod;
         this.orderPrice = orderPrice;
-        this.orderId = orderId;
     }
 }
 
@@ -385,6 +385,7 @@ if (localStorage.getItem('orderArray')==null) {
 //MK: This function's purpose is to store the created order in the orderArray in localStorage.
 //Function written by: MM & MD
 function storeOrder() {
+    /*
     // MK:Variables are created for the amount picked of the three different types of Jetski.
     var orderAmount1JS = document.getElementById('orderAmount1').value;
     var orderAmount2JS = document.getElementById('orderAmount2').value;
@@ -398,10 +399,21 @@ function storeOrder() {
     The new order is pushed onto the retrieved orderArray, and the entire updated array is saved to local storage by using
     JSON.stringify() and localStorage.setItem().
      */
-    const newOrder = new Order(orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    var selectedProducts = [];
+    for (let i = 0; i<storedProducts.length; i++) {
+        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+        if (selectElement.options[selectElement.selectedIndex].value > 0) {
+            var selectedProduct = {productid: storedProducts[i].productId, productAmount: parseInt(selectElement.options[selectElement.selectedIndex].value)};
+            selectedProducts.push(selectedProduct);
+        }
+    }
+    console.log(selectedProducts);
+
+    const newOrder = new Order(selectedProducts, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'http://localhost:3000/submitOrder', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(newOrder));
     window.location = "http://localhost:3000/orderconfirmation.html";
+
 }
