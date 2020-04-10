@@ -42,12 +42,24 @@ function checkLoginProfilePage() {
         window.location ="profile.html"
     }
 }
+
+     */
+//MM: The Product class is created. For now, only the price property is used in the code.
+class Product {
+    constructor(price, modelName, modelDescription, maxAmount, imageSRC) {
+        this.price = price;
+        this.modelName = modelName;
+        this.modelDescription = modelDescription;
+        this.maxAmount = maxAmount;
+        this.imageSRC = imageSRC;
+    }
+}
 /*MM/MK: The following function is activated by the confirm time button. It has the following purposes:
 1. It checks if the date/time values have been filled out, and displays an error if not.
 2. It checks if there already are reservations for the given time/date, and adjusts the amount of jetskis shown.
  */
 //Function written by: MM
-
+var storedProducts = [];
 function confirmTime() {
     /* MK/MM Creating variables that represent the user selection of date and time we assign the variable to the different elementID's from our HTML
 
@@ -67,33 +79,50 @@ function confirmTime() {
     //MM: If the variables have been set, it changes the display property from "none" to "", showing all the jetski models
     //and all the jetski amounts.
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
+        //Fetches the products from the database
         fetch('/orderPage/products')
             .then(response => response.json())
             .then(json => {
                 console.log(json);
                 console.log(json.length);
-                for (let i = 1; i<json.length; i++) {
-                    var container = document.getElementById("modelContainer1");
+                //Clones "modelContainer" for each product fetched from database, and creates objects for each product
+                for (let i = 0; i < json.length; i++) {
+                    var container = document.getElementById("modelContainer");
                     var clone = container.cloneNode(true);
+                    //Gives each product clone its own id
+                    clone.id = "modelContainer" + [i];
+                    //Makes each product clone visible
+                    clone.style.display = "initial";
+                    //Inserts each product clone onto the "productContainer" node
                     document.getElementById("productContainer").appendChild(clone);
+                    //Creates a new Product object and pushes it to the storedProducts array
+                    var newProduct = new Product(json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
+                    storedProducts.push(newProduct);
                 }
+                //Corrects the information for each created product
+                for (let i = 0; i < json.length; i++) {
+                    //Inserts product title
+                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
+                    //Inserts product photo source
+                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
+                    //Inserts product description
+                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
+                    //Inserts maximum amount of vacant jetskis
+                    var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+                    for (let x = 0; x < json[i].maxamount; x++) {
+                        selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                    }
+                }
+                console.log(storedProducts);
             });
-        document.getElementById("modelContainer1").style.display = '';
-        document.getElementById("modelContainer2").style.display = '';
-        document.getElementById("modelContainer3").style.display = '';
-        document.getElementById('jetski1Amount3').style.display = '';
-        document.getElementById('jetski1Amount2').style.display = '';
-        document.getElementById('jetski2Amount3').style.display = '';
-        document.getElementById('jetski2Amount2').style.display = '';
-        document.getElementById('jetski3Amount3').style.display = '';
-        document.getElementById('jetski3Amount2').style.display = '';
-    } else { //MM: If the user has not filled out alle the date/time fields, an error is shown:
+        //MM: If the user has not filled out alle the date/time fields, an error is shown:
+    } else {
         alert("Udfyld venligst alle felter.");
     }
+}
     /*MM:
     Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
 
-     */
 
     var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;
     var orderArray = JSON.parse(localStorage.getItem('orderArray'));
@@ -178,7 +207,7 @@ function confirmTime() {
                 }
             }
         }
-        */
+
 
     //MK: This if statement corrects the amount of jetski 1 if there are any reserved
     function correctAmountShown() {
@@ -214,22 +243,16 @@ function confirmTime() {
     }
 }
 
-
-//MM: The Jetski class is created. For now, only the price property is used in the code.
-class Jetski {
-    constructor(model, price, HorsePower) {
-        this.model = model;
-        this.price = price;
-    }
-}
 //MM: Objects are created from the Jetski class, representing the different jetski models.
-var jetski1= new Jetski('Sea Doo Spark', 300);
-var jetski2= new Jetski('Yamaha Waverunner VX', 500);
-var jetski3= new Jetski('Kawasaki STX 15F', 600);
+var jetski1= new Product('Sea Doo Spark', 300);
+var jetski2= new Product('Yamaha Waverunner VX', 500);
+var jetski3= new Product('Kawasaki STX 15F', 600);
 //the Object.freeze is used to make sure customers can't change the price property of the objects.
 Object.freeze(jetski1);
 Object.freeze(jetski2);
 Object.freeze(jetski3);
+
+     */
 
 
 /*MM: The following function is activated when the user changes the amount of jetskis in the HTML selector. It does the following:
