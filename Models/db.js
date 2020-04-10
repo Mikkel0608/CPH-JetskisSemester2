@@ -34,7 +34,10 @@ const createTables = () =>{
                             products(
                             productId SERIAL PRIMARY KEY,
                             price FLOAT,
-                            modelName VARCHAR(50)
+                            modelName VARCHAR(50),
+                            modelDescription VARCHAR(250),
+                            maxAmount INT,
+                            imageSRC VARCHAR(50)
                             );
                             
                             CREATE TABLE IF NOT EXISTS
@@ -53,7 +56,38 @@ const createTables = () =>{
                            orderProduct(
                             orderProductId SERIAL PRIMARY KEY,
                             productId INT REFERENCES products(productId),
-                            orderId INT REFERENCES Orders(orderId));`;
+                            orderId INT REFERENCES Orders(orderId));
+                            
+                            INSERT INTO products(
+                            productId,
+                            price, 
+                            modelName,
+                            modelDescription,
+                            maxAmount,
+                            imageSRC)
+                            VALUES(
+                            1, 300, 'Sea Doo Spark', 'Sea Doo Spark er en fornuftig maskine til en stærk pris. <br><br> Pris: 300 kr. for 2 timer.', 3, '../images/sea-doo-spark.jpg') ON CONFLICT (productId) DO NOTHING;
+                            
+                            INSERT INTO products(
+                            productId,
+                            price, 
+                            modelName,
+                            modelDescription,
+                            maxAmount,
+                            imageSRC)
+                            VALUES(
+                            2, 500, 'Yamaha Waverunner VX', 'Pris: 500 kr. for 2 timer', 3, '../images/yamaha-waverunner-vx.jpg') ON CONFLICT (productId) DO NOTHING;
+                            
+                            INSERT INTO products(
+                            productId,
+                            price, 
+                            modelName,
+                            modelDescription,
+                            maxAmount,
+                            imageSRC)
+                            VALUES(
+                            3, 600, 'Kawasaki STF-15F', 'Pris: 600 kr. for 2 timer', 3, '../images/kawasaki-stx-15f.jpg') ON CONFLICT (productId) DO NOTHING;
+                            `;
 
 
    pool.query(queryText)

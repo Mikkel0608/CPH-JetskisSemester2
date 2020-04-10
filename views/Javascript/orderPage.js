@@ -5,13 +5,14 @@ is redirected to the login page. In addition, the function also inserts the user
  */
 //Function written by: MM
 
-window.onload = function checkLoginButton() {
-    var xmr = new XMLHttpRequest();
-    xmr.open('GET', 'http://localhost:3000/register');
-    xmr.onload = function() {
-        console.log(xmr.response);
-        document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + xmr.response;
-    }
+window.onload = function getActivePhone() {
+    fetch('/profile/userinfo')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
+        });
+}
     //checks if the user is logged in and redirects to loginpage if not
     // (this is used if the user is linked directly to this page and have not logged in or registered before.)
     /*
@@ -19,7 +20,6 @@ window.onload = function checkLoginButton() {
         window.location = "Loginpage.html"
     }
 
-     */
 }
 //MK: The purpose of this function is to make sure that the user of the website cannot enter the orderPage if the user is not logged in.
 //This function uses the same if statement as the function above but here it is an if else statement. The difference is mainly that this function is activated when a button is clicked.
@@ -42,14 +42,28 @@ function checkLoginProfilePage() {
         window.location ="profile.html"
     }
 }
+
+     */
+//MM: The Product class is created. For now, only the price property is used in the code.
+class Product {
+    constructor(price, modelName, modelDescription, maxAmount, imageSRC) {
+        this.price = price;
+        this.modelName = modelName;
+        this.modelDescription = modelDescription;
+        this.maxAmount = maxAmount;
+        this.imageSRC = imageSRC;
+    }
+}
 /*MM/MK: The following function is activated by the confirm time button. It has the following purposes:
 1. It checks if the date/time values have been filled out, and displays an error if not.
 2. It checks if there already are reservations for the given time/date, and adjusts the amount of jetskis shown.
  */
 //Function written by: MM
-/*
+var storedProducts = [];
 function confirmTime() {
     /* MK/MM Creating variables that represent the user selection of date and time we assign the variable to the different elementID's from our HTML
+
+     */
 
     var rentDayID = document.getElementById("rentDay");
     var rentDayValue = rentDayID.options[rentDayID.selectedIndex].value;
@@ -65,20 +79,50 @@ function confirmTime() {
     //MM: If the variables have been set, it changes the display property from "none" to "", showing all the jetski models
     //and all the jetski amounts.
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
-        document.getElementById("modelContainer1").style.display = '';
-        document.getElementById("modelContainer2").style.display = '';
-        document.getElementById("modelContainer3").style.display = '';
-        document.getElementById('jetski1Amount3').style.display = '';
-        document.getElementById('jetski1Amount2').style.display = '';
-        document.getElementById('jetski2Amount3').style.display = '';
-        document.getElementById('jetski2Amount2').style.display = '';
-        document.getElementById('jetski3Amount3').style.display = '';
-        document.getElementById('jetski3Amount2').style.display = '';
-    } else { //MM: If the user has not filled out alle the date/time fields, an error is shown:
+        //Fetches the products from the database
+        fetch('/orderPage/products')
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                console.log(json.length);
+                //Clones "modelContainer" for each product fetched from database, and creates objects for each product
+                for (let i = 0; i < json.length; i++) {
+                    var container = document.getElementById("modelContainer");
+                    var clone = container.cloneNode(true);
+                    //Gives each product clone its own id
+                    clone.id = "modelContainer" + [i];
+                    //Makes each product clone visible
+                    clone.style.display = "initial";
+                    //Inserts each product clone onto the "productContainer" node
+                    document.getElementById("productContainer").appendChild(clone);
+                    //Creates a new Product object and pushes it to the storedProducts array
+                    var newProduct = new Product(json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
+                    storedProducts.push(newProduct);
+                }
+                //Corrects the information for each created product
+                for (let i = 0; i < json.length; i++) {
+                    //Inserts product title
+                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
+                    //Inserts product photo source
+                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
+                    //Inserts product description
+                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
+                    //Inserts maximum amount of vacant jetskis
+                    var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+                    for (let x = 0; x < json[i].maxamount; x++) {
+                        selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                    }
+                }
+                console.log(storedProducts);
+            });
+        //MM: If the user has not filled out alle the date/time fields, an error is shown:
+    } else {
         alert("Udfyld venligst alle felter.");
     }
-       MM:
-       Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
+}
+    /*MM:
+    Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
+
 
     var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;
     var orderArray = JSON.parse(localStorage.getItem('orderArray'));
@@ -91,84 +135,124 @@ function confirmTime() {
     The purpose of this loop is that only available jetskis are shown, and that jetskis that are already reserved are hidden.
     The loop uses the orderAmount and the orderArray variables.
 
-    for (var i = 0; i < orderAmount; i++) {
-        if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
-            //MM:Counts the amount of jetski1 reserved and adds to the var
-            if (orderArray[i].amount1 == 1) {
-                occupiedAmount1++;
-            } else if (orderArray[i].amount1 == 2) {
-                occupiedAmount1+=2;
-            } else if (orderArray[i].amount1 == 3) {
-                occupiedAmount1+=3;
-            }
-            //MM:Counts the amount of jetski2 reserved and adds to the var
-            if (orderArray[i].amount2 == 1) {
-                occupiedAmount2++;
-            } else if (orderArray[i].amount2 == 2) {
-                occupiedAmount2+=2;
-            } else if (orderArray[i].amount2 == 3) {
-                occupiedAmount2+=3;
-            }
-            //MM:Counts the amount of jetski3 reserved and adds to the var
-            if (orderArray[i].amount3 == 1) {
-                occupiedAmount3++;
-            } else if (orderArray[i].amount3 == 2) {
-                occupiedAmount3+=2;
-            } else if (orderArray[i].amount3 == 3) {
-                occupiedAmount3+=3;
-            }
+     */
+    class OrderDate {
+        constructor(orderDay, orderMonth, orderYear, timePeriod, amount1, amount2, amount3) {
+            this.orderDay = orderDay;
+            this.orderMonth = orderMonth;
+            this.orderYear = orderYear;
+            this.timePeriod = timePeriod;
+            this.amount1 = amount1;
+            this.amount2 = amount2;
+            this.amount3 = amount3;
         }
     }
 
+    var occupiedAmount1 = 0;
+    var occupiedAmount2 = 0;
+    var occupiedAmount3 = 0;
+    const newOrderDate = new OrderDate(rentDayValue, rentMonthValue, rentYearValue, rentTimeValue, 0, 0, 0);
+    fetch('http://localhost:3000/orderPage/getOrders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newOrderDate)
+    }).then(response => response.json())
+        .then(json => {
+            if (!json.ok) {
+                console.log(json);
+                occupiedAmount1 = json.amount1;
+                occupiedAmount2 = json.amount2;
+                occupiedAmount3 = json.amount3;
+                console.log([occupiedAmount1, occupiedAmount2, occupiedAmount3]);
+                correctAmountShown();
+            } else if (json.ok === true) {
+                console.log(json.ok);
+            }
+        });
+    /*var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/orderPage/getOrders', true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify(newOrderDate));
+    console.log(xhr.response);
+
+     */
+    /*
+        for (var i = 0; i < orderAmount; i++) {
+            if (rentDayValue == orderArray[i].orderDay && rentMonthValue == orderArray[i].orderMonth && rentYearValue == orderArray[i].orderYear && rentTimeValue == orderArray[i].timePeriod) {
+                //MM:Counts the amount of jetski1 reserved and adds to the var
+                if (orderArray[i].amount1 == 1) {
+                    occupiedAmount1++;
+                } else if (orderArray[i].amount1 == 2) {
+                    occupiedAmount1+=2;
+                } else if (orderArray[i].amount1 == 3) {
+                    occupiedAmount1+=3;
+                }
+                //MM:Counts the amount of jetski2 reserved and adds to the var
+                if (orderArray[i].amount2 == 1) {
+                    occupiedAmount2++;
+                } else if (orderArray[i].amount2 == 2) {
+                    occupiedAmount2+=2;
+                } else if (orderArray[i].amount2 == 3) {
+                    occupiedAmount2+=3;
+                }
+                //MM:Counts the amount of jetski3 reserved and adds to the var
+                if (orderArray[i].amount3 == 1) {
+                    occupiedAmount3++;
+                } else if (orderArray[i].amount3 == 2) {
+                    occupiedAmount3+=2;
+                } else if (orderArray[i].amount3 == 3) {
+                    occupiedAmount3+=3;
+                }
+            }
+        }
+
+
     //MK: This if statement corrects the amount of jetski 1 if there are any reserved
-    if (occupiedAmount1 == 1) {
-        document.getElementById('jetski1Amount3').style.display = "none";
-    } else if (occupiedAmount1 == 2) {
-        document.getElementById('jetski1Amount3').style.display = "none";
-        document.getElementById('jetski1Amount2').style.display = "none";
-        //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
-    } else if (occupiedAmount1 >= 3) {
-        document.getElementById("modelContainer1").style.display = "none";
-    }
-    //MK: This if statement corrects the amount of jetski 2 if there are any reserved
-    if (occupiedAmount2 == 1) {
-        document.getElementById('jetski2Amount3').style.display = "none";
-    } else if (occupiedAmount2== 2) {
-        document.getElementById('jetski2Amount3').style.display = "none";
-        document.getElementById('jetski2Amount2').style.display = "none";
-        //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
-    } else if (occupiedAmount2 >= 3) {
-        document.getElementById("modelContainer2").style.display = "none";
-    }
-    //MK: This if statement corrects the amount of jetski 3 if there are any reserved
-    if (occupiedAmount3 == 1) {
-        document.getElementById('jetski3Amount3').style.display = "none";
-    } else if (occupiedAmount3 == 2) {
-        document.getElementById('jetski3Amount3').style.display = "none";
-        document.getElementById('jetski3Amount2').style.display = "none";
-        //MM: The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
-    } else if (occupiedAmount3 >= 3) {
-        document.getElementById("modelContainer3").style.display = "none";
-    }
-}
-*/
-
-
-//MM: The Jetski class is created. For now, only the price property is used in the code.
-class Jetski {
-    constructor(model, price, HorsePower) {
-        this.model = model;
-        this.price = price;
+    function correctAmountShown() {
+        if (occupiedAmount1 == 1) {
+            document.getElementById('jetski1Amount3').style.display = "none";
+        } else if (occupiedAmount1 == 2) {
+            document.getElementById('jetski1Amount3').style.display = "none";
+            document.getElementById('jetski1Amount2').style.display = "none";
+            //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
+        } else if (occupiedAmount1 >= 3) {
+            document.getElementById("modelContainer1").style.display = "none";
+        }
+        //MK: This if statement corrects the amount of jetski 2 if there are any reserved
+        if (occupiedAmount2 == 1) {
+            document.getElementById('jetski2Amount3').style.display = "none";
+        } else if (occupiedAmount2 == 2) {
+            document.getElementById('jetski2Amount3').style.display = "none";
+            document.getElementById('jetski2Amount2').style.display = "none";
+            //MM:The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
+        } else if (occupiedAmount2 >= 3) {
+            document.getElementById("modelContainer2").style.display = "none";
+        }
+        //MK: This if statement corrects the amount of jetski 3 if there are any reserved
+        if (occupiedAmount3 == 1) {
+            document.getElementById('jetski3Amount3').style.display = "none";
+        } else if (occupiedAmount3 == 2) {
+            document.getElementById('jetski3Amount3').style.display = "none";
+            document.getElementById('jetski3Amount2').style.display = "none";
+            //MM: The following condition is set to >= in case a bug occurs and the amount of reserved jetskis exceeds 3.
+        } else if (occupiedAmount3 >= 3) {
+            document.getElementById("modelContainer3").style.display = "none";
+        }
     }
 }
+
 //MM: Objects are created from the Jetski class, representing the different jetski models.
-var jetski1= new Jetski('Sea Doo Spark', 300)
-var jetski2= new Jetski('Yamaha Waverunner VX', 500);
-var jetski3= new Jetski('Kawasaki STX 15F', 600);
+var jetski1= new Product('Sea Doo Spark', 300);
+var jetski2= new Product('Yamaha Waverunner VX', 500);
+var jetski3= new Product('Kawasaki STX 15F', 600);
 //the Object.freeze is used to make sure customers can't change the price property of the objects.
 Object.freeze(jetski1);
 Object.freeze(jetski2);
 Object.freeze(jetski3);
+
+     */
 
 
 /*MM: The following function is activated when the user changes the amount of jetskis in the HTML selector. It does the following:
@@ -177,7 +261,18 @@ Object.freeze(jetski3);
 3. It shows the name of the jetski, the photo, and the price of the selected jetskis in the basket.
  */
 //Function written by: MM
+var finalPrice;
 function calculatePrice() {
+    //Goes through all the stored products and adds their individual prices and quantities to the finalPrice var
+    finalPrice = 0;
+    for (let i=0; i<storedProducts.length; i++) {
+        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+        finalPrice += selectElement.options[selectElement.selectedIndex].value * storedProducts[i].price;
+    }
+    document.getElementById('totalPrice').innerHTML = "Samlet Pris: " + finalPrice + " kr.";
+    document.getElementById('basketDivFull').style.display = "initial";
+
+/*
     var orderAmount1JS = document.getElementById('orderAmount1').value;
     var orderAmount2JS = document.getElementById('orderAmount2').value;
     var orderAmount3JS = document.getElementById('orderAmount3').value;
@@ -188,9 +283,34 @@ function calculatePrice() {
     //MM:Checks if all order amounts are 0, then the basket should be hidden
     if (orderAmount1JS == 0 && orderAmount2JS == 0 && orderAmount3JS == 0)
         document.getElementById('basketDivFull').style.display = "none";
-
+*/
     /* MM: Checks if the order amount if above 0, and if so, it adds the jetski name, photo, price and amount to the <p> in the basket.
-    If the order amount is 0, it empties the <p> so that the element is hidden in the basket */
+    If the order amount is 0, it empties the <p> so that the element is hidden in the basket
+
+     */
+    for (let x=0; x<storedProducts.length; x++) {
+        var selectElement2 = document.getElementById("modelContainer" + [x]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+        if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) == null) {
+            //Creates a clone of the "basketProduct" div
+            var basketProduct = document.getElementById("basketProduct");
+            var clone = basketProduct.cloneNode(true);
+            //Gives each product clone its own id
+            clone.id = "basketProduct" + [x];
+            //Makes each product clone visible
+            clone.style.display = "initial";
+            //Inserts each product clone onto the "productContainer" node
+            document.getElementById("basketDivMain").appendChild(clone);
+
+            //Inserts all the product information
+            document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
+        } else if (selectElement2.options[selectElement2.selectedIndex].value === 0) {
+            document.getElementById("basketProduct"+[x]).style.display = "none";
+        } else if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) != null) {
+            document.getElementById("basketProduct"+[x]).style.display = "initial";
+        }
+    }
+    /*
+
     if (orderAmount1JS > 0) {
         document.getElementById('basketJetski1').innerHTML = "<img style=\"width:30%; float:left; \" src=\"images/sea-doo-spark.jpg\"> Sea Doo Spark <br> Antal: " + orderAmount1JS + "<br> Pris: " + orderAmount1JS * jetski1.price + " kr.";
     } else {
@@ -206,12 +326,13 @@ function calculatePrice() {
     } else {
         document.getElementById('basketJetski3').innerHTML = "";
     }
+
+     */
 }
 
 //MM: A class is created to represent order data.
 class Order {
-    constructor(phone, amount1, amount2, amount3, orderDay, orderMonth, orderYear, timePeriod, orderPrice, orderId) {
-        this.phone = phone;
+    constructor(amount1, amount2, amount3, orderDay, orderMonth, orderYear, timePeriod, orderPrice, orderId) {
         this.amount1 = amount1;
         this.amount2 = amount2;
         this.amount3 = amount3;
@@ -229,6 +350,7 @@ class Order {
 MM: If no orderArray exists in localStorage, an orderArray with predefined users is pushed to localStorage using JSON.stringify.
  */
 //Statements written by: MD
+/*
 var orderArray;
 if (localStorage.getItem('orderArray')==null) {
     orderArray = [];
@@ -242,6 +364,8 @@ if (localStorage.getItem('orderArray')==null) {
     localStorage.setItem('orderArray', orderArrayString);
 }
 
+ */
+
 //MK: This function's purpose is to store the created order in the orderArray in localStorage.
 //Function written by: MM & MD
 function storeOrder() {
@@ -251,17 +375,16 @@ function storeOrder() {
     var orderAmount3JS = document.getElementById('orderAmount3').value;
     // MK/MM: A variable is created to calculate the final price of the order.
     // MK: Totalprice = Amount picked of jetski1 * jetski1's price + Amount picked of jetski2 * jetski2's price and so on...
-    var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
+    //var finalPrice = orderAmount1JS * jetski1.price + orderAmount2JS * jetski2.price + orderAmount3JS * jetski3.price;
 
     /* MM: The orderArray is retrieved from local storage by using JSON.parse.
     The values of the new order is collected from variables used earlier, and from HTML elements by using getElementById().
     The new order is pushed onto the retrieved orderArray, and the entire updated array is saved to local storage by using
     JSON.stringify() and localStorage.setItem().
      */
-
-
-    const newOrder = new Order("", orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
-    xhr.open("POST", 'http://localhost:3000/createOrder', true);
+    const newOrder = new Order(orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'http://localhost:3000/submitOrder', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(newOrder));
     window.location = "http://localhost:3000/orderconfirmation.html";

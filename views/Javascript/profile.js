@@ -63,6 +63,8 @@ window.onload = function getCustomerInfo() {
             document.getElementById('customerEmail').innerHTML=json.email;
             document.getElementById('created_at').innerHTML=json.created_at;
 
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
+
         });
     /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
     links the user to the login page.
@@ -73,34 +75,37 @@ window.onload = function getCustomerInfo() {
     /* MM: This line of code retrieves the innerHTML part of the HTML tag with id "loginPhone" and sets it equal to some text and
     the phone key's value stored in local storage.
      */
-    document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + localStorage.getItem('phone');
-
     /*
     MM:
     Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
     The array is retrieved from local storage by using JSON.parse. The array from local storage is saved as the "orderArray" variable.
      */
-    var orderAmount = JSON.parse(localStorage.getItem('orderArray')).length;
-    var orderArray = JSON.parse(localStorage.getItem('orderArray'));
+    fetch('/profile/orderinfo')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+
+            var orderAmount = json.length;
+            var orderArray = json;
 
     /* MM: The following for loop cycles through all the stored orders and prints the order information onto the page
     if the order's phone number matches the phone number of the logged in user.
      */
-    var i;
-    for (i = 0; i < orderAmount; i++) {
-        if (localStorage.getItem('phone') == orderArray[i].phone) {
+            var i;
+            for (i = 0; i < orderAmount; i++) {
             /*
             MM: Variables are created and set equal to the corresponding values of the number i object of the orderArray.
              */
-            var day = orderArray[i].orderDay;
-            var month = orderArray[i].orderMonth;
-            var year = orderArray[i].orderYear;
-            var timePeriod = orderArray[i].timePeriod;
-            var amount1 = orderArray[i].amount1;
-            var amount2 = orderArray[i].amount2;
-            var amount3 = orderArray[i].amount3;
-            var orderPrice = orderArray[i].orderPrice;
-            var orderID = orderArray[i].orderId;
+                var day = orderArray[i].orderday;
+                var month = orderArray[i].ordermonth;
+                var year = orderArray[i].orderyear;
+                var timePeriod = orderArray[i].timeperiod;
+                var amount1 = orderArray[i].amount1;
+                var amount2 = orderArray[i].amount2;
+                var amount3 = orderArray[i].amount3;
+                var orderPrice = orderArray[i].orderprice;
+                var orderID = orderArray[i].orderid;
+                var orderDate = orderArray[i].order_placed_at;
 
             /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
              */
@@ -108,7 +113,7 @@ window.onload = function getCustomerInfo() {
             /*
             MM: The innerHTML of the newly created <p> tag is set equal to a section of text and the variables above.
              */
-            orderInfo.innerHTML ="Dato for udlejning: "+ day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" + "Antal Sea Doo Spark: " + amount1 + "</br></br>" + "Antal Yamaha Waverunner VX: " + amount2 + "</br></br>" + "Antal Kawasaki STX-15F: " + amount3 + "</br></br>" + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br>";
+            orderInfo.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" + "Antal Sea Doo Spark: " + amount1 + "</br></br>" + "Antal Yamaha Waverunner VX: " + amount2 + "</br></br>" + "Antal Kawasaki STX-15F: " + amount3 + "</br></br>" + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
             /*
             MM: The appendChild method is used to set the newly created <p> tag as a child to to the ID "orderList", specified in the
             getElementById method.
@@ -120,7 +125,7 @@ window.onload = function getCustomerInfo() {
              */
             document.getElementById('noOrders').innerHTML = "";
         }
-    }
+    })
 };
 
 
@@ -136,7 +141,11 @@ attribute in the stored order matches the phone of the active user.
  */
 //Function written by Morten Dyberg
 (function getOrderId() {
-    var orderArray = JSON.parse(localStorage.getItem("orderArray"));
+    fetch('/profile/orderinfo')
+        .then(response => response.json())
+        .then(json => {
+
+    var orderArray = json;
     /*
     MM: This for loop cycles through all the orders in the orderArray. For each repetition, variable i is increased by 1.
     The loop only stops once i is greater than the length of the orderArray.
@@ -148,14 +157,15 @@ attribute in the stored order matches the phone of the active user.
             /*
             MM: The innerHTML of the newly created option tag is set equal to the orderID of order object number i in the orderArray.
              */
-            orderId.innerHTML = orderArray[i].orderId;
+            orderId.innerHTML = orderArray[i].orderid;
 
             /*
             MM: The appendChild method is used to set the newly created option tag as a child to the "orderId" ID.
              */
             document.getElementById("orderId").appendChild(orderId);
+            }
         }
-    }
+    })
 }());
 
 /*
@@ -236,3 +246,4 @@ function deleteUser() {
          */
     }
 }
+

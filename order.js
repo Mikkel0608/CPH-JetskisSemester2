@@ -1,38 +1,101 @@
-const session = require('express-session');
-const bodyParser = require('body-parser');
-
 //Importing the database connection
 const pool = require('./Models/db');
-//Importing the express server
+
 const app = require('./index.js');
 
-//Ved ikke lige hvad det her gør lol
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-
-//the bodyParser extracts the form data from our html file.
-app.use(bodyParser.urlencoded({extended : true}));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-module.exports = function (request, response) {
-    var rentDay = request.body.rentDay;
-    var rentMonth = request.body.rentMonth;
-    var rentYear = request.body.rentYear;
-    var rentTime = request.body.rentTime;
-    var orderAmount1 = request.body.orderAmount1;
-    var orderAmount2 = request.body.orderAmount2;
-    var orderAmount3 = request.body.orderAmount3;
-    var totalPrice = request.body.totalPriceHidden;
+function getProducts (request, response) {
+    pool.query(`SELECT productid, price, modelname, modeldescription, maxamount, imagesrc FROM products`,
+        function (error, results) {
+        if(error) {
+            throw error;
+        } else {
+            response.send(results.rows);
+        }
+    })
+}
+
+function getOrders (request, response) {
+    var rentDay = request.body.orderDay;
+    var rentMonth = request.body.orderMonth;
+    var rentYear = request.body.orderYear;
+    var rentTime = request.body.timePeriod;
+    var amount1 = request.body.amount1;
+    var amount2 = request.body.amount2;
+    var amount3 = request.body.amount3;
+
+    pool.query(`SELECT orderid FROM orders WHERE orderday =$1 AND ordermonth =$2 AND orderyear =$3 AND timeperiod =$4`,
+        [rentDay, rentMonth, rentYear, rentTime], function (error, results) {
+        if(error) {
+            throw error;
+        } else {
+            console.log(results.rows);
+            for (let i = 0; i < results.rows.length; i++) {
+                pool.query(`SELECT orderproductid FROM orderproduct WHERE orderid =$1 AND productid =$2`,
+                    [results.rows[i].orderid, 1], function (error, results) {
+                        if (error) {
+                            throw error;
+                        } else {
+                            amount1 += results.rows.length;
+                            console.log("Counted the first amount: " + amount1);
+                            countSecond();
+                        }
+                    }
+                );
+
+                function countSecond() {
+                    pool.query(`SELECT orderproductid FROM orderproduct WHERE orderid =$1 AND productid =$2`,
+                        [results.rows[i].orderid, 2], function (error, results) {
+                            if (error) {
+                                throw error;
+                            } else {
+                                amount2 += results.rows.length;
+                                console.log("Counted the second amount: " + amount2);
+                                countThird();
+                            }
+                        }
+                    );
+                }
+
+                function countThird() {
+                    pool.query(`SELECT orderproductid FROM orderproduct WHERE orderid =$1 AND productid =$2`,
+                        [results.rows[i].orderid, 3], function (error, results) {
+                            if (error) {
+                                throw error;
+                            } else {
+                                amount3 += results.rows.length;
+                                console.log("Counted the third amount: " + amount3);
+                                console.log("Counted the following reservations: Amount1:" + amount1 + ", Amount2:" + amount2 + ", Amount3:" + amount3);
+                                response.send([amount1, amount2, amount3]);
+                                response.end;
+                            }
+                        }
+                    );
+                }
+            }
+        }
+        });
+}
+
+function submitOrder (request, response) {
+    var rentDay = request.body.orderDay;
+    var rentMonth = request.body.orderMonth;
+    var rentYear = request.body.orderYear;
+    var rentTime = request.body.timePeriod;
+    var orderAmount1 = request.body.amount1;
+    var orderAmount2 = request.body.amount2;
+    var orderAmount3 = request.body.amount3;
+    var totalPrice = request.body.orderPrice;
 
     //If no phone is registered, an error is shown:
     if (request.session.email === undefined) {
         response.send("Session timed out. Please login again and resubmit your order. <br><br><br> <a href='/loginpage.html'>Click here to go to the login page</a>");
     }
 
-    // The following section uses the phone stored in the session to find the corresponding customerid in the database
+    // The following section uses the email stored in the session to find the corresponding customerid in the database
     var userid = null;
     pool.query(`SELECT userid FROM users WHERE email =$1`, [request.session.email], function (error, results) {
         if(error) {
@@ -104,29 +167,9 @@ module.exports = function (request, response) {
             }
         }
     }
-
-
-
-
-    /* For at lave produkterne (kør kun hvis de ikke eksisterer)
-    pool.query(`INSERT INTO products(
-                price, 
-                modelname)
-                VALUES(
-                $1, $2);
-                `, [300, "Sea Doo Spark"]);
-    pool.query(`INSERT INTO products(
-                price, 
-                modelname)
-                VALUES(
-                $1, $2);
-                `, [500, "Yamaha Waverunner VX"]);
-    pool.query(`INSERT INTO products(
-                price, 
-                modelname)
-                VALUES(
-                $1, $2);
-                `, [600, "Kawasaki STF-15F"]);
-
-     */
 }
+module.exports = {
+    submitOrder,
+    getOrders,
+    getProducts
+};

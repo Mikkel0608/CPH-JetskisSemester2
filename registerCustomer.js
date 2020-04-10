@@ -43,7 +43,7 @@ module.exports = function (request, response){
             responseText+='Email-addressen er allerede registreret';
         }
         if(form_valid === false) {
-            response.send(responseText);
+            response.send(JSON.stringify(responseText));
         }
             if (form_valid === true){
                 var usertypeid = null;
@@ -74,9 +74,12 @@ module.exports = function (request, response){
                 $1, $2, $3, $4, $5, $6, $7, $8, $9);
                 `, [usertypeid, name, streetName, streetNumber, postalCode, city, phone, email, password]);
                 //response.redirect('/Loginpage.html');
+                    request.body.ok = true;
+                    console.log(request.body);
+                    response.send(request.body);
                 }
             }
-            response.end();
+            //response.end();
         });
         console.log(form_valid);
     });

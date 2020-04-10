@@ -19,7 +19,7 @@
 
 <!-- Navigation bar and navigation buttons -->
 <div id="naviBar">
-    <a href="Adminpage.html"><button id="buttonStyle"> Tilbage til forsiden </button></a>
+    <a href="/Adminpage"><button id="buttonStyle"> Tilbage til forsiden </button></a>
 
 </div>
 <h2> style="font-family: modernSansLight; font-size: 30px;"> Brugerprofil </h2>
@@ -79,44 +79,42 @@
 <script>
    var selection = document.getElementById("phoneSelect");
     window.onload = function () {
-        var usersArray = null;
 
         fetch('/adminpage/allusers')
             .then(response =>
                 response.json())
             .then(json => {
                 console.log(json);
-                usersArray = json;
 
-                for (let i=0; i < usersArray.length; i++){
-                    var option = document.createElement("option");
-                    option.innerHTML = usersArray[i].phone;
+                for (let i=0; i < json.length; i++){
+                    if (json[i].phone !== null || undefined) {
+                        var option = document.createElement("option");
+                        option.innerHTML = json[i].phone;
 
-                    document.getElementById("phoneSelect").appendChild(option);
+                        document.getElementById("phoneSelect").appendChild(option);
+                    }
                 }
             })
         };
 
     function showInfo (){
-        var usersArray = null;
         fetch('/adminpage/allusers')
             .then(response =>
                 response.json())
             .then(json => {
-                usersArray = json;
 
-                for (let i = 0; i < usersArray.length; i++) {
-                    if (selection.value == usersArray[i].phone) {
-                        document.getElementById("userid").innerHTML = usersArray[i].userid;
-                        document.getElementById("usertypeid").innerHTML = usersArray[i].usertypeid;
-                        document.getElementById("customerName").innerHTML = usersArray[i].username;
-                        document.getElementById("customerStreetName").innerHTML = usersArray[i].streetname;
-                        document.getElementById("customerStreetNumber").innerHTML = usersArray[i].streetnumber;
-                        document.getElementById("customerPostalCode").innerHTML = usersArray[i].postalcode;
-                        document.getElementById("customerCity").innerHTML = usersArray[i].city;
-                        document.getElementById("customerPhone").innerHTML = usersArray[i].phone;
-                        document.getElementById("customerEmail").innerHTML = usersArray[i].email;
-                        document.getElementById("created_at").innerHTML = usersArray[i].created_at;
+                for (let i = 0; i < json.length; i++) {
+                    if (selection.value == json[i].phone) {
+                        document.getElementById("userid").innerHTML = json[i].userid;
+                        document.getElementById("usertypeid").innerHTML = json[i].usertypeid;
+                        document.getElementById("customerName").innerHTML = json[i].username;
+                        document.getElementById("customerStreetName").innerHTML = json[i].streetname;
+                        document.getElementById("customerStreetNumber").innerHTML = json[i].streetnumber;
+                        document.getElementById("customerPostalCode").innerHTML = json[i].postalcode;
+                        document.getElementById("customerCity").innerHTML = json[i].city;
+                        document.getElementById("customerPhone").innerHTML = json[i].phone;
+                        document.getElementById("customerEmail").innerHTML = json[i].email;
+                        document.getElementById("created_at").innerHTML = json[i].created_at;
                     }
                 }
             });

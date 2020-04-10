@@ -6,6 +6,9 @@ const cors = require('cors');
 const app = express();
 module.exports = app;
 
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+
 app.use(cors());
 app.use(express.json());
 
@@ -33,7 +36,7 @@ app.get('/profile.html',(req,res)=>{
 });
 app.get('/profile/updatePassword', (req, res)=>{
     res.sendFile(path.resolve(__dirname, 'html/updatePassword.html'))
-})
+});
 app.get('/orderConfirmation.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/orderConfirmation.html'))
 });
@@ -58,8 +61,11 @@ const loginFunction = require('./login.js');
 //login validation
 app.post('/loginpage/auth', loginFunction.loginFunc);
 
-//Checks that the user is logged in before viewing page
-app.get('/checklogin', loginFunction.checkLogin);
+//Checks that the user is logged in before viewing profile page
+app.get('/checkloginProfile', loginFunction.checkLoginProfile);
+
+//Checks that the user is logged in before viewing order page
+app.get('/checkloginOrder', loginFunction.checkLoginOrder);
 
 //logs user out
 app.get('/profile/logout', loginFunction.logOut);
@@ -68,11 +74,18 @@ const profileFunctions = require('./profile.js');
 //deletes the customer-user that is logged in
 app.get('/profile/deleteuser', profileFunctions.deleteUser);
 
+//the use of middleware ensures that the active customer only can see information about themselves.
 app.use(profileFunctions.infoMW);
 
 app.get('/profile/userinfo', profileFunctions.showInfo);
 
-app.post('/profile/updatepassword/update', profileFunctions.updatePassword);
+app.use(profileFunctions.orderMW);
+
+app.get('/profile/orderinfo', profileFunctions.showOrder);
+
+/*app.post('/profile/updatepassword/update', profileFunctions.updatePassword);*/
+
+app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
 
 
 const registerFunction = require('./registerCustomer');
@@ -80,19 +93,14 @@ const registerFunction = require('./registerCustomer');
 app.post('/register', registerFunction);
 
 // creating new order
-const createOrder = require('./order.js');
-app.post('/createOrder', createOrder);
-
-// getting the active phone number from the API to the frontend
-const getPhone = require('./getphone.js');
-app.get('/getphone', getPhone);
-
-
+const orderFunction = require('./order.js');
+app.post('/submitOrder', orderFunction.submitOrder);
+app.post('/orderPage/getOrders', orderFunction.getOrders);
+app.get('/orderPage/products', orderFunction.getProducts);
 
 //adminpage
-const getUser = require ('./admin_users.js');
+const getUser = require ('./admin.js');
 app.get('/adminpage/allusers/', getUser.getUsers);
-
 
 
 
