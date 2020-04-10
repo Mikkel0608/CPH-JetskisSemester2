@@ -139,21 +139,6 @@ function createAdmin(){
     }
 }
 
-
-
-// Funktion der pusher producter ind i product tabel
- const pushProducts = () =>{
-
- }
-
-/* TODO: Slet evt tables før arbejde med DB fortsættes:
-Dette skyldes vi benytter "Create table if not exist"
-Drop tabels og derefter refresh.
- */
-
-
-
-
 //kør disse funktioner for at få noget data i databasen
 
 createTables();
