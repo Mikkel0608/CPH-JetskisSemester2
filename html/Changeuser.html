@@ -41,7 +41,7 @@
      <h4>Brugerinformation</h4>
      <h5>User id</h5> <p id="userid"></p>
 
-     <h5>User type id</h5> <p id="usertypeid"></p>
+     <h5>User type</h5> <p id="type"></p>
 
      <h5>Navn</h5> <p id="customerName"></p>
 
@@ -106,7 +106,7 @@
                 for (let i = 0; i < json.length; i++) {
                     if (selection.value == json[i].phone) {
                         document.getElementById("userid").innerHTML = json[i].userid;
-                        document.getElementById("usertypeid").innerHTML = json[i].usertypeid;
+                        document.getElementById("type").innerHTML = json[i].type;
                         document.getElementById("customerName").innerHTML = json[i].username;
                         document.getElementById("customerStreetName").innerHTML = json[i].streetname;
                         document.getElementById("customerStreetNumber").innerHTML = json[i].streetnumber;
