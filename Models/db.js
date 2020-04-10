@@ -157,6 +157,7 @@ Drop tabels og derefter refresh.
 //kør disse funktioner for at få noget data i databasen
 
 createTables();
+//createAdmin()
 //createData();
 //createProducts();
 

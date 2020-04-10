@@ -1,71 +1,32 @@
-/* MM: The following function uses an if statement with the condition that the phone key in local storage has to equal null.
-If the condition is true, it sends the user to the login page, as the user is not logged in. If not, it allows the user to access the order page.
-The function is activated by the onclick attribute specified on the "Bestil tid" button HTML tag.
- */
-/*function checkLoginOrderPage() {
-    if (localStorage.getItem('phone') == null) {
-        window.location = "Loginpage.html"
-    } else {
-        window.location ="orderPage.html"
-    }
-}
-/* MM: The following function has the same functionality as the function above, but with the "Profil" button instead.
- */
-/*
-function checkLoginProfilePage() {
-    if (localStorage.getItem('phone') == null) {
-        window.location = "Loginpage.html"
-    } else {
-        window.location ="profile.html"
-    }
-}
- */
-
-
-/* MM: The logOut function removes the specified keys from the local storage. By removing the keys, the user is seen as
-logged out by the system.
- */
-//Function written by Morten Dyberg
-function logOut(){
-    localStorage.removeItem("customerName");
-    localStorage.removeItem("streetName");
-    localStorage.removeItem("streetNumber");
-    localStorage.removeItem("postalCode");
-    localStorage.removeItem("city");
-    localStorage.removeItem("phone");
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-}
-
 /*  MM: The following function is activated whenever the window has loaded. This is done by using the "window.onload"
 event handler.
  */
 //Function written by Mikkel Marcher
 window.onload = function getCustomerInfo() {
+    fetch('/profile/userinfo')
+        .then(response => response.json())
+        .then(json => {
+            var userInfo = json;
+            console.log(userInfo);
     /*
     MM:
     The code retrieves information from local storage by using the "getItem" command, and specifying the key that the
     information should be retrieved from. This retrieved information is then saved to the newly created variables.
      */
+            //console.log(userInfo);
 
-    fetch('/profile/userinfo')
-        .then(response => response.json())
-        .then(json => {
-            console.log(json);
+            document.getElementById('userid').innerHTML=userInfo.userid;
+            document.getElementById('customerName').innerHTML=userInfo.username;
+            document.getElementById('customerStreetName').innerHTML=userInfo.streetname;
+            document.getElementById('customerStreetNumber').innerHTML=userInfo.streetnumber;
+            document.getElementById('customerPostalCode').innerHTML=userInfo.postalcode;
+            document.getElementById('customerCity').innerHTML=userInfo.city;
+            document.getElementById('customerPhone').innerHTML=userInfo.phone;
+            document.getElementById('customerEmail').innerHTML=userInfo.email;
+            document.getElementById('created_at').innerHTML=userInfo.created_at;
 
-            document.getElementById('userid').innerHTML=json.userid;
-            document.getElementById('customerName').innerHTML=json.username;
-            document.getElementById('customerStreetName').innerHTML=json.streetname;
-            document.getElementById('customerStreetNumber').innerHTML=json.streetnumber;
-            document.getElementById('customerPostalCode').innerHTML=json.postalcode;
-            document.getElementById('customerCity').innerHTML=json.city;
-            document.getElementById('customerPhone').innerHTML=json.phone;
-            document.getElementById('customerEmail').innerHTML=json.email;
-            document.getElementById('created_at').innerHTML=json.created_at;
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + userInfo.userid;
 
-            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
-
-        });
     /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
     links the user to the login page.
      */
@@ -83,49 +44,50 @@ window.onload = function getCustomerInfo() {
     fetch('/profile/orderinfo')
         .then(response => response.json())
         .then(json => {
-            console.log(json);
+            var orderInfo = json;
+            console.log(orderInfo);
 
-            var orderAmount = json.length;
-            var orderArray = json;
+
 
     /* MM: The following for loop cycles through all the stored orders and prints the order information onto the page
     if the order's phone number matches the phone number of the logged in user.
      */
             var i;
-            for (i = 0; i < orderAmount; i++) {
+            for (i = 0; i < userInfo.length; i++) {
             /*
             MM: Variables are created and set equal to the corresponding values of the number i object of the orderArray.
              */
-                var day = orderArray[i].orderday;
-                var month = orderArray[i].ordermonth;
-                var year = orderArray[i].orderyear;
-                var timePeriod = orderArray[i].timeperiod;
-                var amount1 = orderArray[i].amount1;
-                var amount2 = orderArray[i].amount2;
-                var amount3 = orderArray[i].amount3;
-                var orderPrice = orderArray[i].orderprice;
-                var orderID = orderArray[i].orderid;
-                var orderDate = orderArray[i].order_placed_at;
+                var day = userInfo[i].orderday;
+                var month = userInfo[i].ordermonth;
+                var year = userInfo[i].orderyear;
+                var timePeriod = userInfo[i].timeperiod;
+                var amount1 = userInfo[i].amount1;
+                var amount2 = userInfo[i].amount2;
+                var amount3 = userInfo[i].amount3;
+                var orderPrice = userInfo[i].orderprice;
+                var orderID = userInfo[i].orderid;
+                var orderDate = userInfo[i].order_placed_at;
 
             /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
              */
-            var orderInfo = document.createElement("P");
+            var order = document.createElement("P");
             /*
             MM: The innerHTML of the newly created <p> tag is set equal to a section of text and the variables above.
              */
-            orderInfo.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" + "Antal Sea Doo Spark: " + amount1 + "</br></br>" + "Antal Yamaha Waverunner VX: " + amount2 + "</br></br>" + "Antal Kawasaki STX-15F: " + amount3 + "</br></br>" + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
+            order.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" + "Antal Sea Doo Spark: " + amount1 + "</br></br>" + "Antal Yamaha Waverunner VX: " + amount2 + "</br></br>" + "Antal Kawasaki STX-15F: " + amount3 + "</br></br>" + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
             /*
             MM: The appendChild method is used to set the newly created <p> tag as a child to to the ID "orderList", specified in the
             getElementById method.
              */
-            document.getElementById('orderList').appendChild(orderInfo);
+            document.getElementById('orderList').appendChild(order);
             /*
             MM: The following line empties the innerHTML of the noOrders ID tag. If the line below is not run, the text
             explains that there are no orders. Whenever the line below is run, the text is removed.
              */
             document.getElementById('noOrders').innerHTML = "";
         }
-    })
+        });
+        });
 };
 
 
@@ -152,16 +114,8 @@ attribute in the stored order matches the phone of the active user.
      */
     for (var i = 0; i < orderArray.length; i++) {
         if (localStorage.getItem("phone") == orderArray[i].phone) {
-
             var orderId = document.createElement("option");
-            /*
-            MM: The innerHTML of the newly created option tag is set equal to the orderID of order object number i in the orderArray.
-             */
             orderId.innerHTML = orderArray[i].orderid;
-
-            /*
-            MM: The appendChild method is used to set the newly created option tag as a child to the "orderId" ID.
-             */
             document.getElementById("orderId").appendChild(orderId);
             }
         }
@@ -223,27 +177,20 @@ function deleteUser() {
     //var userArray = JSON.parse(localStorage.getItem("userArray"));
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
     if (choice == true) {
-        /*
-        MM: The following for loop runs through all the stored users in the userArray, and if the active phone and the
-        phone attribute of the i object in the array is the same, it splices the number i user from the array. The array is then
-        again saved to local storage using the JSON.stringify method. The user is linked to the login page using window.location,
-        and the logOut() function and deleteOrder() functions are called.
-         */
-        window.location = '/profile/deleteuser';
-        /*
-        for (var i = 0; i <= userArray.length; i++) {
-            if (localStorage.getItem("phone") == userArray[i].phone) {
-                alert("Bruger er blevet slettet");
-                window.location = 'Loginpage.html';
-                userArray.splice(i, 1);
+        fetch('http://localhost:3000/profile/userinfo')
+            .then(response => response.json())
+            .then(json => {
+                console.log('frontend user-id ' + json.userid);
 
-                var userArrayString = JSON.stringify(userArray);
-                localStorage.setItem('userArray', userArrayString);
-                logOut();
-                deleteOrder();
-            }
-        }
-         */
+                fetch(`http://localhost:3000/profile/deleteuser/${json.userid}`, {
+                    method: 'DELETE'
+                }).then(response => response.json())
+                    .then(json => {
+                        if (json === 'ok'){
+                            window.location = 'http://localhost:3000';
+                        }
+                    })
+            });
     }
 }
 

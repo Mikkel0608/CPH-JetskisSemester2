@@ -46,7 +46,8 @@ function checkLoginProfilePage() {
      */
 //MM: The Product class is created. For now, only the price property is used in the code.
 class Product {
-    constructor(price, modelName, modelDescription, maxAmount, imageSRC) {
+    constructor(productId, price, modelName, modelDescription, maxAmount, imageSRC) {
+        this.productId = productId;
         this.price = price;
         this.modelName = modelName;
         this.modelDescription = modelDescription;
@@ -75,9 +76,13 @@ function confirmTime() {
     var rentTimeID = document.getElementById("rentTime");
     var rentTimeValue = rentTimeID.options[rentTimeID.selectedIndex].value;
 
-    //MM: Tests if the variables set before are equal to 00 (haven't been set).
-    //MM: If the variables have been set, it changes the display property from "none" to "", showing all the jetski models
-    //and all the jetski amounts.
+
+    //Locks the select elements so they can't be changed
+    document.getElementById('rentDay').disabled = true;
+    document.getElementById('rentMonth').disabled = true;
+    document.getElementById('rentYear').disabled = true;
+    document.getElementById('rentTime').disabled = true;
+
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
         //Fetches the products from the database
         fetch('/orderPage/products')
@@ -85,32 +90,35 @@ function confirmTime() {
             .then(json => {
                 console.log(json);
                 console.log(json.length);
-                //Clones "modelContainer" for each product fetched from database, and creates objects for each product
-                for (let i = 0; i < json.length; i++) {
-                    var container = document.getElementById("modelContainer");
-                    var clone = container.cloneNode(true);
-                    //Gives each product clone its own id
-                    clone.id = "modelContainer" + [i];
-                    //Makes each product clone visible
-                    clone.style.display = "initial";
-                    //Inserts each product clone onto the "productContainer" node
-                    document.getElementById("productContainer").appendChild(clone);
-                    //Creates a new Product object and pushes it to the storedProducts array
-                    var newProduct = new Product(json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
-                    storedProducts.push(newProduct);
-                }
-                //Corrects the information for each created product
-                for (let i = 0; i < json.length; i++) {
-                    //Inserts product title
-                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
-                    //Inserts product photo source
-                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
-                    //Inserts product description
-                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
-                    //Inserts maximum amount of vacant jetskis
-                    var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
-                    for (let x = 0; x < json[i].maxamount; x++) {
-                        selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                //Checks if the products have already been generated on the page
+                if (storedProducts.length != json.length) {
+                    //Clones "modelContainer" for each product fetched from database, and creates objects for each product
+                    for (let i = 0; i < json.length; i++) {
+                        var container = document.getElementById("modelContainer");
+                        var clone = container.cloneNode(true);
+                        //Gives each product clone its own id
+                        clone.id = "modelContainer" + [i];
+                        //Makes each product clone visible
+                        clone.style.display = "initial";
+                        //Inserts each product clone onto the "productContainer" node
+                        document.getElementById("productContainer").appendChild(clone);
+                        //Creates a new Product object and pushes it to the storedProducts array
+                        var newProduct = new Product(json[i].productid, json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
+                        storedProducts.push(newProduct);
+                    }
+                    //Corrects the product information for each created product to the fetched info form the database
+                    for (let i = 0; i < json.length; i++) {
+                        //Inserts product title
+                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
+                        //Inserts product photo source
+                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
+                        //Inserts product description
+                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
+                        //Inserts maximum amount of available products
+                        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+                        for (let x = 0; x < json[i].maxamount; x++) {
+                            selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                        }
                     }
                 }
                 console.log(storedProducts);
@@ -120,6 +128,7 @@ function confirmTime() {
         alert("Udfyld venligst alle felter.");
     }
 }
+
     /*MM:
     Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
 
@@ -271,6 +280,9 @@ function calculatePrice() {
     }
     document.getElementById('totalPrice').innerHTML = "Samlet Pris: " + finalPrice + " kr.";
     document.getElementById('basketDivFull').style.display = "initial";
+    if (finalPrice === 0) {
+        document.getElementById('basketDivFull').style.display = "none";
+    }
 
 /*
     var orderAmount1JS = document.getElementById('orderAmount1').value;
@@ -288,7 +300,9 @@ function calculatePrice() {
     If the order amount is 0, it empties the <p> so that the element is hidden in the basket
 
      */
+
     for (let x=0; x<storedProducts.length; x++) {
+        //Goes through all the "select" elements and clones the "basketProduct" div for the amount of selected products
         var selectElement2 = document.getElementById("modelContainer" + [x]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
         if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) == null) {
             //Creates a clone of the "basketProduct" div
@@ -303,10 +317,15 @@ function calculatePrice() {
 
             //Inserts all the product information
             document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
-        } else if (selectElement2.options[selectElement2.selectedIndex].value === 0) {
+
+            //If the "select" element is changed to "0", it hides the element from the basket:
+        } else if (selectElement2.options[selectElement2.selectedIndex].value == 0 && document.getElementById("basketProduct"+[x]) != null) {
             document.getElementById("basketProduct"+[x]).style.display = "none";
+
+            //If the "select" element already exists, but has been hidden previously, it makes the div visible and updates the div with correct amount/price:
         } else if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) != null) {
             document.getElementById("basketProduct"+[x]).style.display = "initial";
+            document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
         }
     }
     /*
@@ -332,16 +351,13 @@ function calculatePrice() {
 
 //MM: A class is created to represent order data.
 class Order {
-    constructor(amount1, amount2, amount3, orderDay, orderMonth, orderYear, timePeriod, orderPrice, orderId) {
-        this.amount1 = amount1;
-        this.amount2 = amount2;
-        this.amount3 = amount3;
+    constructor(selectedProducts, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
+        this.selectedProducts = selectedProducts;
         this.orderDay = orderDay;
         this.orderMonth = orderMonth;
         this.orderYear = orderYear;
         this.timePeriod = timePeriod;
         this.orderPrice = orderPrice;
-        this.orderId = orderId;
     }
 }
 
@@ -369,6 +385,7 @@ if (localStorage.getItem('orderArray')==null) {
 //MK: This function's purpose is to store the created order in the orderArray in localStorage.
 //Function written by: MM & MD
 function storeOrder() {
+    /*
     // MK:Variables are created for the amount picked of the three different types of Jetski.
     var orderAmount1JS = document.getElementById('orderAmount1').value;
     var orderAmount2JS = document.getElementById('orderAmount2').value;
@@ -382,10 +399,21 @@ function storeOrder() {
     The new order is pushed onto the retrieved orderArray, and the entire updated array is saved to local storage by using
     JSON.stringify() and localStorage.setItem().
      */
-    const newOrder = new Order(orderAmount1JS, orderAmount2JS, orderAmount3JS, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    var selectedProducts = [];
+    for (let i = 0; i<storedProducts.length; i++) {
+        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+        if (selectElement.options[selectElement.selectedIndex].value > 0) {
+            var selectedProduct = {productid: storedProducts[i].productId, productAmount: parseInt(selectElement.options[selectElement.selectedIndex].value)};
+            selectedProducts.push(selectedProduct);
+        }
+    }
+    console.log(selectedProducts);
+
+    const newOrder = new Order(selectedProducts, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'http://localhost:3000/submitOrder', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(newOrder));
     window.location = "http://localhost:3000/orderconfirmation.html";
+
 }

@@ -13,20 +13,22 @@ function deleteUser(request, response){
     var usertypeid = null;
     const activeEmail = request.session.email;
     console.log(activeEmail);
-    pool.query(`DELETE FROM users where email = $1 RETURNING usertypeid`, [activeEmail], function (error, results){
+    pool.query(`DELETE FROM users where userid = $1 RETURNING usertypeid`, [request.params.id], function (error, results){
             if (error){
                 throw error;
             } else {
                 usertypeid = results.rows[0].usertypeid;
                 console.log(usertypeid);
+
+                pool.query(`DELETE FROM usertype WHERE usertypeid = $1`, [usertypeid]);
+                console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
+                request.session.email = undefined;
+                request.session.userid = undefined;
+                request.session.loggedin = undefined;
+                response.send(JSON.stringify('ok'));
+                //response.redirect('/');
+                //response.end();
             }
-            pool.query(`DELETE FROM usertype WHERE usertypeid = $1`, [usertypeid]);
-            console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
-            request.session.email = undefined;
-            request.session.userid = undefined;
-            request.session.loggedin = undefined;
-            response.redirect('/');
-            response.end();
         }
     )
 }
