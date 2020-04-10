@@ -87,12 +87,6 @@ app.get('/profile/orderinfo', profileFunctions.showOrder);
 
 app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
 
-const adminFunctions = require('./admin.js');
-
-app.get('/admin/admInfo', adminFunctions.admInfo);
-
-app.use(adminFunctions.adminMW);
-
 const registerFunction = require('./registerCustomer');
 //register new customer
 app.post('/register', registerFunction);
@@ -105,6 +99,7 @@ app.get('/orderPage/products', orderFunction.getProducts);
 
 //adminpage
 const getUser = require ('./admin.js');
+app.use(getUser.getUsersMW);
 app.get('/adminpage/allusers/', getUser.getUsers);
 
 

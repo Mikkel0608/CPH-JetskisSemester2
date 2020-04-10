@@ -176,11 +176,10 @@ MM: The deleteUser function deletes the current user from the userArray.
 function deleteUser() {
     //var userArray = JSON.parse(localStorage.getItem("userArray"));
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
-    if (choice == true) {
+    if (choice === true) {
         fetch('http://localhost:3000/profile/userinfo')
             .then(response => response.json())
             .then(json => {
-                console.log('frontend user-id ' + json.userid);
 
                 fetch(`http://localhost:3000/profile/deleteuser/${json.userid}`, {
                     method: 'DELETE'

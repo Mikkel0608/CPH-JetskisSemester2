@@ -7,35 +7,29 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-function getUsers(req, res){
-    pool.query(`SELECT userid, usertypeid, username, streetname, streetnumber, 
-                postalcode, city, phone, email, created_at 
-                FROM users;`,
-        ).then(result =>{
-            res.json(result.rows);
-    })
-}
-
-function adminMW (req, res, next){
-    if (req.session.adminloggedin === true){
-        pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
-                    city, phone, email, created_at FROM users WHERE userid = $1;`,
-            [req.session.userid]).then(result =>{
-            req.user = result.rows[0];
+function getUsersMW(req, res, next) {
+    if (req.session.adminloggedin === true) {
+        var type = 'cus';
+        pool.query(`SELECT u.userid, ut.type, u.username, u.streetname, u.streetnumber, u.postalcode, u.city, u.phone, u.email, u.created_at
+                    FROM users u JOIN usertype ut
+                    ON u.usertypeid = ut.usertypeid 
+                    WHERE ut.type = $1;`, [type]).then(result => {
+            req.allUsers = result.rows;
             next();
-        });
+        })
     } else {
-        req.user = JSON.stringify(0);
+        req.allUsers = JSON.stringify(0);
         next();
     }
 }
-function admInfo (req, res){
-    res.json(req.user)
+
+function getUsers(req, res){
+    res.json(req.allUsers);
 }
 
-
 module.exports = {
-    getUsers,
-    adminMW,
-    admInfo
+    getUsersMW,
+    getUsers
 };
+
+
