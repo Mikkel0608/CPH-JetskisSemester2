@@ -7,15 +7,55 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
 function getProducts (request, response) {
+    var selectedDay = request.body.rentDayValue;
+    var selectedMonth = request.body.rentMonthValue;
+    var selectedYear = request.body.rentYearValue;
+    var selectedTime = request.body.rentTimeValue;
+    var foundProducts;
+    //The function first queries all the products in the database
     pool.query(`SELECT productid, price, modelname, modeldescription, maxamount, imagesrc FROM products`,
         function (error, results) {
         if(error) {
             throw error;
         } else {
-            response.send(results.rows);
+            //The products from the databased are saved to a variable
+            foundProducts = results.rows;
+            pool.query(`SELECT orderid FROM orders WHERE orderday =$1 AND ordermonth =$2 AND orderyear =$3 AND timeperiod =$4`,
+                [selectedDay, selectedMonth, selectedYear, selectedTime], function (error, results) {
+                    if (error) {
+                        throw error;
+                    } else {
+                        var foundOrders = results.rows;
+                        console.log(foundOrders);
+                        if (foundOrders.length>0) {
+                            for (let x = 0; x < foundOrders.length; x++) {
+                                for (let i = 0; i < foundProducts.length; i++) {
+                                    pool.query(`SELECT orderproductid FROM orderproduct WHERE orderid =$1 AND productid =$2`,
+                                        [foundOrders[x].orderid, foundProducts[i].productid], function (error, results) {
+                                            if (error) {
+                                                throw error;
+                                            } else {
+                                                foundProducts[i].maxamount -= results.rows.length;
+                                                console.log("decremented a product with: " + results.rows.length);
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                            sendOrderProducts();
+                        } else {
+                            sendOrderProducts();
+                        }
+                    }
+                });
         }
-    })
+    });
+    function sendOrderProducts() {
+        console.log("responded to request");
+        response.send(foundProducts);
+    }
 }
 
 function getOrders (request, response) {

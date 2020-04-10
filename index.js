@@ -95,7 +95,7 @@ app.post('/register', registerFunction);
 const orderFunction = require('./order.js');
 app.post('/submitOrder', orderFunction.submitOrder);
 app.post('/orderPage/getOrders', orderFunction.getOrders);
-app.get('/orderPage/products', orderFunction.getProducts);
+app.post('/orderPage/products', orderFunction.getProducts);
 
 //adminpage
 const getUser = require ('./admin.js');

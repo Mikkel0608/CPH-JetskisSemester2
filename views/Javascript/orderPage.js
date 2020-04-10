@@ -95,9 +95,15 @@ function confirmTime() {
     document.getElementById('rentTime').disabled = true;
 
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
+        var selectedDate = {rentDayValue: rentDayValue, rentMonthValue: rentMonthValue, rentYearValue: rentYearValue, rentTimeValue: rentTimeValue};
         //Fetches the products from the database
-        fetch('/orderPage/products')
-            .then(response => response.json())
+        fetch('http://localhost:3000/orderPage/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(selectedDate)
+        }).then(response => response.json())
             .then(json => {
                 console.log(json);
                 console.log(json.length);
