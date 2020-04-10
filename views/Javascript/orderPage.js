@@ -75,6 +75,13 @@ function confirmTime() {
     var rentTimeID = document.getElementById("rentTime");
     var rentTimeValue = rentTimeID.options[rentTimeID.selectedIndex].value;
 
+
+    //Locks the select elements so they can't be changed
+    document.getElementById('rentDay').disabled = true;
+    document.getElementById('rentMonth').disabled = true;
+    document.getElementById('rentYear').disabled = true;
+    document.getElementById('rentTime').disabled = true;
+
     //MM: Tests if the variables set before are equal to 00 (haven't been set).
     //MM: If the variables have been set, it changes the display property from "none" to "", showing all the jetski models
     //and all the jetski amounts.
@@ -85,32 +92,35 @@ function confirmTime() {
             .then(json => {
                 console.log(json);
                 console.log(json.length);
-                //Clones "modelContainer" for each product fetched from database, and creates objects for each product
-                for (let i = 0; i < json.length; i++) {
-                    var container = document.getElementById("modelContainer");
-                    var clone = container.cloneNode(true);
-                    //Gives each product clone its own id
-                    clone.id = "modelContainer" + [i];
-                    //Makes each product clone visible
-                    clone.style.display = "initial";
-                    //Inserts each product clone onto the "productContainer" node
-                    document.getElementById("productContainer").appendChild(clone);
-                    //Creates a new Product object and pushes it to the storedProducts array
-                    var newProduct = new Product(json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
-                    storedProducts.push(newProduct);
-                }
-                //Corrects the information for each created product
-                for (let i = 0; i < json.length; i++) {
-                    //Inserts product title
-                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
-                    //Inserts product photo source
-                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
-                    //Inserts product description
-                    document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
-                    //Inserts maximum amount of vacant jetskis
-                    var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
-                    for (let x = 0; x < json[i].maxamount; x++) {
-                        selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                //Checks if the products have already been generated on the page
+                if (storedProducts.length != json.length) {
+                    //Clones "modelContainer" for each product fetched from database, and creates objects for each product
+                    for (let i = 0; i < json.length; i++) {
+                        var container = document.getElementById("modelContainer");
+                        var clone = container.cloneNode(true);
+                        //Gives each product clone its own id
+                        clone.id = "modelContainer" + [i];
+                        //Makes each product clone visible
+                        clone.style.display = "initial";
+                        //Inserts each product clone onto the "productContainer" node
+                        document.getElementById("productContainer").appendChild(clone);
+                        //Creates a new Product object and pushes it to the storedProducts array
+                        var newProduct = new Product(json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
+                        storedProducts.push(newProduct);
+                    }
+                    //Corrects the information for each created product
+                    for (let i = 0; i < json.length; i++) {
+                        //Inserts product title
+                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
+                        //Inserts product photo source
+                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
+                        //Inserts product description
+                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
+                        //Inserts maximum amount of vacant jetskis
+                        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+                        for (let x = 0; x < json[i].maxamount; x++) {
+                            selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                        }
                     }
                 }
                 console.log(storedProducts);
@@ -303,10 +313,11 @@ function calculatePrice() {
 
             //Inserts all the product information
             document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
-        } else if (selectElement2.options[selectElement2.selectedIndex].value === 0) {
+        } else if (selectElement2.options[selectElement2.selectedIndex].value == 0 && document.getElementById("basketProduct"+[x]) != null) {
             document.getElementById("basketProduct"+[x]).style.display = "none";
         } else if (selectElement2.options[selectElement2.selectedIndex].value>0 && document.getElementById("basketProduct"+[x]) != null) {
             document.getElementById("basketProduct"+[x]).style.display = "initial";
+            document.getElementById("basketProduct"+[x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> "+ storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
         }
     }
     /*
