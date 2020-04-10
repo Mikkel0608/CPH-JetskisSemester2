@@ -89,7 +89,7 @@ app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
 
 const adminFunctions = require('./admin.js');
 
-app.get('/admin/admInfo', adminFunctions.admInfo())
+app.get('/admin/admInfo', adminFunctions.admInfo);
 
 app.use(adminFunctions.adminMW);
 

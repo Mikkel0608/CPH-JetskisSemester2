@@ -16,10 +16,6 @@ function getUsers(req, res){
     })
 }
 
-module.exports = {
-    getUsers
-};
-
 function adminMW (req, res, next){
     if (req.session.adminloggedin === true){
         pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
@@ -37,7 +33,9 @@ function admInfo (req, res){
     res.json(req.user)
 }
 
+
 module.exports = {
+    getUsers,
     adminMW,
     admInfo
 };
