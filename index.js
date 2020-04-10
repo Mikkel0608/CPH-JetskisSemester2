@@ -72,7 +72,7 @@ app.get('/profile/logout', loginFunction.logOut);
 
 const profileFunctions = require('./profile.js');
 //deletes the customer-user that is logged in
-app.get('/profile/deleteuser', profileFunctions.deleteUser);
+app.delete('/profile/deleteuser/:id', profileFunctions.deleteUser);
 
 //the use of middleware ensures that the active customer only can see information about themselves.
 app.use(profileFunctions.infoMW);
