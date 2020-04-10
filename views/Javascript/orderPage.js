@@ -83,9 +83,6 @@ function confirmTime() {
     document.getElementById('rentYear').disabled = true;
     document.getElementById('rentTime').disabled = true;
 
-    //MM: Tests if the variables set before are equal to 00 (haven't been set).
-    //MM: If the variables have been set, it changes the display property from "none" to "", showing all the jetski models
-    //and all the jetski amounts.
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
         //Fetches the products from the database
         fetch('/orderPage/products')
@@ -131,6 +128,7 @@ function confirmTime() {
         alert("Udfyld venligst alle felter.");
     }
 }
+
     /*MM:
     Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
 
