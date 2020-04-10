@@ -53,20 +53,20 @@ window.onload = function getCustomerInfo() {
     if the order's phone number matches the phone number of the logged in user.
      */
             var i;
-            for (i = 0; i < userInfo.length; i++) {
+            for (i = 0; i < orderInfo.length; i++) {
             /*
             MM: Variables are created and set equal to the corresponding values of the number i object of the orderArray.
              */
-                var day = userInfo[i].orderday;
-                var month = userInfo[i].ordermonth;
-                var year = userInfo[i].orderyear;
-                var timePeriod = userInfo[i].timeperiod;
-                var amount1 = userInfo[i].amount1;
-                var amount2 = userInfo[i].amount2;
-                var amount3 = userInfo[i].amount3;
-                var orderPrice = userInfo[i].orderprice;
-                var orderID = userInfo[i].orderid;
-                var orderDate = userInfo[i].order_placed_at;
+                var day = orderInfo[i].orderday;
+                var month = orderInfo[i].ordermonth;
+                var year = orderInfo[i].orderyear;
+                var timePeriod = orderInfo[i].timeperiod;
+                var amount1 = orderInfo[i].amount1;
+                var amount2 = orderInfo[i].amount2;
+                var amount3 = orderInfo[i].amount3;
+                var orderPrice = orderInfo[i].orderprice;
+                var orderID = orderInfo[i].orderid;
+                var orderDate = orderInfo[i].order_placed_at;
 
             /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
              */
