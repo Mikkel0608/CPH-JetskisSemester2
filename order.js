@@ -85,9 +85,7 @@ function submitOrder (request, response) {
     var rentMonth = request.body.orderMonth;
     var rentYear = request.body.orderYear;
     var rentTime = request.body.timePeriod;
-    var orderAmount1 = request.body.amount1;
-    var orderAmount2 = request.body.amount2;
-    var orderAmount3 = request.body.amount3;
+    var selectedProducts = request.body.selectedProducts;
     var totalPrice = request.body.orderPrice;
 
     //If no phone is registered, an error is shown:
@@ -136,6 +134,17 @@ function submitOrder (request, response) {
             }
         });
     }
+    function createOrderProducts() {
+        for (let i=0; i<selectedProducts.length; i++) {
+            for (let x=0; x<selectedProducts[i].productAmount; x++) {
+                pool.query(`INSERT INTO orderproduct(
+                productid,
+                orderid)
+                VALUES($1, $2);
+            `, [selectedProducts[i].productid, orderId])
+            }
+        }
+/*
 
     function createOrderProducts() {
         if (orderAmount1>0) {
@@ -166,6 +175,7 @@ function submitOrder (request, response) {
 
             }
         }
+        */
     }
 }
 module.exports = {

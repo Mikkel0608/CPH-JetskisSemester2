@@ -55,6 +55,17 @@ class Product {
         this.imageSRC = imageSRC;
     }
 }
+//MM: A class is created to represent order data.
+class Order {
+    constructor(selectedProducts, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
+        this.selectedProducts = selectedProducts;
+        this.orderDay = orderDay;
+        this.orderMonth = orderMonth;
+        this.orderYear = orderYear;
+        this.timePeriod = timePeriod;
+        this.orderPrice = orderPrice;
+    }
+}
 /*MM/MK: The following function is activated by the confirm time button. It has the following purposes:
 1. It checks if the date/time values have been filled out, and displays an error if not.
 2. It checks if there already are reservations for the given time/date, and adjusts the amount of jetskis shown.
@@ -347,18 +358,6 @@ function calculatePrice() {
     }
 
      */
-}
-
-//MM: A class is created to represent order data.
-class Order {
-    constructor(selectedProducts, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
-        this.selectedProducts = selectedProducts;
-        this.orderDay = orderDay;
-        this.orderMonth = orderMonth;
-        this.orderYear = orderYear;
-        this.timePeriod = timePeriod;
-        this.orderPrice = orderPrice;
-    }
 }
 
 
