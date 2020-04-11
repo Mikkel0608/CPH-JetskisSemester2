@@ -90,13 +90,11 @@ request.session.email = undefined;
 
 
 
-
-
 module.exports = {
     loginFunc,
     checkLoginProfile,
     checkLoginOrder,
-    logOut
+    logOut,
 };
 
 
