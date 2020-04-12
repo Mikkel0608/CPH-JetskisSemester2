@@ -13,7 +13,10 @@ function deleteUser(request, response){
     var usertypeid = null;
     const activeEmail = request.session.email;
     console.log(activeEmail);
-    pool.query(`DELETE FROM users where userid = $1 RETURNING usertypeid`, [request.params.id], function (error, results){
+    pool.query(`SELECT u.userid, ut.usertypeid
+                FROM users AS u JOIN usertype AS ut
+                ON u.usertypeid = ut.usertypeid
+                WHERE userid = $1;`, [request.params.id], function (error, results){
             if (error){
                 throw error;
             } else {

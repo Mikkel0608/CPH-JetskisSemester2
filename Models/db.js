@@ -18,7 +18,7 @@ const createTables = () =>{
                         CREATE TABLE IF NOT EXISTS
                         users(
                             userId SERIAL PRIMARY KEY,
-                            userTypeId INT REFERENCES userType(userTypeId),
+                            userTypeId INT REFERENCES userType(userTypeId) ON DELETE CASCADE,
                             userName VARCHAR(50),
                             streetName VARCHAR(50),
                             streetNumber INT,
@@ -56,7 +56,7 @@ const createTables = () =>{
                            orderProduct(
                             orderProductId SERIAL PRIMARY KEY,
                             productId INT REFERENCES products(productId),
-                            orderId INT REFERENCES Orders(orderId));
+                            orderId INT REFERENCES Orders(orderId) ON DELETE CASCADE);
                             
                             INSERT INTO products(
                             productId,
