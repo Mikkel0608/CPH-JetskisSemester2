@@ -8,102 +8,106 @@ window.onload = function getCustomerInfo() {
         .then(json => {
             var userInfo = json;
             console.log(userInfo);
-    /*
-    MM:
-    The code retrieves information from local storage by using the "getItem" command, and specifying the key that the
-    information should be retrieved from. This retrieved information is then saved to the newly created variables.
-     */
+            /*
+            MM:
+            The code retrieves information from local storage by using the "getItem" command, and specifying the key that the
+            information should be retrieved from. This retrieved information is then saved to the newly created variables.
+             */
             //console.log(userInfo);
 
-            document.getElementById('userid').innerHTML=userInfo.userid;
-            document.getElementById('customerName').innerHTML=userInfo.username;
-            document.getElementById('customerStreetName').innerHTML=userInfo.streetname;
-            document.getElementById('customerStreetNumber').innerHTML=userInfo.streetnumber;
-            document.getElementById('customerPostalCode').innerHTML=userInfo.postalcode;
-            document.getElementById('customerCity').innerHTML=userInfo.city;
-            document.getElementById('customerPhone').innerHTML=userInfo.phone;
-            document.getElementById('customerEmail').innerHTML=userInfo.email;
-            document.getElementById('created_at').innerHTML=userInfo.created_at;
+            document.getElementById('userid').innerHTML = userInfo.userid;
+            document.getElementById('customerName').innerHTML = userInfo.username;
+            document.getElementById('customerStreetName').innerHTML = userInfo.streetname;
+            document.getElementById('customerStreetNumber').innerHTML = userInfo.streetnumber;
+            document.getElementById('customerPostalCode').innerHTML = userInfo.postalcode;
+            document.getElementById('customerCity').innerHTML = userInfo.city;
+            document.getElementById('customerPhone').innerHTML = userInfo.phone;
+            document.getElementById('customerEmail').innerHTML = userInfo.email;
+            document.getElementById('created_at').innerHTML = userInfo.created_at;
 
-            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + userInfo.userid;
+            document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userid;
 
-    /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
-    links the user to the login page.
-     */
-    /*    if (localStorage.getItem('phone') == null) {
-            window.location = "Loginpage.html"
-        }*/
-    /* MM: This line of code retrieves the innerHTML part of the HTML tag with id "loginPhone" and sets it equal to some text and
-    the phone key's value stored in local storage.
-     */
-    /*
-    MM:
-    Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
-    The array is retrieved from local storage by using JSON.parse. The array from local storage is saved as the "orderArray" variable.
-     */
+            /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
+            links the user to the login page.
+             */
+            /*    if (localStorage.getItem('phone') == null) {
+                    window.location = "Loginpage.html"
+                }*/
+            /* MM: This line of code retrieves the innerHTML part of the HTML tag with id "loginPhone" and sets it equal to some text and
+            the phone key's value stored in local storage.
+             */
+            /*
+            MM:
+            Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
+            The array is retrieved from local storage by using JSON.parse. The array from local storage is saved as the "orderArray" variable.
+             */
+    })
+};
+const selection = document.getElementById("orderId");
+
+
+function showOrder(){
     fetch('/profile/orderinfo')
         .then(response => response.json())
         .then(json => {
             var orderInfo = json;
             console.log(orderInfo);
 
-
-
-    /* MM: The following for loop cycles through all the stored orders and prints the order information onto the page
-    if the order's phone number matches the phone number of the logged in user.
-     */
             var i;
             for (i = 0; i < orderInfo.length; i++) {
-            /*
-            MM: Variables are created and set equal to the corresponding values of the number i object of the orderArray.
-             */
-                var day = orderInfo[i].orderday;
-                var month = orderInfo[i].ordermonth;
-                var year = orderInfo[i].orderyear;
-                var timePeriod = orderInfo[i].timeperiod;
-                var orderPrice = orderInfo[i].orderprice;
-                var orderID = orderInfo[i].orderid;
-                var orderDate = orderInfo[i].order_placed_at;
-                var product = null;
-                /*fetch(`/profile/orderproduct/${orderInfo[i].orderid}`)
-                    .then(response => response.json())
-                    .then(json => {
-                        console.log(json);
-                        for (let X = 0; X < json.length; X++) {
-                            console.log('sda');
-                            product = document.createElement('p');
-                            product.innerHTML = `Produkt: ${json[X].productid}, antal: ${json[X].count}`;
-                        }*/
+                if (selection.value == orderInfo[i].orderid) {
+                    /*
+                    MM: Variables are created and set equal to the corresponding values of the number i object of the orderArray.
+                     */
+                    var day = orderInfo[i].orderday;
+                    var month = orderInfo[i].ordermonth;
+                    var year = orderInfo[i].orderyear;
+                    var timePeriod = orderInfo[i].timeperiod;
+                    var orderPrice = orderInfo[i].orderprice;
+                    var orderID = orderInfo[i].orderid;
+                    var orderDate = orderInfo[i].order_placed_at;
+                    var product = null;
 
-                            /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
-                             */
-                            var order = document.createElement("P");
-                            /*
-                            MM: The innerHTML of the newly created <p> tag is set equal to a section of text and the variables above.
-                             */
-                            order.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
-                            /*
-                            MM: The appendChild method is used to set the newly created <p> tag as a child to to the ID "orderList", specified in the
-                            getElementById method.
-                             */
-                            document.getElementById('orderList').appendChild(order);
-                            /*
-                            MM: The following line empties the innerHTML of the noOrders ID tag. If the line below is not run, the text
-                            explains that there are no orders. Whenever the line below is run, the text is removed.
-                             */
-                            document.getElementById('noOrders').innerHTML = "";
+
+                    /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
+                     */
+                    var order = document.createElement("P");
+                    /*
+                    MM: The innerHTML of the newly created <p> tag is set equal to a section of text and the variables above.
+                     */
+                    order.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
+                    /*
+                    MM: The appendChild method is used to set the newly created <p> tag as a child to to the ID "orderList", specified in the
+                    getElementById method.
+                     */
+                    document.getElementById('orderList').appendChild(order);
+                    /*
+                    MM: The following line empties the innerHTML of the noOrders ID tag. If the line below is not run, the text
+                    explains that there are no orders. Whenever the line below is run, the text is removed.
+                     */
+                    document.getElementById('noOrders').innerHTML = "";
                     //})
-        }
-        });
-        })
-};
+
+                }
+            }
+            fetch(`/profile/orderproduct/${selection.value}`)
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                    for (let X = 0; X < json.length; X++) {
+                        product = document.createElement('p');
+                        product.innerHTML = `Produkt: ${json[X].modelname}, antal: ${json[X].count}, pris: ${json[X].price}`;
+                        document.getElementById('orderList').appendChild(product);
+                    }
+                });
+            });
+}
 
 
 /*
 MM: Two variables are created. The "selection" variable is set equal to the HTML select tag with the ID "orderID".
 The "option" variable is set equal to the options of the "selection" variable.
  */
-var selection = document.getElementById("orderId");
 
 /*
 MM: This function goes through all the stored orders in localStorage and adds the orderID to the order selector if the phone
@@ -194,6 +198,7 @@ function deleteUser() {
                 }).then(response => response.json())
                     .then(json => {
                         if (json === 'ok'){
+                            alert('Brugeren er blevet slettet.');
                             window.location = 'http://localhost:3000';
                         }
                     })

@@ -54,9 +54,8 @@
     <a href ="/profile/updatePassword"><button id="buttonOnPage" >Opdater password</button></a>
     <button id="buttonOnPage" onclick="deleteUser()">Slet bruger </button>
     <button id="buttonOnPage" onclick="deleteOrderAlert()">Annuller bestilling</button>
-    <select id="orderId">
-        <option value="00" selected disabled id="optionOrder">-Ordrer</option>
-        <!--<option id="order1"></option>-->
+
+    <!--<option id="order1"></option>-->
 
 
     </select>
@@ -64,10 +63,17 @@
 <div style="position: absolute; top: 225px; right: 300px; z-index: 1;" id="rightTextArea">
     <h4> Dine tidligere bestillinger:</h4>
     <div id="orderList" style="height: 500px; width: 300px; border:solid black 2px; overflow: scroll;">
-    <p id="noOrders"> Ingen aktive ordrer på nuværende tidspunkt. </p>
+    <p id="noOrders"> Vælg en ordre i menuen </p>
     </div>
+    <select id="orderId">
+        <option value="00" selected disabled id="optionOrder">-Ordrer</option>
+        <br>
+    </select>
+    <button id="showOrder" onclick="showOrder()">Vis ordre</button>
+
 
 </div>
+
 <script type="text/javascript" src="Javascript/profile.js"></script>
 <script type="text/javascript" src="Javascript/checkLogin.js"></script>
 

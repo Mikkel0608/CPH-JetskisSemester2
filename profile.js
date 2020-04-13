@@ -85,11 +85,12 @@ function orderMW (req, res, next){
 
 function orderProduct (req, res){
     if (req.session.loggedin === true){
-        pool.query(`select productid, count(*) 
-                    from orderproduct as op 
-                    join orders as o on op.orderid = o.orderid
-                    where o.orderid = $1
-                    group by productid;`, [req.params.id]).then(result =>{
+        pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+                    from orderproduct as op JOIN products as p
+                    on op.productid = p.productid
+                    where orderid = $1
+                    group by p.modelname, op.productid, p.price
+                    order by op.productid;`, [req.params.id]).then(result =>{
                         res.send(result.rows);
         });
     }
