@@ -72,7 +72,7 @@ function showInfo (req, res){
 
 function orderMW (req, res, next){
     if (req.session.loggedin === true){
-        pool.query(`SELECT orderid, orderday, ordermonth, timeperiod, orderprice, order_placed_at
+        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
                     FROM orders WHERE userid = $1;`,
                     [req.session.userid]).then(result =>{
                         req.order = result.rows;
@@ -82,6 +82,19 @@ function orderMW (req, res, next){
         next();
     }
 }
+
+function orderProduct (req, res){
+    if (req.session.loggedin === true){
+        pool.query(`select productid, count(*) 
+                    from orderproduct as op 
+                    join orders as o on op.orderid = o.orderid
+                    where o.orderid = $1
+                    group by productid;`, [req.params.id]).then(result =>{
+                        res.send(result.rows);
+        });
+    }
+}
+
 
 function showOrder (req, res){
     res.json(req.order);
@@ -94,7 +107,8 @@ module.exports = {
     showInfo,
     infoMW,
     orderMW,
-    showOrder
+    showOrder,
+    orderProduct
 };
 
 

@@ -61,33 +61,41 @@ window.onload = function getCustomerInfo() {
                 var month = orderInfo[i].ordermonth;
                 var year = orderInfo[i].orderyear;
                 var timePeriod = orderInfo[i].timeperiod;
-                var amount1 = orderInfo[i].amount1;
-                var amount2 = orderInfo[i].amount2;
-                var amount3 = orderInfo[i].amount3;
                 var orderPrice = orderInfo[i].orderprice;
                 var orderID = orderInfo[i].orderid;
                 var orderDate = orderInfo[i].order_placed_at;
+                var product = null;
+                /*fetch(`/profile/orderproduct/${orderInfo[i].orderid}`)
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json);
+                        for (let X = 0; X < json.length; X++) {
+                            console.log('sda');
+                            product = document.createElement('p');
+                            product.innerHTML = `Produkt: ${json[X].productid}, antal: ${json[X].count}`;
+                        }*/
 
-            /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
-             */
-            var order = document.createElement("P");
-            /*
-            MM: The innerHTML of the newly created <p> tag is set equal to a section of text and the variables above.
-             */
-            order.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" + "Antal Sea Doo Spark: " + amount1 + "</br></br>" + "Antal Yamaha Waverunner VX: " + amount2 + "</br></br>" + "Antal Kawasaki STX-15F: " + amount3 + "</br></br>" + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
-            /*
-            MM: The appendChild method is used to set the newly created <p> tag as a child to to the ID "orderList", specified in the
-            getElementById method.
-             */
-            document.getElementById('orderList').appendChild(order);
-            /*
-            MM: The following line empties the innerHTML of the noOrders ID tag. If the line below is not run, the text
-            explains that there are no orders. Whenever the line below is run, the text is removed.
-             */
-            document.getElementById('noOrders').innerHTML = "";
+                            /* MM: A new variable is created and set equal to the createElement() method, as we want to create a new <p> tag.
+                             */
+                            var order = document.createElement("P");
+                            /*
+                            MM: The innerHTML of the newly created <p> tag is set equal to a section of text and the variables above.
+                             */
+                            order.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
+                            /*
+                            MM: The appendChild method is used to set the newly created <p> tag as a child to to the ID "orderList", specified in the
+                            getElementById method.
+                             */
+                            document.getElementById('orderList').appendChild(order);
+                            /*
+                            MM: The following line empties the innerHTML of the noOrders ID tag. If the line below is not run, the text
+                            explains that there are no orders. Whenever the line below is run, the text is removed.
+                             */
+                            document.getElementById('noOrders').innerHTML = "";
+                    //})
         }
         });
-        });
+        })
 };
 
 

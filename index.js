@@ -83,6 +83,8 @@ app.use(profileFunctions.orderMW);
 
 app.get('/profile/orderinfo', profileFunctions.showOrder);
 
+app.get('/profile/orderproduct/:id', profileFunctions.orderProduct);
+
 /*app.post('/profile/updatepassword/update', profileFunctions.updatePassword);*/
 
 app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
