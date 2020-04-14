@@ -22,6 +22,7 @@ function getProducts (request, response) {
         } else {
             //The products from the databased are saved to a variable
             foundProducts = results.rows;
+            //The API queries the database for the amount of orderproducts and their product ids on the given date
             pool.query(`SELECT count(op.productid), op.productid
                         FROM orderproduct as op JOIN orders as o
                         ON op.orderid = o.orderid
@@ -43,10 +44,6 @@ function getProducts (request, response) {
                 });
         }
     });
-    function sendOrderProducts() {
-        console.log("responded to request");
-        response.send(foundProducts);
-    }
 }
 
 function getOrders (request, response) {

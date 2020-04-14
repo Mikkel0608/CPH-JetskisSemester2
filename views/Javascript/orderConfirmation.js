@@ -1,3 +1,12 @@
+window.onload = function getActivePhone() {
+    fetch('/profile/userinfo')
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+            document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
+        });
+}
+/*
 window.onload = function getOrderInfo() {
     //MM: Inserts the user ID in the navibar
     fetch('/profile/userinfo')
@@ -29,6 +38,9 @@ window.onload = function getOrderInfo() {
     document.getElementById('orderPrice').innerHTML = "Samlet pris til betaling ved udlejning: " + orderPrice;
     document.getElementById('orderID').innerHTML = "Ordre ID: " + orderID;
 }
+
+ */
+/*
 //MM: Checks if there is stored a phone value when the user pressed the order page button. If not, it sends the user to the login page
 function checkLoginOrderPage() {
     if (localStorage.getItem('phone') == null) {
@@ -45,3 +57,5 @@ function checkLoginProfilePage() {
         window.location ="profile.html"
     }
 }
+
+ */
