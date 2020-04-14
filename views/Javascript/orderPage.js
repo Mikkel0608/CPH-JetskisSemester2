@@ -108,33 +108,33 @@ function confirmTime() {
                 console.log(json);
                 console.log(json.length);
                 //Checks if the products have already been generated on the page
-                if (storedProducts.length != json.length) {
+                if (storedProducts.length !== json.length) {
                     //Clones "modelContainer" for each product fetched from database, and creates objects for each product
-                    for (let i = 0; i < json.length; i++) {
-                        var container = document.getElementById("modelContainer");
-                        var clone = container.cloneNode(true);
-                        //Gives each product clone its own id
-                        clone.id = "modelContainer" + [i];
-                        //Makes each product clone visible
-                        clone.style.display = "initial";
-                        //Inserts each product clone onto the "productContainer" node
-                        document.getElementById("productContainer").appendChild(clone);
-                        //Creates a new Product object and pushes it to the storedProducts array
-                        var newProduct = new Product(json[i].productid, json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
-                        storedProducts.push(newProduct);
-                    }
-                    //Corrects the product information for each created product to the fetched info form the database
-                    for (let i = 0; i < json.length; i++) {
-                        //Inserts product title
-                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
-                        //Inserts product photo source
-                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
-                        //Inserts product description
-                        document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
-                        //Inserts maximum amount of available products
-                        var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
-                        for (let x = 0; x < json[i].maxamount; x++) {
-                            selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                        for (let i = 0; i < json.length; i++) {
+                            if (json[i].maxamount !== 0) {
+                                var container = document.getElementById("modelContainer");
+                                var clone = container.cloneNode(true);
+                                //Gives each product clone its own id
+                                clone.id = "modelContainer" + [i];
+                                //Makes each product clone visible
+                                clone.style.display = "initial";
+                                //Inserts each product clone onto the "productContainer" node
+                                document.getElementById("productContainer").appendChild(clone);
+                                //Creates a new Product object and pushes it to the storedProducts array
+                                var newProduct = new Product(json[i].productid, json[i].price, json[i].modelname, json[i].modeldescription, json[i].maxamount, json[i].imagesrc);
+                                storedProducts.push(newProduct);
+                            //Corrects the product information for each created product to the fetched info form the database
+                                //Inserts product title
+                                document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[0].getElementsByTagName("h2")[0].innerHTML = json[i].modelname;
+                                //Inserts product photo source
+                                document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[1].getElementsByTagName('img')[0].src = json[i].imagesrc;
+                                //Inserts product description
+                                document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('p')[0].innerHTML = json[i].modeldescription;
+                                //Inserts maximum amount of available products
+                                var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
+                                for (let x = 0; x < json[i].maxamount; x++) {
+                                    selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
+                                }
                         }
                     }
                 }
