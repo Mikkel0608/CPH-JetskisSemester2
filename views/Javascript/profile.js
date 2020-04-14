@@ -26,35 +26,21 @@ window.onload = function getCustomerInfo() {
             document.getElementById('created_at').innerHTML = userInfo.created_at;
 
             document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userid;
-
-            /* MM: This if statement checks if there is a "phone" value stored in local storage. If there is no value saved, it
-            links the user to the login page.
-             */
-            /*    if (localStorage.getItem('phone') == null) {
-                    window.location = "Loginpage.html"
-                }*/
-            /* MM: This line of code retrieves the innerHTML part of the HTML tag with id "loginPhone" and sets it equal to some text and
-            the phone key's value stored in local storage.
-             */
-            /*
-            MM:
-            Two variables are created. The variable "orderAmount" is set equal to the length of the array "orderArray" that is saved in local storage.
-            The array is retrieved from local storage by using JSON.parse. The array from local storage is saved as the "orderArray" variable.
-             */
     })
 };
+
+
 const selection = document.getElementById("orderId");
 
 
-/*function clearOrder(){
-    const node = document.getElementById('orderList');
-    node.textContent = "";
-    showOrder();
-}*/
-
 function showOrder(){
     const node = document.getElementById('orderList');
-    node.textContent = "";
+    //while-loop that removes the existing nodes in the orderList div
+    //Using a while loop since the amount of iterations can differ
+    while (node.firstChild){
+        node.removeChild(node.lastChild);
+    }
+
     fetch('/profile/orderinfo')
         .then(response => response.json())
         .then(json => {
@@ -74,7 +60,7 @@ function showOrder(){
                     var product = null;
 
                     var order = document.createElement("P");
-                    order.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "</br></br> Ordre lavet d.:" + orderDate + "</br></br>";
+                    order.innerHTML = "<b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Samlet pris til betaling ved udlejning: </b> " + orderPrice + "</br></br> <b>Ordre ID: </b>  " + orderID + "</br></br> <b> Ordre lavet d.: </b>" + orderDate + "</br></br>";
                     document.getElementById('orderList').appendChild(order);
                 }
             }
@@ -94,34 +80,16 @@ function showOrder(){
 }
 
 
-
-
-/*
-MM: Two variables are created. The "selection" variable is set equal to the HTML select tag with the ID "orderID".
-The "option" variable is set equal to the options of the "selection" variable.
- */
-
-/*
-MM: This function goes through all the stored orders in localStorage and adds the orderID to the order selector if the phone
-attribute in the stored order matches the phone of the active user.
- */
-//Function written by Morten Dyberg
 (function getOrderId() {
     fetch('/profile/orderinfo')
         .then(response => response.json())
         .then(json => {
 
     var orderArray = json;
-    /*
-    MM: This for loop cycles through all the orders in the orderArray. For each repetition, variable i is increased by 1.
-    The loop only stops once i is greater than the length of the orderArray.
-     */
     for (var i = 0; i < orderArray.length; i++) {
-        if (localStorage.getItem("phone") == orderArray[i].phone) {
             var orderId = document.createElement("option");
             orderId.innerHTML = orderArray[i].orderid;
             document.getElementById("orderId").appendChild(orderId);
-            }
         }
     })
 }());

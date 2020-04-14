@@ -1,5 +1,9 @@
 var form = document.getElementById('updatepassword');
 
+/*
+Fetches the userid, which is used to make a parameterized query in the PUT request.
+New password is sent through the request body.
+ */
 window.onload = function(){
     fetch('http://localhost:3000/profile/userinfo')
         .then(response => response.json())
