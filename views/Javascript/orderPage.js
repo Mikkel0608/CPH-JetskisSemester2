@@ -87,15 +87,13 @@ function confirmTime() {
     var rentTimeID = document.getElementById("rentTime");
     var rentTimeValue = rentTimeID.options[rentTimeID.selectedIndex].value;
 
-
-    //Locks the select elements so they can't be changed
-    document.getElementById('rentDay').disabled = true;
-    document.getElementById('rentMonth').disabled = true;
-    document.getElementById('rentYear').disabled = true;
-    document.getElementById('rentTime').disabled = true;
-
     if (rentDayValue != "00" && rentMonthValue != "00" && rentYearValue != "00" && rentTimeValue != "00") {
         var selectedDate = {rentDayValue: rentDayValue, rentMonthValue: rentMonthValue, rentYearValue: rentYearValue, rentTimeValue: rentTimeValue};
+        //Locks the select elements so they can't be changed
+        document.getElementById('rentDay').disabled = true;
+        document.getElementById('rentMonth').disabled = true;
+        document.getElementById('rentYear').disabled = true;
+        document.getElementById('rentTime').disabled = true;
         //Fetches the products from the database
         fetch('http://localhost:3000/orderPage/products', {
             method: 'POST',
