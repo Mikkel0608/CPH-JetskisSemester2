@@ -74,6 +74,8 @@ const profileFunctions = require('./profile.js');
 //deletes the customer-user that is logged in
 app.delete('/profile/deleteuser/:id', profileFunctions.deleteUser);
 
+app.delete('/profile/deleteorder/:id', profileFunctions.deleteOrder);
+
 //the use of middleware ensures that the active customer only can see information about themselves.
 app.use(profileFunctions.infoMW);
 
@@ -88,6 +90,7 @@ app.get('/profile/orderproduct/:id', profileFunctions.orderProduct);
 /*app.post('/profile/updatepassword/update', profileFunctions.updatePassword);*/
 
 app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
+
 
 const registerFunction = require('./registerCustomer');
 //register new customer

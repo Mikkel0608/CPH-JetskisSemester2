@@ -31,15 +31,18 @@ window.onload = function getCustomerInfo() {
 
 
 const selection = document.getElementById("orderId");
+const nodes = document.getElementById('orderList');
 
-
-function showOrder(){
-    const node = document.getElementById('orderList');
-    //while-loop that removes the existing nodes in the orderList div
-    //Using a while loop since the amount of iterations can differ
+function removeNode (node){
     while (node.firstChild){
         node.removeChild(node.lastChild);
     }
+}
+
+function showOrder(){
+    //while-loop that removes the existing nodes in the orderList div
+    //Using a while loop since the amount of iterations can differ
+    removeNode(nodes);
 
     fetch('/profile/orderinfo')
         .then(response => response.json())
@@ -60,7 +63,7 @@ function showOrder(){
                     var product = null;
 
                     var order = document.createElement("P");
-                    order.innerHTML = "<b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Samlet pris til betaling ved udlejning: </b> " + orderPrice + "</br></br> <b>Ordre ID: </b>  " + orderID + "</br></br> <b> Ordre lavet d.: </b>" + orderDate + "</br></br>";
+                    order.innerHTML = "<b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Pris total: </b> " + orderPrice + "</br></br> <b>Ordre ID: </b>  " + orderID + "</br></br> <b> Ordre lavet d. : </b>" + orderDate;
                     document.getElementById('orderList').appendChild(order);
                 }
             }
@@ -70,9 +73,9 @@ function showOrder(){
                     console.log(json);
                     for (let X = 0; X < json.length; X++) {
                         product = document.createElement('p');
-                        product.innerHTML = `Produkt: ${json[X].modelname}
-                                             antal: ${json[X].count}
-                                             pris: ${json[X].price}`;
+                        product.innerHTML = '<b>Produkt: </b>' + json[X].modelname + '<br>' +
+                                             '<b>Antal: </b>' + json[X].count + '<br>' +
+                                             '<b>Pris: </b>' + json[X].price * json[X].count;
                         document.getElementById('orderList').appendChild(product);
                     }
                 });
@@ -98,55 +101,35 @@ function showOrder(){
 MM: The following function deletes the order that is currently selected.
  */
 //Function written by Morten Dyberg
-function deleteOrder() {
-    var orderArray = JSON.parse(localStorage.getItem("orderArray"));
-    /*
-    MM: The following for loop cycles through all the stored orders. If the currently selected order is equal to
-    the stored order's orderId attribute, the order is removed from the order array.
-     */
-    for (var i = 0; i < orderArray.length; i++) {
-        if (selection.value == orderArray[i].orderId) {
-            /*
-            MM: The page is reloaded using the location property.
-             */
-            window.location = "profile.html";
-            /*
-            MM: The splice method is used to remove a section of the orderArray. It specifies that at position i, it should
-            remove 1 item.
-             */
-            orderArray.splice(i, 1);
-            /*
-            MM: Using the JSON.stringify method, the orderArray array is saved as a string in the variable "orderArrayString".
-            The variable is saved to the key "orderArray" in local storage using the localStorage.setItem method.
-             */
-            var orderArrayString = JSON.stringify(orderArray);
-            localStorage.setItem("orderArray", orderArrayString);
+var selectMenu = document.getElementById('orderId');
+function deleteOrder (){
+    if (selection.value === '0'){
+        alert(`Vælg venligst et ordre ID i menuen`)
+    } else {
+        var choice = window.confirm(`Er du sikker på, at du vil slette ordre med ordre ID ${selection.value}?`);
+        if (choice === true) {
+            fetch(`http://localhost:3000/profile/deleteorder/${selection.value}`, {
+                method: 'DELETE'
+            }).then(response => response.json())
+                .then(json => {
+                    if (json === 'ok') {
+                        for (let i = 0; i < selectMenu.length; i++) {
+                            if (selectMenu[i].value === selection.value) {
+                                selectMenu.remove(i);
+                            }
+                        }
+                        removeNode(nodes);
+                        alert(`Ordren er blevet slettet`);
+                    }
+                })
         }
     }
 }
+
 /*
-MM: The following function prompts the user to confirm that they want to delete their order.
+MM: The deleteUser function deletes the current user.
  */
-//Function written by Morten Dyberg
-function deleteOrderAlert() {
-    /*
-    MM: The window.confirm method prompts the user to either confirm or cancel the cancellation action.
-     */
-    var choice = window.confirm("Er du sikker på, at du vil slette din ordre?");
-    /*
-    MM: If the user confirms to delete their order, an alert appears and the deleteOrder function is called.
-     */
-    if (choice == true) {
-        alert("Ordren er blevet slettet");
-        deleteOrder();
-    }
-}
-/*
-MM: The deleteUser function deletes the current user from the userArray.
- */
-//Function written by Morten Dyberg
 function deleteUser() {
-    //var userArray = JSON.parse(localStorage.getItem("userArray"));
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
     if (choice === true) {
         fetch('http://localhost:3000/profile/userinfo')

@@ -36,6 +36,12 @@ function deleteUser(request, response){
     )
 }
 
+function deleteOrder (req, res){
+    pool.query(`DELETE FROM orders WHERE orderid = $1 AND userid = $2`,
+    [req.params.id, req.session.userid]);
+    res.send(JSON.stringify('ok'));
+}
+
 function updatePassword(req, res){
     console.log(req.body);
     pool.query(`UPDATE users SET password = $1 WHERE userid = $2 `,
@@ -45,7 +51,6 @@ function updatePassword(req, res){
             } else {
                 console.log(results.rows);
                 res.send(JSON.stringify('ok'));
-                //res.end();
             }
         })
 }
@@ -109,7 +114,8 @@ module.exports = {
     infoMW,
     orderMW,
     showOrder,
-    orderProduct
+    orderProduct,
+    deleteOrder
 };
 
 

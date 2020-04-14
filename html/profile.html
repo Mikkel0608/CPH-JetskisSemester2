@@ -53,7 +53,6 @@
     <a href="/profile/logout"><button id="buttonOnPage" >Log ud </button></a>
     <a href ="/profile/updatePassword"><button id="buttonOnPage" >Opdater password</button></a>
     <button id="buttonOnPage" onclick="deleteUser()">Slet bruger </button>
-    <button id="buttonOnPage" onclick="deleteOrderAlert()">Annuller bestilling</button>
 
     <!--<option id="order1"></option>-->
 
@@ -62,14 +61,16 @@
 </div>
 <div style="position: absolute; top: 225px; right: 300px; z-index: 1;" id="rightTextArea">
     <h4> Dine ordrer:</h4>
-    <div id="orderList" style="height: 400px; width: 300px; border:solid black 2px; overflow: scroll;">
+    <div id="orderList" style="height: 400px; width: 342px; border:solid black 2px; overflow: scroll;">
     <p id="noOrders"> Vælg en ordre i menuen </p>
     </div>
     <select id="orderId">
-        <option value="00" selected disabled id="optionOrder">Vælg en ordre</option>
+        <option value="0" selected disabled id="optionOrder">Vælg en ordre</option>
         <br>
     </select>
-    <button id="showOrder" onclick="showOrder()">Vis ordre</button>
+    <button id="buttonOnPage" onclick="showOrder()">Vis ordre</button>
+    <button id="buttonOnPage" onclick="deleteOrder()">Annuller bestilling</button>
+
 
 
 </div>
