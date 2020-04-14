@@ -22,33 +22,24 @@ function getProducts (request, response) {
         } else {
             //The products from the databased are saved to a variable
             foundProducts = results.rows;
-            pool.query(`SELECT orderid FROM orders WHERE orderday =$1 AND ordermonth =$2 AND orderyear =$3 AND timeperiod =$4`,
-                [selectedDay, selectedMonth, selectedYear, selectedTime], function (error, results) {
-                    if (error) {
-                        throw error;
-                    } else {
-                        var foundOrders = results.rows;
-                        console.log(foundOrders);
-                        if (foundOrders.length>0) {
-                            for (let x = 0; x < foundOrders.length; x++) {
-                                for (let i = 0; i < foundProducts.length; i++) {
-                                    pool.query(`SELECT orderproductid FROM orderproduct WHERE orderid =$1 AND productid =$2`,
-                                        [foundOrders[x].orderid, foundProducts[i].productid], function (error, results) {
-                                            if (error) {
-                                                throw error;
-                                            } else {
-                                                foundProducts[i].maxamount -= results.rows.length;
-                                                console.log("decremented a product with: " + results.rows.length);
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                            sendOrderProducts();
-                        } else {
-                            sendOrderProducts();
-                        }
+            pool.query(`SELECT count(op.productid), op.productid
+                        FROM orderproduct as op JOIN orders as o
+                        ON op.orderid = o.orderid
+                        WHERE orderday=$1 AND ordermonth=$2 AND orderyear=$3 AND timeperiod=$4
+                        GROUP BY op.productid
+                        ORDER BY op.productid`,
+                        [selectedDay, selectedMonth, selectedYear, selectedTime], function(error, results) {
+                if(error) {
+                    throw error;
+                } else {
+                    console.log(results.rows);
+                    for (let i = 0; i<results.rows.length; i++) {
+                        foundProducts[i].maxamount -= parseInt(results.rows[i].count);
+                        console.log()
                     }
+                    console.log("responded to request");
+                    response.send(foundProducts);
+                }
                 });
         }
     });
