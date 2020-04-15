@@ -15,15 +15,15 @@ window.onload = function getCustomerInfo() {
              */
             //console.log(userInfo);
 
-            document.getElementById('userid').innerHTML = userInfo.userid;
-            document.getElementById('customerName').innerHTML = userInfo.username;
-            document.getElementById('customerStreetName').innerHTML = userInfo.streetname;
-            document.getElementById('customerStreetNumber').innerHTML = userInfo.streetnumber;
-            document.getElementById('customerPostalCode').innerHTML = userInfo.postalcode;
-            document.getElementById('customerCity').innerHTML = userInfo.city;
-            document.getElementById('customerPhone').innerHTML = userInfo.phone;
-            document.getElementById('customerEmail').innerHTML = userInfo.email;
-            document.getElementById('created_at').innerHTML = userInfo.created_at;
+            document.getElementById('userid').innerHTML = '<b>Bruger ID: </b>' + userInfo.userid;
+            document.getElementById('customerName').innerHTML = '<b>Navn: </b>' + userInfo.username;
+            document.getElementById('customerStreetName').innerHTML = '<b>Vejnavn: </b>' + userInfo.streetname;
+            document.getElementById('customerStreetNumber').innerHTML = '<b>Vejnummer: </b>' + userInfo.streetnumber;
+            document.getElementById('customerPostalCode').innerHTML = '<b>Postnummer: </b>' + userInfo.postalcode;
+            document.getElementById('customerCity').innerHTML = '<b>By: </b>' + userInfo.city;
+            document.getElementById('customerPhone').innerHTML = '<b>Telefonnummer: </b>' + userInfo.phone;
+            document.getElementById('customerEmail').innerHTML = '<b>E-mail: </b>' + userInfo.email;
+            document.getElementById('created_at').innerHTML = '<b>Bruger oprettet d. : </b>' + userInfo.created_at;
 
             document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userid;
     })

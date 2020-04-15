@@ -24,29 +24,27 @@
 <br><br><br>
 <div style="float: left" id="leftTextArea">
     <h2 style="font-family: modernSansLight; font-size: 30px;"> Brugerprofil </h2>
-    <br>
     <h4> Herunder kan du se de oplysninger vi har registreret om dig:</h4>
 
 
-    <br>
-    <h4>Bruger id: </h4> <p id="userid"></p>
+    <p id="userid"></p>
 
-    <h4>Navn: </h4> <p id="customerName"></p>
+    <p id="customerName"></p>
 
 
-    <h4>Vejnavn: </h4> <p id="customerStreetName"></p>
+    <p id="customerStreetName"></p>
 
-    <h4>Vejnummer: </h4> <p id="customerStreetNumber"></p>
+    <p id="customerStreetNumber"></p>
 
-    <h4>Postnummer: </h4> <p id="customerPostalCode"></p>
+    <p id="customerPostalCode"></p>
 
-    <h4>By: </h4> <p id="customerCity"></p>
+    <p id="customerCity"></p>
 
-    <h4>Telefonnummer: </h4> <p id="customerPhone"></p>
+    <p id="customerPhone"></p>
 
-    <h4>Email: </h4> <p id="customerEmail"></p>
+    <p id="customerEmail"></p>
 
-    <h4>Oprettelsesdato </h4> <p id="created_at"></p>
+    <p id="created_at"></p>
 
 
     <br><br>
@@ -59,16 +57,16 @@
 
     </select>
 </div>
-<div style="position: absolute; top: 225px; right: 300px; z-index: 1;" id="rightTextArea">
-    <h4> Dine ordrer:</h4>
+<div style="position: absolute; top: 70px; right: 300px; z-index: 1;" id="rightTextArea">
+    <h4> Dine reservationer:</h4>
     <div id="orderList" style="height: 400px; width: 342px; border:solid black 2px; overflow: scroll;">
-    <p id="noOrders"> Vælg en ordre i menuen </p>
+    <p id="noOrders"> Vælg en reservation i menuen </p>
     </div>
     <select id="orderId">
-        <option value="0" selected disabled id="optionOrder">Vælg en ordre</option>
+        <option value="0" selected disabled id="optionOrder">Vælg reservation</option>
         <br>
     </select>
-    <button id="buttonOnPage" onclick="showOrder()">Vis ordre</button>
+    <button id="buttonOnPage" onclick="showOrder()">Vis reservation</button>
     <button id="buttonOnPage" onclick="deleteOrder()">Annuller bestilling</button>
 
 
