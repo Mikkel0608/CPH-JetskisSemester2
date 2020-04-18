@@ -93,14 +93,27 @@ function orderProduct (req, res){
         pool.query(`select count(op.productid), p.modelname, op.productid, p.price
                     from orderproduct as op JOIN products as p
                     on op.productid = p.productid
+                    JOIN orders as o
+                    on o.orderid = op.orderid
+                    JOIN users as u 
+                    on u.userid = o.userid
+                    where o.orderid = $1 AND u.userid = $2
+                    group by p.modelname, op.productid, p.price
+                    order by op.productid;`, [req.params.id, req.session.userid]).then(result =>{
+                        res.send(result.rows);
+        });
+    } else if (req.session.adminloggedin === true){
+        pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+                    from orderproduct as op JOIN products as p
+                    on op.productid = p.productid 
                     where orderid = $1
                     group by p.modelname, op.productid, p.price
                     order by op.productid;`, [req.params.id]).then(result =>{
-                        res.send(result.rows);
+            res.send(result.rows);
         });
     }
 }
-
+//
 
 function showOrder (req, res){
     res.json(req.order);

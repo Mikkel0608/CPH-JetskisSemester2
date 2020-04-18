@@ -7,10 +7,8 @@
     <script type="text/javascript" src="Javascript/orderPage.js"></script>
 </head>
 
-<body style="background-color:rgb(245, 246, 250)">
-<script src="Javascript/Users_customer_admin.js">
+<body style="background-color:rgb(245, 246, 250)" onload="getUsers()">
 
-</script>
 
 <!-- Name and logo -->
 <div>
@@ -62,64 +60,21 @@
 
  </div>
 
-<div style="position: absolute; top: 184px; left: 200px; z-index: 1;" id="orderArea">
-    <div id="orderDetails" style="height: 500px; width: 300px; border: solid black 2px; overflow: scroll;">
-        <p id="noOrders"> Ingen aktive ordrer på nuværende tidspunkt. </p>
-     </div>
-       <!-- <p id="orderHeadline"></p>
-        <p id="date"></p>
-        <p id="timePeriod"></p>
-        <p id="amountOfJetski1"></p>
-        <p id="amountOfJetski2"></p>
-        <p id="amountOfJetski3"></p>
-        <p id="orderPrice"></p>
-        <p id="orderId"></p>-->
+<div style="position: absolute; top: 70px; right: 300px; z-index: 1;" id="rightTextArea">
+    <h4> Dine reservationer:</h4>
+    <div id="orderList" style="height: 400px; width: 342px; border:solid black 2px; overflow: scroll;">
+        <p id="noOrders"> Vælg en reservation i menuen </p>
+    </div>
+    <select id="orderId">
+        <option value="0" selected disabled id="optionOrder">Vælg reservation</option>
+        <br>
+    </select>
+    <button id="buttonOnPage" >Vis reservation</button>
+
 </div>
 
-<script>
-   var selection = document.getElementById("phoneSelect");
-    window.onload = function () {
-
-        fetch('/adminpage/allusers')
-            .then(response =>
-                response.json())
-            .then(json => {
-                console.log(json);
-
-                for (let i=0; i < json.length; i++){
-                    if (json[i].phone !== null || undefined) {
-                        var option = document.createElement("option");
-                        option.innerHTML = json[i].phone;
-
-                        document.getElementById("phoneSelect").appendChild(option);
-                    }
-                }
-            })
-        };
-
-    function showInfo (){
-        fetch('/adminpage/allusers')
-            .then(response =>
-                response.json())
-            .then(json => {
-
-                for (let i = 0; i < json.length; i++) {
-                    if (selection.value == json[i].phone) {
-                        document.getElementById("userid").innerHTML = json[i].userid;
-                        document.getElementById("type").innerHTML = json[i].type;
-                        document.getElementById("customerName").innerHTML = json[i].username;
-                        document.getElementById("customerStreetName").innerHTML = json[i].streetname;
-                        document.getElementById("customerStreetNumber").innerHTML = json[i].streetnumber;
-                        document.getElementById("customerPostalCode").innerHTML = json[i].postalcode;
-                        document.getElementById("customerCity").innerHTML = json[i].city;
-                        document.getElementById("customerPhone").innerHTML = json[i].phone;
-                        document.getElementById("customerEmail").innerHTML = json[i].email;
-                        document.getElementById("created_at").innerHTML = json[i].created_at;
-                    }
-                }
-            });
-    }
-</script>
+<!--<script type="text/javascript" src="../Javascript/profile.js"></script>-->
+<script src="../Javascript/Users_customer_admin.js"></script>
 
 
 </body>

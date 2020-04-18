@@ -7,7 +7,6 @@ class User {
 }
 
 
-
 class Customer extends User{
     constructor(name, streetName, streetNumber, postalCode, city, phone, email, password){
         super(name, email, password);
@@ -140,66 +139,6 @@ The method .push is used to introduce a new customer object into the back of the
 }
 
 
-
-/*MD:
-The following code will execute if the value of the userArray key in localStorage is null. If it is empty, it will push
-the following pre-defined user objects into the array, then stringify to JSON format and then add them to localStorage.
-The objects all have the same properties, but with different values.
- */
-//Originally written by Markus Kronborg, changed to fit new needs by Morten Dyberg
-var userArray;
-if (localStorage.getItem('userArray')==null) {
-    userArray = [];
-
-    userArray.push(new Customer('Per','Nørregade', '31, 4th', '2300', 'København', '45678904','per@købenahvn.dk', 'per123'));
-    userArray.push(new Customer('Tina','Gothersgade', '42, 3tv', '2300','København', '22340987','tina@gmail.com', 'Minkode122'));
-    userArray.push(new Customer('Louise','Brostykkevej', '81', '2000', 'Hvidovre', '67880322', 'Louise@hotmail.com', 'nulnul42'));
-    userArray.push(new Customer('Martin', 'Lemchesvej', '22', '2000', 'Hellerup', '33445522', 'martin@privat.eu','Hejmeddig'));
-    userArray.push(new Customer('Niels', 'Gurrevej', '12', '2450', 'Helsingør', '73459025','Niels123@yahoo.dk','Niels8477'));
-    
-    var userArrayString = JSON.stringify(userArray);
-    localStorage.setItem('userArray', userArrayString);
-}
-
-
-
-/*MD:
-This function will validate whether the input values correspond to the values stored in localStorage.
-A "for loop" is introduced to loop through the array, and an if-statement is used to check if a specific condition
-is met.
-The condition checks whether the input phone/password matches the phone/password of the array at index i.
-If it matches, the user is sent to the front page, and the user information is stored in their respective keys.
- */
-//Function written by Morten Dyberg
-function loginVal() {
-    var userArray = JSON.parse(localStorage.getItem('userArray'));
-    var phone = document.getElementById("phone").value;
-    var password = document.getElementById("password").value;
-    var status = false;
-
-    for (var i = 0; i < userArray.length; i++) {
-        if (phone == userArray[i].phone && password == userArray[i].password) {
-            status = true;
-            window.location = "index.html";
-            localStorage.setItem('customerName', userArray[i].customerName);
-            localStorage.setItem('streetName', userArray[i].streetName);
-            localStorage.setItem('streetNumber', userArray[i].streetNumber);
-            localStorage.setItem('postalCode', userArray[i].postalCode);
-            localStorage.setItem('city', userArray[i].city);
-            localStorage.setItem('phone', userArray[i].phone);
-            localStorage.setItem('email', userArray[i].email);
-            localStorage.setItem('password', userArray[i].password);
-
-//The console.log method is used to display data. This string is displayed in the browser console.
-            console.log("logged in");
-        }
-    }
-    if (status==false) {
-        alert("Forkert ID eller password. Prøv igen.");
-    }
-}
-
-
 //A class is created for the admin. The only properties in this class are username and password.
 //Class written by Markus Kronborg
 class Admin extends User{
@@ -214,108 +153,49 @@ class Admin extends User{
 admin1 = new Admin('admin', 12345);
 
 
-/*MD:
-This function validates the login using if and else if-statements.
-It retrieves the input entered, and uses an if-statement to check whether the input matches the properties in the admin1
-object. The first else if statement will execute if the if statement is false. If the phone (username) entered is not
-admin, it will call the loginVal function, which loops through the user array.
- */
-//Function written by Morten Dyberg
-function validate() {
-    var phone = document.getElementById("phone").value;
-    var password = document.getElementById("password").value;
-    if (phone == admin1.username && password == admin1.password) {
-        window.location = "adminpage.html";
-        admin1.logIn();
-    } else if (phone == admin1.username && password != admin1.password) {
-        alert("Forkert ID eller password. Prøv igen.")
-    } else if (phone != admin1.username) {
-        loginVal();
-    }
-}
 
+var idSelect = document.getElementById("phoneSelect");
+function getUsers () {
 
-/*MD:
-The selection variable has the value of the select field created in HTML. Here the admin can select a user phone number
-to view their orders.
+    fetch('/adminpage/allusers')
+        .then(response =>
+            response.json())
+        .then(json => {
+            console.log(json);
 
-This function creates options in the select field depending on how many customers there are.
-We can create elements in the DOM using the .createElement method. To create an option, we use the option tag
-(like one would do in HTMl <option>).
-The value of this option is manipulated using the .innerHTML property, which lets us change the content of an
-HTML document. Lastly, the .appendChild method is used to append the new node (option) into the select field.
- */
-//Function originally written by Markus Kronborg, changed quite a bit by Morten Dyberg
-var selection = document.getElementById("phoneSelect");
+            for (let i=0; i < json.length; i++){
+                if (json[i].userid !== null || undefined) {
+                    var option = document.createElement("option");
+                    option.innerHTML = json[i].userid;
 
-(function getNumber() {
-    var userArray = JSON.parse(localStorage.getItem('userArray'));
-
-    for (var i = 0; i < userArray.length; i++) {
-
-        var allUsers = document.createElement("option");
-        allUsers.innerHTML = userArray[i].phone;
-
-        document.getElementById("phoneSelect").appendChild(allUsers);
-    }
-//Self-invoking function: functions doesn't need to be called to activate.
-}());
-
-
-/*MD:
-Purpose of the function is to show the info of a user on the admin page.
-This function contains a loop that first checks the selection value in an if statement. If the selection value matches a
-phone number from userArray then the function shows the rest of the information of the customer object, again using the
-.innerHTML method to manipulate the HTML document.
-*/
-//Function written by Markus Kronborg
-
-
-
-
-function showInfo () {
-    var userArray = JSON.parse(localStorage.getItem('userArray'));
-    for (let i = 0; i < userArray.length; i++) {
-        if (selection.value == userArray[i].phone) {
-            document.getElementById('customerName').innerHTML = userArray[i].customerName;
-            document.getElementById('customerStreetName').innerHTML = userArray[i].streetName;
-            document.getElementById('customerStreetNumber').innerHTML = userArray[i].streetNumber;
-            document.getElementById('customerPostalCode').innerHTML = userArray[i].postalCode;
-            document.getElementById('customerCity').innerHTML = userArray[i].city;
-            document.getElementById('customerPhone').innerHTML = userArray[i].phone;
-            document.getElementById('customerEmail').innerHTML = userArray[i].email;
-        }
-    }
-}
-
-/*MD:
-This function shows the order of the specific customer selected in the select field. Same procedure as the showInfo
-function, but this function can also dynamically show any new orders by using document.createElement.
- */
-//Function originally written by Markus Kronborg and changed completely by Morten Dyberg
-function showOrder() {
-    var orderArray = JSON.parse(localStorage.getItem('orderArray'));
-    for (let i = 0; i < orderArray.length; i++) {
-            if (selection.value == orderArray[i].phone) {
-                var day = orderArray[i].orderDay;
-                var month = orderArray[i].orderMonth;
-                var year = orderArray[i].orderYear;
-                var timePeriod = orderArray[i].timePeriod;
-                var amount1 = orderArray[i].amount1;
-                var amount2 = orderArray[i].amount2;
-                var amount3 = orderArray[i].amount3;
-                var orderPrice = orderArray[i].orderPrice;
-                var orderID = orderArray[i].orderId;
-
-
-
-                var orderInfo = document.createElement("P");
-                orderInfo.innerHTML = "Dato for udlejning: " + day + "/" + month + "/" + year + "</br></br>" + "Tidspunkt for udlejning: kl." + timePeriod + "</br></br>" + "Antal Sea Doo Spark: " + amount1 + "</br></br>" + "Antal Yamaha Waverunner VX: " + amount2 + "</br></br>" + "Antal Kawasaki STX-15F: " + amount3 + "</br></br>" + "Samlet pris til betaling ved udlejning: " + orderPrice + "</br></br> Ordre ID: " + orderID + "<br><br>";
-
-                document.getElementById('orderDetails').appendChild(orderInfo);
-                document.getElementById('noOrders').innerHTML = "";
+                    document.getElementById("phoneSelect").appendChild(option);
+                }
             }
-    }
+        })
+}
+
+
+function showInfo (){
+    fetch('/adminpage/allusers')
+        .then(response =>
+            response.json())
+        .then(json => {
+
+            for (let i = 0; i < json.length; i++) {
+                if (idSelect.value == json[i].userid) {
+                    document.getElementById("userid").innerHTML = json[i].userid;
+                    document.getElementById("type").innerHTML = json[i].type;
+                    document.getElementById("customerName").innerHTML = json[i].username;
+                    document.getElementById("customerStreetName").innerHTML = json[i].streetname;
+                    document.getElementById("customerStreetNumber").innerHTML = json[i].streetnumber;
+                    document.getElementById("customerPostalCode").innerHTML = json[i].postalcode;
+                    document.getElementById("customerCity").innerHTML = json[i].city;
+                    document.getElementById("customerPhone").innerHTML = json[i].phone;
+                    document.getElementById("customerEmail").innerHTML = json[i].email;
+                    document.getElementById("created_at").innerHTML = json[i].created_at;
+                }
+            }
+        });
 }
 
 

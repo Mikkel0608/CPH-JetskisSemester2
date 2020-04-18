@@ -2,6 +2,7 @@
 event handler.
  */
 //Function written by Mikkel Marcher
+getOrderId('/profile/orderinfo');
 window.onload = function getCustomerInfo() {
     fetch('/profile/userinfo')
         .then(response => response.json())
@@ -38,8 +39,7 @@ function removeNode (node){
         node.removeChild(node.lastChild);
     }
 }
-
-function showOrder(){
+function showOrder(path){
     //while-loop that removes the existing nodes in the orderList div
     //Using a while loop since the amount of iterations can differ
     if (selection.value === '0'){
@@ -47,7 +47,7 @@ function showOrder(){
     } else {
         removeNode(nodes);
 
-        fetch('/profile/orderinfo')
+        fetch(path)
             .then(response => response.json())
             .then(json => {
                 var orderInfo = json;
@@ -87,8 +87,8 @@ function showOrder(){
 }
 
 
-(function getOrderId() {
-    fetch('/profile/orderinfo')
+function getOrderId(path) {
+    fetch(path)
         .then(response => response.json())
         .then(json => {
 
@@ -99,7 +99,7 @@ function showOrder(){
             document.getElementById("orderId").appendChild(orderId);
         }
     })
-}());
+}
 
 /*
 MM: The following function deletes the order that is currently selected.
@@ -152,4 +152,7 @@ function deleteUser() {
             });
     }
 }
+
+
+
 
