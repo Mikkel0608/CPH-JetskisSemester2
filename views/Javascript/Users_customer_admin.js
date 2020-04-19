@@ -16,6 +16,24 @@ class Customer extends User{
         this.city = city;
         this.phone = phone;
     }
+    create (customer){
+        fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(customer)
+        }).then(response => response.json())
+            .then(json => {
+                if (!json.ok){
+                    console.log(json);
+                    alert(json);
+                } else if (json.ok === true){
+                    console.log(json.ok);
+                    window.location = 'http://localhost:3000/loginpage.html';
+                }
+            });
+    }
 }
 //var xhr = new XMLHttpRequest();
 
@@ -108,29 +126,8 @@ The method .push is used to introduce a new customer object into the back of the
 
     if (form_valid) {
         const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
-        fetch('http://localhost:3000/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(customer)
-        }).then(response => response.json())
-            .then(json => {
-                if (!json.ok){
-                    console.log(json);
-                    alert(json);
-                } else if (json.ok === true){
-                    console.log(json.ok);
-                    window.location = 'http://localhost:3000/loginpage.html';
-                }
-            });
-        /*xhr.open("POST", 'http://localhost:3000/register', true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(JSON.stringify(customer));
-        //window.location = "http://localhost:3000/register";
-        //window.location = "/loginpage.html";*/
+        customer.create(customer);
         return true;
-
     } else {
         alert(validation_message);
         return false;
