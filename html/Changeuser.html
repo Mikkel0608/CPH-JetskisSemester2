@@ -7,7 +7,7 @@
     <script type="text/javascript" src="Javascript/orderPage.js"></script>
 </head>
 
-<body style="background-color:rgb(245, 246, 250)" onload="getUsers()">
+<body style="background-color:rgb(245, 246, 250)">
 
 
 <!-- Name and logo -->
@@ -31,7 +31,7 @@
 </select>
 <!--<button id=showinfo onclick="showInfo(), showOrder()">Vis brugeroplysninger</button>-->
 
-<button type="button" onclick="showInfo()">Submit</button>
+<button type="button" id="showInfo" >Submit</button>
 <br>
 <br>
 
@@ -69,12 +69,12 @@
         <option value="0" selected disabled id="optionOrder">Vælg reservation</option>
         <br>
     </select>
-    <button id="buttonOnPage" onclick="showOrder()">Vis reservation</button>
+    <button id="showOrder" >Vis reservation</button>
 
 </div>
 
 <!--<script type="text/javascript" src="../Javascript/profile.js"></script>-->
-<script src="../Javascript/Users_customer_admin.js"></script>
+<script type="module" src="../Javascript/admin_users.js"></script>
 
 
 </body>

@@ -39,7 +39,12 @@ function removeNode (node){
         node.removeChild(node.lastChild);
     }
 }
-function showOrder(path){
+
+const showOrderBtn = document.getElementById('showOrderBtn');
+showOrderBtn.onclick = ()=>{
+    showOrder('/profile/orderinfo', selection);
+};
+function showOrder(path, selection){
     //while-loop that removes the existing nodes in the orderList div
     //Using a while loop since the amount of iterations can differ
     if (selection.value === '0'){
@@ -67,7 +72,7 @@ function showOrder(path){
 
                         var order = document.createElement("P");
                         order.innerHTML = "<b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Pris total: </b> " + orderPrice + "</br></br> <b>Ordre ID: </b>  " + orderID + "</br></br> <b> Ordre lavet d. : </b>" + orderDate;
-                        document.getElementById('orderList').appendChild(order);
+                        nodes.appendChild(order);
                     }
                 }
                 fetch(`/profile/orderproduct/${selection.value}`)
@@ -79,7 +84,7 @@ function showOrder(path){
                             product.innerHTML = '<b>Produkt: </b>' + json[X].modelname + '<br>' +
                                 '<b>Antal: </b>' + json[X].count + '<br>' +
                                 '<b>Pris: </b>' + json[X].price * json[X].count;
-                            document.getElementById('orderList').appendChild(product);
+                            nodes.appendChild(product);
                         }
                     });
             });
@@ -105,7 +110,10 @@ function getOrderId(path) {
 MM: The following function deletes the order that is currently selected.
  */
 //Function written by Morten Dyberg
-var selectMenu = document.getElementById('orderId');
+const delOrderBtn = document.getElementById('delOrderBtn');
+delOrderBtn.onclick = ()=>{
+    deleteOrder();
+};
 function deleteOrder (){
     if (selection.value === '0'){
         alert(`Vælg venligst et ordre ID i menuen`)
@@ -117,9 +125,9 @@ function deleteOrder (){
             }).then(response => response.json())
                 .then(json => {
                     if (json === 'ok') {
-                        for (let i = 0; i < selectMenu.length; i++) {
-                            if (selectMenu[i].value === selection.value) {
-                                selectMenu.remove(i);
+                        for (let i = 0; i < selection.length; i++) {
+                            if (selection[i].value === selection.value) {
+                                selection.remove(i);
                             }
                         }
                         removeNode(nodes);
@@ -133,6 +141,10 @@ function deleteOrder (){
 /*
 MM: The deleteUser function deletes the current user.
  */
+const delUserBtn = document.getElementById('delUserBtn');
+delUserBtn.onclick = ()=>{
+    deleteUser();
+};
 function deleteUser() {
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
     if (choice === true) {
@@ -152,7 +164,6 @@ function deleteUser() {
             });
     }
 }
-
 
 
 

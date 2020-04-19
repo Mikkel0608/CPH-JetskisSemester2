@@ -50,7 +50,7 @@
     <br><br>
     <a href="/profile/logout"><button id="buttonOnPage" >Log ud </button></a>
     <a href ="/profile/updatePassword"><button id="buttonOnPage" >Opdater password</button></a>
-    <button id="buttonOnPage" onclick="deleteUser()">Slet bruger </button>
+    <button id="delUserBtn" >Slet bruger </button>
 
     <!--<option id="order1"></option>-->
 
@@ -66,14 +66,14 @@
         <option value="0" selected disabled id="optionOrder">Vælg reservation</option>
         <br>
     </select>
-    <button id="buttonOnPage" onclick="showOrder('/profile/orderinfo')">Vis reservation</button>
-    <button id="buttonOnPage" onclick="deleteOrder()">Annuller bestilling</button>
+    <button id="showOrderBtn" >Vis reservation</button>
+    <button id="delOrderBtn" >Annuller bestilling</button>
 
 
 
 </div>
 
-<script type="text/javascript" src="Javascript/profile.js"></script>
+<script type="module" src="Javascript/profile.js"></script>
 
 </body>
 
