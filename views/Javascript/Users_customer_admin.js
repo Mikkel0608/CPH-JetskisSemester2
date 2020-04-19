@@ -174,6 +174,8 @@ function getUsers () {
         })
 }
 
+const selection = document.getElementById("orderId");
+const nodes = document.getElementById('orderList');
 
 function showInfo (){
     fetch('/adminpage/allusers')
@@ -195,12 +197,12 @@ function showInfo (){
                     document.getElementById("created_at").innerHTML = json[i].created_at;
                 }
             }
-            getOrderId(`/adminpage/order/${idSelect.value}`)
+            getOrderId(`/adminpage/ordersByUser/${idSelect.value}`);
+            removeNode(nodes);
         });
 }
 
-const selection = document.getElementById("orderId");
-const nodes = document.getElementById('orderList');
+
 
 function removeNode (node){
     while (node.firstChild){
@@ -223,7 +225,7 @@ function getOrderId(path) {
         })
 }
 
-function showOrder(path){
+function showOrder(){
     //while-loop that removes the existing nodes in the orderList div
     //Using a while loop since the amount of iterations can differ
     if (selection.value === '0'){
@@ -231,7 +233,7 @@ function showOrder(path){
     } else {
         removeNode(nodes);
 
-        fetch(path)
+        fetch(`/adminpage/order/${selection.value}`)
             .then(response => response.json())
             .then(json => {
                 var orderInfo = json;

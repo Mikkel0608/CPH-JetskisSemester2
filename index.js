@@ -6,6 +6,14 @@ const cors = require('cors');
 const app = express();
 module.exports = app;
 
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+    cookie  : { maxAge  : new Date(Date.now() + (60 * 1000 * 30)) }
+}));
+
+
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
@@ -29,71 +37,76 @@ app.get('/index.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/index.html'))
 });
 app.get('/orderPage.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/orderPage.html'))
+    if (req.session.loggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/orderpage.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
 app.get('/profile.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/profile.html'))
+    if (req.session.loggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/profile.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
 app.get('/profile/updatePassword', (req, res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/updatePassword.html'))
+    if (req.session.loggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/updatePassword.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
 app.get('/orderConfirmation.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/orderConfirmation.html'))
+    if (req.session.loggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/orderConfirmation.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
 app.get('/Register2.html',(req,res)=>{
     res.sendFile(path.resolve(__dirname, 'html/Register2.html'))
 });
 app.get('/Adminpage/showuser',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/Changeuser.html'))
+    if (req.session.adminloggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/Changeuser.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
 app.get('/Changeorder.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/Changeorder.html'))
+    if (req.session.adminloggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/Changeorder.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
 app.get('/Adminpage',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/Adminpage.html'))
+    if (req.session.adminloggedin === true) {
+        res.sendFile(path.resolve(__dirname, 'html/Adminpage.html'))
+    } else {
+        res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    }
 });
-/*app.get('/Calendar.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, 'html/Calendar.html'))
-});*/
 
 //require functions from login.js
 const loginFunction = require('./login.js');
 //login validation
 app.post('/loginpage/auth', loginFunction.loginFunc);
-
-//Checks that the user is logged in before viewing profile page
-app.get('/checkloginProfile', loginFunction.checkLoginProfile);
-
-//Checks that the user is logged in before viewing order page
-app.get('/checkloginOrder', loginFunction.checkLoginOrder);
-
-//logs user out
 app.get('/profile/logout', loginFunction.logOut);
 
 const profileFunctions = require('./profile.js');
-//deletes the customer-user that is logged in
-app.delete('/profile/deleteuser/:id', profileFunctions.deleteUser);
-
-app.delete('/profile/deleteorder/:id', profileFunctions.deleteOrder);
-
-//the use of middleware ensures that the active customer only can see information about themselves.
 app.use(profileFunctions.infoMW);
-
-app.get('/profile/userinfo', profileFunctions.showInfo);
-
 app.use(profileFunctions.orderMW);
-
+app.get('/profile/userinfo', profileFunctions.showInfo);
 app.get('/profile/orderinfo', profileFunctions.showOrder);
-
 app.get('/profile/orderproduct/:id', profileFunctions.orderProduct);
-
-/*app.post('/profile/updatepassword/update', profileFunctions.updatePassword);*/
-
 app.put('/profile/updatepassword/update/:id', profileFunctions.updatePassword);
+app.delete('/profile/deleteuser/:id', profileFunctions.deleteUser);
+app.delete('/profile/deleteorder/:id', profileFunctions.deleteOrder);
 
 
 const registerFunction = require('./registerCustomer');
-//register new customer
 app.post('/register', registerFunction);
 
 // creating new order
@@ -106,6 +119,8 @@ app.post('/orderPage/products', orderFunction.getProducts);
 const adminFunctions = require ('./admin.js');
 app.use(adminFunctions.getUsersMW);
 app.get('/adminpage/allusers/', adminFunctions.getUsers);
+app.get('/adminpage/allOrders', adminFunctions.allOrders);
+app.get('/adminpage/ordersByUser/:id', adminFunctions.getOrdersByUser);
 app.get('/adminpage/order/:id', adminFunctions.getOrder);
 
 

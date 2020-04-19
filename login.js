@@ -7,12 +7,6 @@ const pool = require('./Models/db');
 const app = require('./index.js');
 
 //Ved ikke lige hvad det her gør lol
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-    cookie  : { maxAge  : new Date(Date.now() + (60 * 1000 * 30)) }
-}));
 
 //the bodyParser extracts the form data from our Loginpage.html file.
 app.use(bodyParser.urlencoded({extended : true}));
@@ -60,26 +54,6 @@ function loginFunc (request, response) {
 }
 
 
-function checkLoginProfile (request, response){
-    if (request.session.loggedin) {
-        response.redirect('/profile.html');
-    } else {
-        response.redirect('/loginpage.html');
-        console.log("Venligst log ind");
-    }
-    response.end();
-}
-
-function checkLoginOrder (request, response){
-    if (request.session.loggedin) {
-        response.redirect('/orderPage.html');
-    } else {
-        response.redirect('/loginpage.html');
-        console.log("Venligst log ind");
-    }
-    response.end();
-}
-
 function logOut (request, response){
 request.session.loggedin = false;
 request.session.email = undefined;
@@ -92,8 +66,6 @@ request.session.email = undefined;
 
 module.exports = {
     loginFunc,
-    checkLoginProfile,
-    checkLoginOrder,
     logOut,
 };
 

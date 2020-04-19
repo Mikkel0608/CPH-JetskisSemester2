@@ -27,7 +27,7 @@ function getUsers(req, res){
     res.json(req.allUsers);
 }
 
-function getOrder(req, res){
+function getOrdersByUser(req, res){
     if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
                 FROM orders WHERE userid = $1;`,
@@ -37,10 +37,31 @@ function getOrder(req, res){
     }
 }
 
+function getOrder(req, res){
+    if (req.session.adminloggedin === true) {
+        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+                FROM orders WHERE orderid = $1;`,
+            [req.params.id]).then(result => {
+            res.send(result.rows);
+        })
+    }
+}
+
+function allOrders (req, res){
+    if (req.session.adminloggedin === true) {
+        pool.query(`SELECT * from orders`,
+            ).then(result => {
+            res.send(result.rows);
+        })
+    }
+}
+
 module.exports = {
     getUsersMW,
     getUsers,
-    getOrder
+    getOrdersByUser,
+    getOrder,
+    allOrders
 };
 
 
