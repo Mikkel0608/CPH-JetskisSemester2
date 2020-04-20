@@ -43,7 +43,7 @@ const createTables = () =>{
                             CREATE TABLE IF NOT EXISTS
                             orders(
                             orderId SERIAL PRIMARY KEY,
-                            userId INT REFERENCES users(userId),
+                            userId INT REFERENCES users(userId) ON DELETE CASCADE,
                             orderDay INT,
                             orderMonth INT,
                             orderYear INT,
