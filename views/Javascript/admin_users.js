@@ -1,11 +1,10 @@
 import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js";
 
-
-var idSelect = document.getElementById("phoneSelect");
-
-
+const idSelect = document.getElementById("phoneSelect");
 const selection = document.getElementById("orderId");
 const nodes = document.getElementById('orderList');
+
+
 
 const showInfoBtn = document.getElementById('showInfo');
 showInfoBtn.onclick=()=>{
@@ -29,9 +28,7 @@ window.onload = function getUsers () {
 
             for (let i=0; i < json.length; i++){
                 if (json[i].userid !== null || undefined) {
-                    var option = document.createElement("option");
-                    option.innerHTML = json[i].userid;
-
+                    var option = new Option(`ID ${json[i].userid}`, json[i].userid);
                     document.getElementById("phoneSelect").appendChild(option);
                 }
             }
@@ -46,19 +43,19 @@ function showInfo (){
 
             for (let i = 0; i < json.length; i++) {
                 if (idSelect.value == json[i].userid) {
-                    document.getElementById("userid").innerHTML = json[i].userid;
-                    document.getElementById("type").innerHTML = json[i].type;
-                    document.getElementById("customerName").innerHTML = json[i].username;
-                    document.getElementById("customerStreetName").innerHTML = json[i].streetname;
-                    document.getElementById("customerStreetNumber").innerHTML = json[i].streetnumber;
-                    document.getElementById("customerPostalCode").innerHTML = json[i].postalcode;
-                    document.getElementById("customerCity").innerHTML = json[i].city;
-                    document.getElementById("customerPhone").innerHTML = json[i].phone;
-                    document.getElementById("customerEmail").innerHTML = json[i].email;
-                    document.getElementById("created_at").innerHTML = json[i].created_at;
+                    document.getElementById("userid").innerHTML = `<b>Bruger ID:</b> ${json[i].userid}`;
+                    document.getElementById("type").innerHTML = `<b>Brugertype:</b> ${json[i].type}`;
+                    document.getElementById("customerName").innerHTML = `<b>Navn:</b> ${json[i].username}`;
+                    document.getElementById("customerStreetName").innerHTML = `<b>Vejnavn:</b> ${json[i].streetname}`;
+                    document.getElementById("customerStreetNumber").innerHTML = `<b>Vejnummer:</b> ${json[i].streetnumber}`;
+                    document.getElementById("customerPostalCode").innerHTML = `<b>Postnummer:</b> ${json[i].postalcode}`;
+                    document.getElementById("customerCity").innerHTML = `<b>By:</b> ${json[i].city}`;
+                    document.getElementById("customerPhone").innerHTML = `<b>Telefonnummer:</b> ${json[i].phone}`;
+                    document.getElementById("customerEmail").innerHTML = `<b>E-mail:</b> ${json[i].email}`;
+                    document.getElementById("created_at").innerHTML = `<b>Oprettet den:</b> ${json[i].created_at}`;
                 }
             }
-            getOrderId(`/adminpage/ordersByUser/${idSelect.value}`);
+            getOrderId(`/adminpage/ordersByUser/${idSelect.value}`, selection);
             removeNode(nodes);
         });
 }

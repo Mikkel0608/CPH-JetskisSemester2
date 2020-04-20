@@ -5,7 +5,7 @@ Fetches the userid, which is used to make a parameterized query in the PUT reque
 New password is sent through the request body.
  */
 window.onload = function(){
-    fetch('http://localhost:3000/profile/userinfo')
+    fetch('http://localhost:3000/profile/user')
         .then(response => response.json())
         .then(json => {
             console.log(json.userid);

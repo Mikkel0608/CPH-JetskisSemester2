@@ -16,7 +16,7 @@ function deleteUser(request, response){
     pool.query(`SELECT u.userid, ut.usertypeid
                 FROM users AS u JOIN usertype AS ut
                 ON u.usertypeid = ut.usertypeid
-                WHERE userid = $1;`, [request.params.id], function (error, results){
+                WHERE userid = $1;`, [request.params.userid], function (error, results){
             if (error){
                 throw error;
             } else {
@@ -29,8 +29,6 @@ function deleteUser(request, response){
                 request.session.userid = undefined;
                 request.session.loggedin = undefined;
                 response.send(JSON.stringify('ok'));
-                //response.redirect('/');
-                //response.end();
             }
         }
     )
@@ -38,14 +36,14 @@ function deleteUser(request, response){
 
 function deleteOrder (req, res){
     pool.query(`DELETE FROM orders WHERE orderid = $1 AND userid = $2`,
-    [req.params.id, req.session.userid]);
+    [req.params.orderid, req.session.userid]);
     res.send(JSON.stringify('ok'));
 }
 
 function updatePassword(req, res){
     console.log(req.body);
     pool.query(`UPDATE users SET password = $1 WHERE userid = $2 `,
-        [req.body.password, req.params.id], function (error, results) {
+        [req.body.password, req.params.userid], function (error, results) {
             if (error){
                 throw error;
             } else {
@@ -88,10 +86,14 @@ function orderMW (req, res, next){
     }
 }
 
+//First if-statement: Making sure that the customer only can access their own data from orderproducts table,
+//hence the 4-table join.
+//Second if-statement is for the admin: Admin should be able to access any data from orderproducts table.
 function orderProduct (req, res){
     if (req.session.loggedin === true){
         pool.query(`select count(op.productid), p.modelname, op.productid, p.price
-                    from orderproduct as op JOIN products as p
+                    from orderproduct as op 
+                    JOIN products as p
                     on op.productid = p.productid
                     JOIN orders as o
                     on o.orderid = op.orderid
@@ -99,7 +101,7 @@ function orderProduct (req, res){
                     on u.userid = o.userid
                     where o.orderid = $1 AND u.userid = $2
                     group by p.modelname, op.productid, p.price
-                    order by op.productid;`, [req.params.id, req.session.userid]).then(result =>{
+                    order by op.productid;`, [req.params.orderid, req.session.userid]).then(result =>{
                         res.send(result.rows);
         });
     } else if (req.session.adminloggedin === true){
@@ -108,7 +110,7 @@ function orderProduct (req, res){
                     on op.productid = p.productid 
                     where orderid = $1
                     group by p.modelname, op.productid, p.price
-                    order by op.productid;`, [req.params.id]).then(result =>{
+                    order by op.productid;`, [req.params.orderid]).then(result =>{
             res.send(result.rows);
         });
     }

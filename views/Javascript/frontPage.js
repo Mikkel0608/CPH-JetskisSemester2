@@ -4,13 +4,13 @@ in localStorage (here we use the 'phone' key), and checks if there are is any va
 is redirected to the login page. In addition, the function also inserts the users phone number in the navibar as text.
  */
 window.onload = function getActivePhone() {
-    fetch('/profile/userinfo')
+    fetch('/profile/user')
         .then(response => response.json())
         .then(json => {
             console.log(json);
             document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.phone;
         });
-}
+};
 
 /*MK: The purpose of this function is to make sure that the user of the website cannot enter the orderPage if the user
 /is not logged in.

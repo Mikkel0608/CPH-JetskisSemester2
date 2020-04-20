@@ -1,12 +1,12 @@
-function getOrderId(path) {
+function getOrderId(path, node) {
+    removeNode(node);
     fetch(path)
         .then(response => response.json())
         .then(json => {
 
             var orderArray = json;
             for (var i = 0; i < orderArray.length; i++) {
-                var orderId = document.createElement("option");
-                orderId.innerHTML = orderArray[i].orderid;
+                var orderId = new Option(`Ordre ${orderArray[i].orderid}`, orderArray[i].orderid);
                 document.getElementById("orderId").appendChild(orderId);
             }
         })
@@ -18,10 +18,10 @@ function removeNode (node){
     }
 }
 
-function showOrder(path, selection, node){
+function showOrder(path, select, node){
     //while-loop that removes the existing nodes in the orderList div
     //Using a while loop since the amount of iterations can differ
-    if (selection.value === '0'){
+    if (select.value === '0'){
         alert(`Vælg venligst et ordre ID i menuen`)
     } else {
         removeNode(node);
@@ -34,7 +34,7 @@ function showOrder(path, selection, node){
 
                 var i;
                 for (i = 0; i < orderInfo.length; i++) {
-                    if (selection.value == orderInfo[i].orderid) {
+                    if (select.value == orderInfo[i].orderid) {
                         var day = orderInfo[i].orderday;
                         var month = orderInfo[i].ordermonth;
                         var year = orderInfo[i].orderyear;
@@ -49,7 +49,7 @@ function showOrder(path, selection, node){
                         node.appendChild(order);
                     }
                 }
-                fetch(`/profile/orderproduct/${selection.value}`)
+                fetch(`/profile/orderproduct/${select.value}`)
                     .then(response => response.json())
                     .then(json => {
                         console.log(json);

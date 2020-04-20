@@ -1,15 +1,15 @@
 import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js";
 
-getOrderId('/profile/orderinfo');
-
 
 const selection = document.getElementById("orderId");
 const nodes = document.getElementById('orderList');
 
 
+getOrderId('/profile/orders', selection);
+
 const showOrderBtn = document.getElementById('showOrderBtn');
 showOrderBtn.onclick = ()=>{
-    showOrder('/profile/orderinfo', selection, nodes);
+    showOrder('/profile/orders', selection, nodes);
 };
 
 const delOrderBtn = document.getElementById('delOrderBtn');
@@ -26,7 +26,7 @@ delUserBtn.onclick = ()=>{
 
 
 window.onload = function getCustomerInfo() {
-    fetch('/profile/userinfo')
+    fetch('/profile/user')
         .then(response => response.json())
         .then(json => {
             var userInfo = json;
