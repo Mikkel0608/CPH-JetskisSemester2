@@ -62,7 +62,7 @@ function deleteOrder (){
     } else {
         var choice = window.confirm(`Er du sikker på, at du vil slette ordre med ordre ID ${selection.value}?`);
         if (choice === true) {
-            fetch(`http://localhost:3000/profile/deleteorder/${selection.value}`, {
+            fetch(`http://localhost:3000/profile/orders/${selection.value}`, {
                 method: 'DELETE'
             }).then(response => response.json())
                 .then(json => {
@@ -87,11 +87,11 @@ MM: The deleteUser function deletes the current user.
 function deleteUser() {
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
     if (choice === true) {
-        fetch('http://localhost:3000/profile/userinfo')
+        fetch('http://localhost:3000/profile/user')
             .then(response => response.json())
             .then(json => {
 
-                fetch(`http://localhost:3000/profile/deleteuser/${json.userid}`, {
+                fetch(`http://localhost:3000/profile/user/${json.userid}`, {
                     method: 'DELETE'
                 }).then(response => response.json())
                     .then(json => {
