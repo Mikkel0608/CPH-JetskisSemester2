@@ -24,29 +24,37 @@ function loginFunc (request, response) {
     var password = request.body.password;
     console.log(email, password);
     if (email && password) {
+        var randomChars = 'abcdefghijklmnopqrstuvwxyz';
+        var ok = false;
+        for (let i=0; i<randomChars.length; i++){
+            var peppered = password;
+            peppered += randomChars[i];
+            console.log(peppered);
         pool.query(`select u.userid, u.email, ut.type
                     from users u JOIN usertype ut
                     on u.usertypeid = ut.usertypeid
-                    where email = $1 AND password = $2;`,
-            [email, password], function (error, results, fields) {
-            if (results.rows.length > 0 && results.rows[0].type === 'cus') {
-                console.log(results.rows);
-                request.session.loggedin = true;
-                request.session.userid = results.rows[0].userid;
-                request.session.email = email;
-                response.redirect('/');
-            } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
-                console.log(results.rows);
-                request.session.adminloggedin = true;
-                console.log(request.session.adminloggedin);
-                request.session.userid = results.rows[0].userid;
-                request.session.email = email;
-                response.redirect('/adminpage');
-            } else {
-                response.send('Incorrect phone and/or password');
-            }
-            response.end();
-        });
+                    where email = $1 AND password = crypt($2, password);`,
+            [email, peppered], function (error, results, fields) {
+                if (results.rows.length > 0 && results.rows[0].type === 'cus') {
+                    console.log(results.rows);
+                    request.session.loggedin = true;
+                    request.session.userid = results.rows[0].userid;
+                    request.session.email = email;
+                    response.redirect('/');
+                    ok = true;
+                } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
+                    console.log(results.rows);
+                    request.session.adminloggedin = true;
+                    console.log(request.session.adminloggedin);
+                    request.session.userid = results.rows[0].userid;
+                    request.session.email = email;
+                    response.redirect('/adminpage');
+                    ok = true;
+                }
+            });
+            //response.end();
+        }
+
     } else {
         response.send('Please enter phone and password');
         response.end();

@@ -148,13 +148,13 @@ function createAdmin(){
         pool.query(`
                     INSERT INTO users(        
                     usertypeid, userName, email, password)
-                    VALUES($1, 'admin', 'admin@admin.com', CRYPT('admin', GEN_SALT('md5')));`, [usertypeid]);
+                    VALUES($1, 'admin', 'admin@admin.com', crypt('admink', gen_salt('md5')));`, [usertypeid]);
     }
 }
 //kør disse funktioner for at få noget data i databasen
 requirePgcrypto();
 createTables();
-createAdmin();
+//createAdmin();
 //createData();
 //createProducts();
 

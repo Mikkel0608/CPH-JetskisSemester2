@@ -124,7 +124,18 @@ The method .push is used to introduce a new customer object into the back of the
 .setItem is used to put data into the localStorage.
 */
 
+
     if (form_valid) {
+        function randomChar(length) {
+            var randomChars = 'abcdefghijklmnopqrstuvwxyz';
+            var result = '';
+            for ( var i = 0; i < length; i++ ) {
+                result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+            }
+            return result;
+        }
+        password += randomChar(1);
+        console.log(password);
         const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
         customer.create(customer);
         return true;
