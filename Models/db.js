@@ -8,6 +8,18 @@ const pool = new Pool({
 });
 module.exports = pool;
 
+const requirePgcrypto = () =>{
+    const queryText = `CREATE EXTENSION IF NOT EXISTS pgcrypto;`;
+
+    pool.query(queryText)
+        .then(()=>{
+        })
+        .catch((err)=>{
+            console.log(err);
+            pool.end();
+        });
+}
+
 //Opretter tabeller med udgangspunkt i E/R
 const createTables = () =>{
     const queryText =   `CREATE TABLE IF NOT EXISTS
@@ -26,7 +38,7 @@ const createTables = () =>{
                             city VARCHAR(50),
                             phone INT,
                             email VARCHAR(50),
-                            password VARCHAR(50),
+                            password VARCHAR(255),
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             );
                             
@@ -133,16 +145,16 @@ function createAdmin(){
     });
 
     function insertAdmin(){
-        pool.query(`INSERT INTO users(
+        pool.query(`
+                    INSERT INTO users(        
                     usertypeid, userName, email, password)
-                    VALUES($1, 'admin', 'admin@admin.com', 'admin');`, [usertypeid]);
+                    VALUES($1, 'admin', 'admin@admin.com', CRYPT('admin', GEN_SALT('md5')));`, [usertypeid]);
     }
 }
-
 //kør disse funktioner for at få noget data i databasen
-
+requirePgcrypto();
 createTables();
-//createAdmin();
+createAdmin();
 //createData();
 //createProducts();
 
