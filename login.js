@@ -25,7 +25,7 @@ function loginFunc (request, response) {
     console.log(email, password);
     if (email && password) {
         var randomChars = 'abcdefghijklmnopqrstuvwxyz';
-        var ok = false;
+        //var ok = false;
         for (let i=0; i<randomChars.length; i++){
             var peppered = password;
             peppered += randomChars[i];
@@ -41,7 +41,7 @@ function loginFunc (request, response) {
                     request.session.userid = results.rows[0].userid;
                     request.session.email = email;
                     response.redirect('/');
-                    ok = true;
+                    //ok = true;
                 } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
                     console.log(results.rows);
                     request.session.adminloggedin = true;
@@ -49,7 +49,7 @@ function loginFunc (request, response) {
                     request.session.userid = results.rows[0].userid;
                     request.session.email = email;
                     response.redirect('/adminpage');
-                    ok = true;
+                    //ok = true;
                 }
             });
             //response.end();

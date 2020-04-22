@@ -25,7 +25,7 @@ module.exports = function (request, response){
     const city = request.body.city;
     const phone = request.body.phone;
     const email = request.body.email;
-    const password = request.body.password;
+    var password = request.body.password;
     console.log(name, streetName, streetNumber, postalCode, city, phone, email, password);
 
 
@@ -60,6 +60,15 @@ module.exports = function (request, response){
 
 
                 function createCustomer() {
+                    const randomChar = (length) => {
+                        const randomChars = 'abcdefghijklmnopqrstuvwxyz';
+                        var result = '';
+                        for ( var i = 0; i < length; i++ ) {
+                            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+                        }
+                        return result;
+                    };
+                    password += randomChar(1);
                     pool.query(`INSERT INTO users(
                 usertypeid,
                 userName, 
