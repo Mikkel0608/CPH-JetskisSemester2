@@ -7,17 +7,26 @@ const pool = require('./Models/db');
 const app = require('./index.js');
 
 //Ved stadig ikke hvad dette gør
-app.use(session({
+/*app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
-
+*/
 //used for extracting form data
-app.use(bodyParser.urlencoded({extended : true}));
+/*app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+*/
+const randomChar = (length) => {
+    const randomChars = 'abcdefghijklmnopqrstuvwxyz';
+    var result = '';
+    for ( var i = 0; i < length; i++ ) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
+};
 
-module.exports = function (request, response){
+function register (request, response){
     const name = request.body.name;
     const streetName = request.body.streetName;
     const streetNumber = request.body.streetNumber;
@@ -60,14 +69,6 @@ module.exports = function (request, response){
 
 
                 function createCustomer() {
-                    const randomChar = (length) => {
-                        const randomChars = 'abcdefghijklmnopqrstuvwxyz';
-                        var result = '';
-                        for ( var i = 0; i < length; i++ ) {
-                            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-                        }
-                        return result;
-                    };
                     password += randomChar(1);
                     pool.query(`INSERT INTO users(
                 usertypeid,
@@ -92,4 +93,9 @@ module.exports = function (request, response){
         });
         console.log(form_valid);
     });
+};
+
+module.exports = {
+    register,
+    randomChar
 };

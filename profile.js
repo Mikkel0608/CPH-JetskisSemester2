@@ -1,5 +1,6 @@
 //Importing the database connection
 const pool = require('./Models/db');
+const registerFunction = require('./registerCustomer');
 
 const app = require('./index.js');
 
@@ -42,7 +43,8 @@ function deleteOrder (req, res){
 
 function updatePassword(req, res){
     console.log(req.body);
-    pool.query(`UPDATE users SET password = $1 WHERE userid = $2 `,
+    req.body.password += registerFunction.randomChar(1);
+    pool.query(`UPDATE users SET password = crypt($1, gen_salt('bf')) WHERE userid = $2 `,
         [req.body.password, req.params.userid], function (error, results) {
             if (error){
                 throw error;

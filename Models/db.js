@@ -154,7 +154,7 @@ function createAdmin(){
 //kør disse funktioner for at få noget data i databasen
 requirePgcrypto();
 createTables();
-createAdmin();
+//createAdmin();
 //createData();
 //createProducts();
 

@@ -108,7 +108,7 @@ app.delete('/profile/orders/:orderid', profileFunctions.deleteOrder);
 
 
 const registerFunction = require('./registerCustomer');
-app.post('/register', registerFunction);
+app.post('/register', registerFunction.register);
 
 // creating new order
 const orderFunction = require('./order.js');
