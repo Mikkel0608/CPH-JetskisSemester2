@@ -71,7 +71,7 @@ module.exports = function (request, response){
                 email,
                 password)
                 VALUES(
-                $1, $2, $3, $4, $5, $6, $7, $8, crypt($9, gen_salt('md5')));
+                $1, $2, $3, $4, $5, $6, $7, $8, crypt($9, gen_salt('bf')));
                 `, [usertypeid, name, streetName, streetNumber, postalCode, city, phone, email, password]);
                 //response.redirect('/Loginpage.html');
                     request.body.ok = true;
