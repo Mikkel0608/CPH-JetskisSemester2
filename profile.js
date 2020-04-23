@@ -88,6 +88,34 @@ function orderMW (req, res, next){
     }
 }
 
+
+function ordersByOrderId (req, res){
+    pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+                    FROM orders WHERE orderid = $1;`,
+        [req.params.orderid]).then(result =>{
+        var order = result.rows[0];
+        order.products = [];
+        pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+                    from orderproduct as op 
+                    JOIN products as p
+                    on op.productid = p.productid
+                    JOIN orders as o
+                    on o.orderid = op.orderid
+                    JOIN users as u 
+                    on u.userid = o.userid
+                    where o.orderid = $1 AND u.userid = $2
+                    group by p.modelname, op.productid, p.price
+                    order by op.productid;`, [req.params.orderid, req.session.userid]).then(result =>{
+            console.log(result.rows);
+            var products = result.rows;
+            for (let i=0; i<products.length; i++){
+                order.products.push(products[i]);
+            }
+            res.send(order);
+        });
+    });
+}
+
 //First if-statement: Making sure that the customer only can access their own data from orderproducts table,
 //hence the 4-table join.
 //Second if-statement is for the admin: Admin should be able to access any data from orderproducts table.
@@ -104,6 +132,7 @@ function orderProduct (req, res){
                     where o.orderid = $1 AND u.userid = $2
                     group by p.modelname, op.productid, p.price
                     order by op.productid;`, [req.params.orderid, req.session.userid]).then(result =>{
+                        console.log(result.rows);
                         res.send(result.rows);
         });
     } else if (req.session.adminloggedin === true){
@@ -132,7 +161,8 @@ module.exports = {
     orderMW,
     showOrder,
     orderProduct,
-    deleteOrder
+    deleteOrder,
+    ordersByOrderId
 };
 
 

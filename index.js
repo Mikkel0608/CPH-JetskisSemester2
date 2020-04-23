@@ -101,6 +101,7 @@ app.use(profileFunctions.infoMW);
 app.use(profileFunctions.orderMW);
 app.get('/profile/user', profileFunctions.showInfo);
 app.get('/profile/orders', profileFunctions.showOrder);
+app.get('/profile/ordersbyorderid/:orderid', profileFunctions.ordersByOrderId);
 app.get('/profile/orderproduct/:orderid', profileFunctions.orderProduct);
 app.put('/profile/updatepassword/update/:userid', profileFunctions.updatePassword);
 app.delete('/profile/user/:userid', profileFunctions.deleteUser);
