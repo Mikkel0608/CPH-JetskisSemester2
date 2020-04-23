@@ -47,12 +47,24 @@ function getOrder(req, res){
     }
 }
 
+var table = '';
 function allOrders (req, res){
-    if (req.session.adminloggedin === true) {
-        pool.query(`SELECT * from orders`,
+    console.log(req.params);
+    if (req.params.sorting === '1' || '2' || '3') {
+        if (req.params.sorting === '1') {
+            table = 'userid ASC';
+        } else if (req.params.sorting === '2') {
+            table = 'orderid ASC';
+        } else if (req.params.sorting === '3') {
+            table = 'orderprice DESC';
+        }
+        console.log(table);
+        if (req.session.adminloggedin === true) {
+            pool.query(`SELECT * from orders ORDER BY ${table}`,
             ).then(result => {
-            res.send(result.rows);
-        })
+                res.send(result.rows);
+            })
+        }
     }
 }
 

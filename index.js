@@ -119,8 +119,8 @@ app.post('/orderPage/products', orderFunction.getProducts);
 //adminpage
 const adminFunctions = require ('./admin.js');
 app.use(adminFunctions.getUsersMW);
-app.get('/adminpage/allusers/', adminFunctions.getUsers);
-app.get('/adminpage/allOrders', adminFunctions.allOrders);
+app.get('/adminpage/allusers', adminFunctions.getUsers);
+app.get('/adminpage/allOrders/:sorting', adminFunctions.allOrders);
 app.get('/adminpage/ordersByUser/:userid', adminFunctions.getOrdersByUser);
 app.get('/adminpage/order/:orderid', adminFunctions.getOrder);
 
