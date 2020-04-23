@@ -112,8 +112,7 @@ app.post('/register', registerFunction.register);
 
 // creating new order
 const orderFunction = require('./order.js');
-app.post('/submitOrder', orderFunction.submitOrder);
-app.post('/orderPage/getOrders', orderFunction.getOrders);
+app.post('/orderPage/submitOrder', orderFunction.submitOrder);
 app.post('/orderPage/products', orderFunction.getProducts);
 
 //adminpage
