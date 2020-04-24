@@ -65,7 +65,7 @@ function allOrders (req, res){
                 pool.query(`SELECT * from orders ORDER BY ${table}`,
                 ).then(result => {
                     var orders = result.rows;
-                    //console.log(orders);
+                    console.log(orders);
                     for (let i = 0; i < orders.length; i++) {
                         orders[i].products = [];
                         pool.query(`select count(op.productid), p.modelname, op.productid, p.price
@@ -75,19 +75,15 @@ function allOrders (req, res){
                     group by p.modelname, op.productid, p.price
                     order by op.productid;`, [orders[i].orderid]).then(result1 => {
                             var products = result1.rows;
+                            console.log(products.length);
                             for (let x = 0; x < products.length; x++) {
                                 orders[i].products.push(products[x]);
                             }
-                            console.log(orders);
-                            //res.send(products);
+                            console.log(orders[0].products[0]);
+
                         });
+                        res.send(orders);
                     }
-                    //console.log(orders);
-
-
-
-                    //res.send(result.rows);
-
                 })
             }
         }
