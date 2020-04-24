@@ -49,23 +49,48 @@ function getOrder(req, res){
 
 var table = '';
 function allOrders (req, res){
-    console.log(req.params);
-    if (req.params.sorting === '1' || '2' || '3') {
-        if (req.params.sorting === '1') {
-            table = 'userid ASC';
-        } else if (req.params.sorting === '2') {
-            table = 'orderid ASC';
-        } else if (req.params.sorting === '3') {
-            table = 'orderprice DESC';
+        console.log(req.params);
+        if (req.params.sorting === '1' || '2' || '3') {
+            if (req.params.sorting === '1') {
+                table = 'userid ASC';
+            } else if (req.params.sorting === '2') {
+                table = 'orderid ASC';
+            } else if (req.params.sorting === '3') {
+                table = 'orderprice DESC';
+            }
+            console.log(table);
+
+
+            if (req.session.adminloggedin === true) {
+                pool.query(`SELECT * from orders ORDER BY ${table}`,
+                ).then(result => {
+                    var orders = result.rows;
+                    //console.log(orders);
+                    for (let i = 0; i < orders.length; i++) {
+                        orders[i].products = [];
+                        pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+                    from orderproduct as op JOIN products as p
+                    on op.productid = p.productid 
+                    where orderid = $1
+                    group by p.modelname, op.productid, p.price
+                    order by op.productid;`, [orders[i].orderid]).then(result1 => {
+                            var products = result1.rows;
+                            for (let x = 0; x < products.length; x++) {
+                                orders[i].products.push(products[x]);
+                            }
+                            console.log(orders);
+                            //res.send(products);
+                        });
+                    }
+                    //console.log(orders);
+
+
+
+                    //res.send(result.rows);
+
+                })
+            }
         }
-        console.log(table);
-        if (req.session.adminloggedin === true) {
-            pool.query(`SELECT * from orders ORDER BY ${table}`,
-            ).then(result => {
-                res.send(result.rows);
-            })
-        }
-    }
 }
 
 module.exports = {

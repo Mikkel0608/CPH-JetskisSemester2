@@ -9,7 +9,11 @@ getOrderId('/profile/orders', selection);
 
 const showOrderBtn = document.getElementById('showOrderBtn');
 showOrderBtn.onclick = ()=>{
-    showOrder('/profile/orders', selection, nodes);
+    if (selection.value === '0'){
+        alert(`Vælg venligst et ordre ID i menuen`)
+    } else {
+        showOrder(`/profile/ordersbyorderid/${selection.value}`, nodes);
+    }
 };
 
 const delOrderBtn = document.getElementById('delOrderBtn');
@@ -21,7 +25,6 @@ const delUserBtn = document.getElementById('delUserBtn');
 delUserBtn.onclick = ()=>{
     deleteUser();
 };
-
 
 
 

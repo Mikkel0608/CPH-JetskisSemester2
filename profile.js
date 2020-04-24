@@ -77,8 +77,7 @@ function showInfo (req, res){
 
 function orderMW (req, res, next){
     if (req.session.loggedin === true){
-        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
-                    FROM orders WHERE userid = $1;`,
+        pool.query(`SELECT orderid FROM orders WHERE userid = $1;`,
                     [req.session.userid]).then(result =>{
                         req.order = result.rows;
                         next();
@@ -89,13 +88,14 @@ function orderMW (req, res, next){
 }
 
 
-function ordersByOrderId (req, res){
-    pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
-                    FROM orders WHERE orderid = $1;`,
-        [req.params.orderid]).then(result =>{
-        var order = result.rows[0];
-        order.products = [];
-        pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+function ordersByOrderId (req, res) {
+    if (req.session.loggedin === true) {
+        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+                    FROM orders WHERE orderid = $1 AND userid =$2;`,
+            [req.params.orderid, req.session.userid]).then(result => {
+            var order = result.rows[0];
+            order.products = [];
+            pool.query(`select count(op.productid), p.modelname, op.productid, p.price
                     from orderproduct as op 
                     JOIN products as p
                     on op.productid = p.productid
@@ -105,20 +105,42 @@ function ordersByOrderId (req, res){
                     on u.userid = o.userid
                     where o.orderid = $1 AND u.userid = $2
                     group by p.modelname, op.productid, p.price
-                    order by op.productid;`, [req.params.orderid, req.session.userid]).then(result =>{
-            console.log(result.rows);
-            var products = result.rows;
-            for (let i=0; i<products.length; i++){
-                order.products.push(products[i]);
-            }
-            res.send(order);
+                    order by op.productid;`, [req.params.orderid, req.session.userid]).then(result => {
+                console.log(result.rows);
+                var products = result.rows;
+                for (let i = 0; i < products.length; i++) {
+                    order.products.push(products[i]);
+                }
+                res.send(order);
+            });
         });
-    });
+    } else if (req.session.adminloggedin === true){
+        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+                    FROM orders WHERE orderid = $1`,
+            [req.params.orderid]).then(result => {
+            var order = result.rows[0];
+            order.products = [];
+            pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+                    from orderproduct as op JOIN products as p
+                    on op.productid = p.productid 
+                    where orderid = $1
+                    group by p.modelname, op.productid, p.price
+                    order by op.productid;`, [req.params.orderid]).then(result => {
+                console.log(result.rows);
+                var products = result.rows;
+                for (let i = 0; i < products.length; i++) {
+                    order.products.push(products[i]);
+                }
+                res.send(order);
+            });
+        });
+    }
 }
 
 //First if-statement: Making sure that the customer only can access their own data from orderproducts table,
 //hence the 4-table join.
 //Second if-statement is for the admin: Admin should be able to access any data from orderproducts table.
+/*
 function orderProduct (req, res){
     if (req.session.loggedin === true){
         pool.query(`select count(op.productid), p.modelname, op.productid, p.price
@@ -146,6 +168,8 @@ function orderProduct (req, res){
         });
     }
 }
+
+ */
 //
 
 function showOrder (req, res){
@@ -160,7 +184,7 @@ module.exports = {
     infoMW,
     orderMW,
     showOrder,
-    orderProduct,
+    //orderProduct,
     deleteOrder,
     ordersByOrderId
 };

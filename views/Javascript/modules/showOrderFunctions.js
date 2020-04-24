@@ -18,12 +18,9 @@ function removeNode (node){
     }
 }
 
-function showOrder(path, select, node){
+function showOrder(path, node){
     //while-loop that removes the existing nodes in the orderList div
     //Using a while loop since the amount of iterations can differ
-    if (select.value === '0'){
-        alert(`Vælg venligst et ordre ID i menuen`)
-    } else {
         removeNode(node);
 
         fetch(path)
@@ -32,37 +29,27 @@ function showOrder(path, select, node){
                 var orderInfo = json;
                 console.log(orderInfo);
 
-                var i;
-                for (i = 0; i < orderInfo.length; i++) {
-                    if (select.value == orderInfo[i].orderid) {
-                        var day = orderInfo[i].orderday;
-                        var month = orderInfo[i].ordermonth;
-                        var year = orderInfo[i].orderyear;
-                        var timePeriod = orderInfo[i].timeperiod;
-                        var orderPrice = orderInfo[i].orderprice;
-                        var orderID = orderInfo[i].orderid;
-                        var orderDate = orderInfo[i].order_placed_at;
-                        var product = null;
+                        var day = orderInfo.orderday;
+                        var month = orderInfo.ordermonth;
+                        var year = orderInfo.orderyear;
+                        var timePeriod = orderInfo.timeperiod;
+                        var orderPrice = orderInfo.orderprice;
+                        var orderID = orderInfo.orderid;
+                        var orderDate = orderInfo.order_placed_at;
 
                         var order = document.createElement("P");
                         order.innerHTML = "<b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Pris total: </b> " + orderPrice + "</br></br> <b>Ordre ID: </b>  " + orderID + "</br></br> <b> Ordre lavet d. : </b>" + orderDate;
                         node.appendChild(order);
-                    }
-                }
-                fetch(`/profile/orderproduct/${select.value}`)
-                    .then(response => response.json())
-                    .then(json => {
-                        console.log(json);
-                        for (let X = 0; X < json.length; X++) {
+
+                        var product = null;
+                        for (let i=0; i<orderInfo.products.length; i++){
                             product = document.createElement('p');
-                            product.innerHTML = '<b>Produkt: </b>' + json[X].modelname + '<br>' +
-                                '<b>Antal: </b>' + json[X].count + '<br>' +
-                                '<b>Pris: </b>' + json[X].price * json[X].count;
+                            product.innerHTML = '<b>Produkt: </b>' + orderInfo.products[i].modelname +'<br>' +
+                                '<b>Antal: </b>' + orderInfo.products[i].count + '<br>' +
+                                '<b>Pris: </b>' + orderInfo.products[i].price * orderInfo.products[i].count;
                             node.appendChild(product);
                         }
-                    });
             });
-    }
 }
 
 export {getOrderId, removeNode, showOrder};

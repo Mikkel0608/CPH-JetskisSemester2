@@ -13,7 +13,11 @@ showInfoBtn.onclick=()=>{
 
 const showOrderBtn = document.getElementById('showOrder');
 showOrderBtn.onclick=()=>{
-    showOrder(`/adminpage/order/${selection.value}`, selection, nodes);
+    if (selection.value === '0'){
+        alert(`Vælg venligst et ordre ID i menuen`)
+    } else {
+        showOrder(`/profile/ordersbyorderid/${selection.value}`, nodes);
+    }
 };
 
 

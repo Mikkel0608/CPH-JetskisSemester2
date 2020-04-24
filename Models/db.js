@@ -36,8 +36,8 @@ const createTables = () =>{
                             streetNumber INT,
                             postalCode INT,
                             city VARCHAR(50),
-                            phone INT,
-                            email VARCHAR(50),
+                            phone INT UNIQUE,
+                            email VARCHAR(50) UNIQUE,
                             password VARCHAR(255),
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             );
