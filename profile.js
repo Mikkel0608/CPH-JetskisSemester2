@@ -90,7 +90,7 @@ function orderMW (req, res, next){
 
 function ordersByOrderId (req, res) {
     if (req.session.loggedin === true) {
-        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+        pool.query(`SELECT orderid, userid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
                     FROM orders WHERE orderid = $1 AND userid =$2;`,
             [req.params.orderid, req.session.userid]).then(result => {
             var order = result.rows[0];
@@ -115,7 +115,7 @@ function ordersByOrderId (req, res) {
             });
         });
     } else if (req.session.adminloggedin === true){
-        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+        pool.query(`SELECT orderid, userid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
                     FROM orders WHERE orderid = $1`,
             [req.params.orderid]).then(result => {
             var order = result.rows[0];

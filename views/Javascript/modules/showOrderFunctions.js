@@ -36,10 +36,11 @@ function showOrder(path, node){
                         var timePeriod = orderInfo.timeperiod;
                         var orderPrice = orderInfo.orderprice;
                         var orderID = orderInfo.orderid;
+                        var userID = orderInfo.userid;
                         var orderDate = orderInfo.order_placed_at;
 
                         var order = document.createElement("P");
-                        order.innerHTML = "<b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Pris total: </b> " + orderPrice + "</br></br> <b>Ordre ID: </b>  " + orderID + "</br></br> <b> Ordre lavet d. : </b>" + orderDate;
+                        order.innerHTML = "<b> Ordre ID: </b>" + orderID + "</b></br></br><b> Bruger ID</b>: " + userID +  "</br></br><b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Pris total: </b> " + orderPrice + "</br></br> <b> Ordre lavet d. : </b>" + orderDate;
                         node.appendChild(order);
 
                         var product = null;
