@@ -1,5 +1,11 @@
+import {removeNode, showOrder} from "./modules/showOrderFunctions.js";
+
 const sortBtn = document.getElementById('sortBtn');
 const sort = document.getElementById('sort');
+const searchBtn = document.getElementById('searchBtn');
+const search = document.getElementById('search');
+const node = document.getElementById("orderList");
+
 
 const datE = document.getElementById('date');
 datE.value = 1;
@@ -16,10 +22,7 @@ sortBtn.onclick = () => {
         .then(json => {
             console.log(json);
             var fetchedOrders = json;
-            var node = document.getElementById("orderList");
-            while (node.firstChild) {
-                node.removeChild(node.lastChild);
-            }
+            removeNode(node);
             for (let i = 0; i < fetchedOrders.length; i++) {
 
                 var day = fetchedOrders[i].orderday;
@@ -50,6 +53,14 @@ sortBtn.onclick = () => {
         })
 };
 
+
+searchBtn.onclick = ()=>{
+    if(isNaN(parseInt(search.value))){
+           alert("Søg efter ordre-id'et")
+    } else {
+        showOrder(`/profile/ordersbyorderid/${parseInt(search.value)}`, node);
+    }
+};
 
 
 

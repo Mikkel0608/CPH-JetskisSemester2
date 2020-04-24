@@ -26,6 +26,7 @@ function showOrder(path, node){
         fetch(path)
             .then(response => response.json())
             .then(json => {
+
                 var orderInfo = json;
                 console.log(orderInfo);
 

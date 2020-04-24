@@ -39,7 +39,7 @@ function getOrdersByUser(req, res){
 
 function getOrder(req, res){
     if (req.session.adminloggedin === true) {
-        pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
+        pool.query(`SELECT orderid
                 FROM orders WHERE orderid = $1;`,
             [req.params.orderid]).then(result => {
             res.send(result.rows);
