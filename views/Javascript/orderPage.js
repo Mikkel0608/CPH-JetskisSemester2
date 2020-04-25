@@ -111,6 +111,13 @@ function confirmTime() {
 3. It generates the product name, photo, and price in basket.
  */
 //Function written by: MM
+
+const cartBtn = document.getElementById('cartBtn');
+cartBtn.onclick = (event)=>{
+    event.preventDefault();
+    console.log(123);
+    calculatePrice();
+};
 var finalPrice;
 function calculatePrice() {
     //MM: Goes through all the stored products and adds their individual prices and quantities to the finalPrice var
