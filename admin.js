@@ -49,16 +49,16 @@ function getOrder(req, res){
 
 var table = '';
 function allOrders (req, res){
-        console.log(req.params);
-        if (req.params.sorting === '1' || '2' || '3') {
-            if (req.params.sorting === '1') {
+    var sorting = parseInt(req.params.sorting);
+        //console.log(typeof parseInt(req.params.sorting));
+        if (sorting === 1 || 2 || 3) {
+            if (sorting === 1) {
                 table = 'userid ASC';
-            } else if (req.params.sorting === '2') {
+            } else if (sorting === 2) {
                 table = 'orderid ASC';
-            } else if (req.params.sorting === '3') {
+            } else if (sorting === 3) {
                 table = 'orderprice DESC';
             }
-            console.log(table);
 
 
             if (req.session.adminloggedin === true) {
@@ -83,10 +83,7 @@ function allOrders (req, res){
                                 res.send(orders);
                                 console.log(orders);
                             }
-                            //console.log(orders[0].products[0]);
-
                         });
-                        //res.send(orders);
                     }
                 })
             }
