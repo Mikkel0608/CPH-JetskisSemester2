@@ -1,4 +1,5 @@
 import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js";
+import Customer from "./users.js";
 
 const idSelect = document.getElementById("phoneSelect");
 const selection = document.getElementById("orderId");
@@ -45,18 +46,22 @@ function showInfo (){
             response.json())
         .then(json => {
 
+
             for (let i = 0; i < json.length; i++) {
                 if (idSelect.value == json[i].userid) {
-                    document.getElementById("userid").innerHTML = `<b>Bruger ID:</b> ${json[i].userid}`;
+                    var customer = new Customer(json[i].username, json[i].streetname, json[i].streetnumber,
+                    json[i].postalcode, json[i].city, json[i].phone, json[i].email, '', json[i].created_at, json[i].userid);
+
+                    document.getElementById("userid").innerHTML = `<b>Bruger ID:</b> ${customer.userId}`;
                     document.getElementById("type").innerHTML = `<b>Brugertype:</b> ${json[i].type}`;
-                    document.getElementById("customerName").innerHTML = `<b>Navn:</b> ${json[i].username}`;
-                    document.getElementById("customerStreetName").innerHTML = `<b>Vejnavn:</b> ${json[i].streetname}`;
-                    document.getElementById("customerStreetNumber").innerHTML = `<b>Vejnummer:</b> ${json[i].streetnumber}`;
-                    document.getElementById("customerPostalCode").innerHTML = `<b>Postnummer:</b> ${json[i].postalcode}`;
-                    document.getElementById("customerCity").innerHTML = `<b>By:</b> ${json[i].city}`;
-                    document.getElementById("customerPhone").innerHTML = `<b>Telefonnummer:</b> ${json[i].phone}`;
-                    document.getElementById("customerEmail").innerHTML = `<b>E-mail:</b> ${json[i].email}`;
-                    document.getElementById("created_at").innerHTML = `<b>Oprettet den:</b> ${json[i].created_at}`;
+                    document.getElementById("customerName").innerHTML = `<b>Navn:</b> ${customer.name}`;
+                    document.getElementById("customerStreetName").innerHTML = `<b>Vejnavn:</b> ${customer.streetName}`;
+                    document.getElementById("customerStreetNumber").innerHTML = `<b>Vejnummer:</b> ${customer.streetNumber}`;
+                    document.getElementById("customerPostalCode").innerHTML = `<b>Postnummer:</b> ${customer.postalCode}`;
+                    document.getElementById("customerCity").innerHTML = `<b>By:</b> ${customer.city}`;
+                    document.getElementById("customerPhone").innerHTML = `<b>Telefonnummer:</b> ${customer.phone}`;
+                    document.getElementById("customerEmail").innerHTML = `<b>E-mail:</b> ${customer.email}`;
+                    document.getElementById("created_at").innerHTML = `<b>Oprettet den:</b> ${customer.created_At}`;
                 }
             }
             getOrderId(`/adminpage/ordersByUser/${idSelect.value}`, selection);

@@ -1,4 +1,4 @@
-class User {
+/*class User {
     constructor(name, email, password){
         this.name = name;
         this.email = email;
@@ -7,14 +7,17 @@ class User {
 }
 
 
-class Customer extends User{
-    constructor(name, streetName, streetNumber, postalCode, city, phone, email, password){
+export default class Customer extends User{
+    constructor(name, streetName, streetNumber, postalCode, city, phone, email, password, created_At, userId, userTypeId){
         super(name, email, password);
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
         this.city = city;
         this.phone = phone;
+        this.created_At = created_At;
+        this.userId = userId;
+        this.userTypeId = userTypeId;
     }
     create (customer){
         fetch('http://localhost:3000/register', {
@@ -35,13 +38,20 @@ class Customer extends User{
             });
     }
 }
-//var xhr = new XMLHttpRequest();
 
+ */
+//var xhr = new XMLHttpRequest();
+import Customer from "./users.js";
+
+const registration_button = document.getElementById('registration_button');
 /*MD:
 The purpose of the code is validate the input in the registration form. We achieve this by using a boolean value
 that returns false if some of the text fields are invalid.
  */
 //This code is written by Morten Dyberg
+registration_button.onclick =()=>{
+  register();
+};
 function register() {
     var name = document.getElementById("customerName").value;
     var streetName = document.getElementById("streetName").value;
@@ -140,6 +150,7 @@ The method .push is used to introduce a new customer object into the back of the
 
 //A class is created for the admin. The only properties in this class are username and password.
 //Class written by Markus Kronborg
+/*
 class Admin extends User{
     constructor(name, email, password) {
         super(name, email, password);
@@ -150,6 +161,8 @@ class Admin extends User{
 }
 //We make an instance of this class by creating an object.
 admin1 = new Admin('admin', 12345);
+
+ */
 
 
 

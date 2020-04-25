@@ -1,4 +1,5 @@
 import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js";
+import Customer from "./users.js";
 
 
 const selection = document.getElementById("orderId");
@@ -34,24 +35,28 @@ window.onload = function getCustomerInfo() {
         .then(json => {
             var userInfo = json;
             console.log(userInfo);
+            var customer = new Customer(userInfo.username, userInfo.streetname, userInfo.streetnumber,
+            userInfo.postalcode, userInfo.city, userInfo.phone, userInfo.email, '', userInfo.created_at, userInfo.userid);
+            console.log(customer);
             /*
+
             MM:
             The code retrieves information from local storage by using the "getItem" command, and specifying the key that the
             information should be retrieved from. This retrieved information is then saved to the newly created variables.
              */
             //console.log(userInfo);
 
-            document.getElementById('userid').innerHTML = '<b>Bruger ID: </b>' + userInfo.userid;
-            document.getElementById('customerName').innerHTML = '<b>Navn: </b>' + userInfo.username;
-            document.getElementById('customerStreetName').innerHTML = '<b>Vejnavn: </b>' + userInfo.streetname;
-            document.getElementById('customerStreetNumber').innerHTML = '<b>Vejnummer: </b>' + userInfo.streetnumber;
-            document.getElementById('customerPostalCode').innerHTML = '<b>Postnummer: </b>' + userInfo.postalcode;
-            document.getElementById('customerCity').innerHTML = '<b>By: </b>' + userInfo.city;
-            document.getElementById('customerPhone').innerHTML = '<b>Telefonnummer: </b>' + userInfo.phone;
-            document.getElementById('customerEmail').innerHTML = '<b>E-mail: </b>' + userInfo.email;
-            document.getElementById('created_at').innerHTML = '<b>Bruger oprettet d. : </b>' + userInfo.created_at;
+            document.getElementById('userid').innerHTML = '<b>Bruger ID: </b>' + customer.userId;
+            document.getElementById('customerName').innerHTML = '<b>Navn: </b>' + customer.name;
+            document.getElementById('customerStreetName').innerHTML = '<b>Vejnavn: </b>' + customer.streetName;
+            document.getElementById('customerStreetNumber').innerHTML = '<b>Vejnummer: </b>' + customer.streetNumber;
+            document.getElementById('customerPostalCode').innerHTML = '<b>Postnummer: </b>' + customer.postalCode;
+            document.getElementById('customerCity').innerHTML = '<b>By: </b>' + customer.city;
+            document.getElementById('customerPhone').innerHTML = '<b>Telefonnummer: </b>' + customer.phone;
+            document.getElementById('customerEmail').innerHTML = '<b>E-mail: </b>' + customer.email;
+            document.getElementById('created_at').innerHTML = '<b>Bruger oprettet d. : </b>' + customer.created_At;
 
-            document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userid;
+            document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userId;
         })
 };
 

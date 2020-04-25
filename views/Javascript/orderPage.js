@@ -20,8 +20,8 @@ class Product {
 }
 //MM: Creating the Order class. This class is used to create the newOrder object that is send to the API and into the database.
 class Order {
-    constructor(selectedProducts, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
-        this.selectedProducts = selectedProducts;
+    constructor(Products, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
+        this.Products = Products;
         this.orderDay = orderDay;
         this.orderMonth = orderMonth;
         this.orderYear = orderYear;
@@ -158,19 +158,19 @@ function calculatePrice() {
 
 //MM: The storeOrder function collects the order information and sends it to the API
 function storeOrder() {
-    //MM: The selectedProducts array is created. It will contain all the selected products.
-    var selectedProducts = [];
-    //MM: The for loop cycles through the storedProducts array and creates objects for each product selected. All product objects are pushed to the selectedProducts array.
+    //MM: The Products array is created. It will contain all the selected products.
+    var Products = [];
+    //MM: The for loop cycles through the storedProducts array and creates objects for each product selected. All product objects are pushed to the Products array.
     for (let i = 0; i<storedProducts.length; i++) {
         var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
         if (selectElement.options[selectElement.selectedIndex].value > 0) {
             var selectedProduct = {productid: storedProducts[i].productId, productAmount: parseInt(selectElement.options[selectElement.selectedIndex].value)};
-            selectedProducts.push(selectedProduct);
+            Products.push(selectedProduct);
         }
     }
-    console.log(selectedProducts);
+    console.log(Products);
     //MM: The newOrder object is created, and is send to the API with a post request. The client is then redirected to the orderconfirmation page.
-    const newOrder = new Order(selectedProducts, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    const newOrder = new Order(Products, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'http://localhost:3000/orderPage/submitOrder', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
