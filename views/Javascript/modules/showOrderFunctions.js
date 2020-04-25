@@ -5,10 +5,16 @@ function getOrderId(path, node) {
         .then(json => {
 
             var orderArray = json;
+            orderArray.forEach((item) => {
+                var orderId = new Option(`Ordre ${item.orderid}`, item.orderid);
+                document.getElementById("orderId").appendChild(orderId);
+            })
+            /*
             for (var i = 0; i < orderArray.length; i++) {
                 var orderId = new Option(`Ordre ${orderArray[i].orderid}`, orderArray[i].orderid);
                 document.getElementById("orderId").appendChild(orderId);
             }
+             */
         })
 }
 
@@ -44,6 +50,14 @@ function showOrder(path, node){
                         node.appendChild(order);
 
                         var product = null;
+                        orderInfo.products.forEach((item)=>{
+                            product = document.createElement('p');
+                            product.innerHTML = '<b>Produkt: </b>' + item.modelname +'<br>' +
+                                '<b>Antal: </b>' + item.count + '<br>' +
+                                '<b>Pris: </b>' + item.price * item.count;
+                            node.appendChild(product);
+
+                        });/*
                         for (let i=0; i<orderInfo.products.length; i++){
                             product = document.createElement('p');
                             product.innerHTML = '<b>Produkt: </b>' + orderInfo.products[i].modelname +'<br>' +
@@ -51,6 +65,7 @@ function showOrder(path, node){
                                 '<b>Pris: </b>' + orderInfo.products[i].price * orderInfo.products[i].count;
                             node.appendChild(product);
                         }
+                        */
             });
 }
 

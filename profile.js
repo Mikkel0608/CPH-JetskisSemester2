@@ -105,12 +105,16 @@ function ordersByOrderId (req, res) {
                     on u.userid = o.userid
                     where o.orderid = $1 AND u.userid = $2
                     group by p.modelname, op.productid, p.price
-                    order by op.productid;`, [req.params.orderid, req.session.userid]).then(result => {
+                    order by op.productid;`, [req.params.orderid, req.session.userid])
+                .then(result => {
                 console.log(result.rows);
                 var products = result.rows;
+                pushProducts(products, order);
+                /*
                 for (let i = 0; i < products.length; i++) {
                     order.products.push(products[i]);
                 }
+                 */
                 res.send(order);
             });
         });
@@ -125,14 +129,23 @@ function ordersByOrderId (req, res) {
                     on op.productid = p.productid 
                     where orderid = $1
                     group by p.modelname, op.productid, p.price
-                    order by op.productid;`, [req.params.orderid]).then(result => {
+                    order by op.productid;`, [req.params.orderid])
+                .then(result => {
                 console.log(result.rows);
                 var products = result.rows;
+                pushProducts(products, order);
+                /*
                 for (let i = 0; i < products.length; i++) {
                     order.products.push(products[i]);
                 }
+                 */
                 res.send(order);
             });
+        });
+    }
+    function pushProducts(products, order){
+        products.forEach((item) => {
+            order.products.push(item);
         });
     }
 }

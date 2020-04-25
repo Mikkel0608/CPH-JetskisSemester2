@@ -1,4 +1,4 @@
-var form = document.getElementById('updatepassword');
+const form = document.getElementById('updatepassword');
 
 /*
 Fetches the userid, which is used to make a parameterized query in the PUT request.
