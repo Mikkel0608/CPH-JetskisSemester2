@@ -20,11 +20,10 @@
 
 </div>
 <h2> style="font-family: modernSansLight; font-size: 30px;"> Brugerprofil </h2>
-<br>
-<br>
+
 <h3>Vælg brugerens bruger-id for at se brugerinformation</h3>
 
-<br>
+
 <select id="phoneSelect">
     <option selected disabled id="optionTlf"> Bruger-ID </option>
 </select>
@@ -35,31 +34,12 @@
 <br>
 
  <div style="float: left">
-     <h4>Brugerinformation</h4>
-     <p id="userid"></p>
-
-     <p id="type"></p>
-
-     <p id="customerName"></p>
-
-     <p id="customerStreetName"></p>
-
-     <p id="customerStreetNumber"></p>
-
-     <p id="customerPostalCode"></p>
-
-     <p id="customerCity"></p>
-
-     <p id="customerPhone"></p>
-
-     <p id="customerEmail"></p>
-
-     <p id="created_at"></p>
-
+    <div id="userInfoList" style="height: 400px; width: 342px; border: solid black 2px; overflow: scroll;">
+    </div>
 
  </div>
 
-<div style="position: absolute; top: 70px; right: 300px; z-index: 1;" id="rightTextArea">
+<div style="position: absolute; top: 85px; right: 300px; z-index: 1;" id="rightTextArea">
     <h4> Kundens reservationer:</h4>
     <div id="orderList" style="height: 400px; width: 342px; border:solid black 2px; overflow: scroll;">
         <p id="noOrders"> Vælg en reservation i menuen </p>
@@ -72,7 +52,6 @@
 
 </div>
 
-<!--<script type="text/javascript" src="../Javascript/profile.js"></script>-->
 <script type="module" src="../Javascript/admin_users.js"></script>
 
 

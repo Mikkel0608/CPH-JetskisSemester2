@@ -41,7 +41,7 @@ export default class Customer extends User{
 
  */
 //var xhr = new XMLHttpRequest();
-import Customer from "./users.js";
+import Customer from "./class_Customer.js";
 
 const registration_button = document.getElementById('registration_button');
 /*MD:
@@ -138,15 +138,13 @@ The method .push is used to introduce a new customer object into the back of the
     if (form_valid) {
         console.log(password);
         const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
-        customer.create(customer);
+        customer.createCustomer(customer);
         return true;
     } else {
         alert(validation_message);
         return false;
     }
-
 }
-
 
 //A class is created for the admin. The only properties in this class are username and password.
 //Class written by Markus Kronborg

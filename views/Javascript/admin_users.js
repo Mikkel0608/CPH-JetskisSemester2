@@ -1,9 +1,10 @@
 import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js";
-import Customer from "./users.js";
+import Customer from "./class_Customer.js";
 
 const idSelect = document.getElementById("phoneSelect");
 const selection = document.getElementById("orderId");
 const nodes = document.getElementById('orderList');
+const userInfo = document.getElementById('userInfoList');
 
 
 
@@ -41,6 +42,8 @@ window.onload = function getUsers () {
 };
 
 function showInfo (){
+    removeNode(userInfo);
+    removeNode(nodes);
     fetch('/adminpage/allusers')
         .then(response =>
             response.json())
@@ -51,7 +54,8 @@ function showInfo (){
                 if (idSelect.value == json[i].userid) {
                     var customer = new Customer(json[i].username, json[i].streetname, json[i].streetnumber,
                     json[i].postalcode, json[i].city, json[i].phone, json[i].email, '', json[i].created_at, json[i].userid);
-
+                    customer.showUserInfo(userInfo);
+/*
                     document.getElementById("userid").innerHTML = `<b>Bruger ID:</b> ${customer.userId}`;
                     document.getElementById("type").innerHTML = `<b>Brugertype:</b> ${json[i].type}`;
                     document.getElementById("customerName").innerHTML = `<b>Navn:</b> ${customer.name}`;
@@ -62,10 +66,11 @@ function showInfo (){
                     document.getElementById("customerPhone").innerHTML = `<b>Telefonnummer:</b> ${customer.phone}`;
                     document.getElementById("customerEmail").innerHTML = `<b>E-mail:</b> ${customer.email}`;
                     document.getElementById("created_at").innerHTML = `<b>Oprettet den:</b> ${customer.created_At}`;
+
+ */
                 }
             }
             getOrderId(`/adminpage/ordersByUser/${idSelect.value}`, selection);
-            removeNode(nodes);
         });
 }
 

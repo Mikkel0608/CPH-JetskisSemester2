@@ -1,3 +1,5 @@
+import Customer from "./class_Customer.js";
+
 const form = document.getElementById('updatepassword');
 
 /*
@@ -15,8 +17,10 @@ window.onload = function(){
                 var password = {
                     password: document.getElementById('newPassword').value
                 };
-
-
+                var customer = new Customer();
+                customer.userId = json.userid;
+                customer.updatePassword(password);
+/*
                 fetch(`http://localhost:3000/profile/updatepassword/update/${json.userid}`,{
                     method: 'PUT',
                     headers: {
@@ -29,6 +33,8 @@ window.onload = function(){
                             window.location = 'http://localhost:3000';
                         }
                     })
+
+ */
             };
         });
 };

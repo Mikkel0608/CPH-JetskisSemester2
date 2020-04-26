@@ -40,14 +40,14 @@ function loginFunc (request, response) {
                             request.session.loggedin = true;
                             request.session.userid = results.rows[0].userid;
                             request.session.email = email;
-                            response.redirect('/');
+                            response.send(JSON.stringify('cus'));
                         } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
                             console.log(results.rows);
                             request.session.adminloggedin = true;
                             console.log(request.session.adminloggedin);
                             request.session.userid = results.rows[0].userid;
                             request.session.email = email;
-                            response.redirect('/adminpage');
+                            response.send(JSON.stringify('adm'));
                         }
                     });
             }

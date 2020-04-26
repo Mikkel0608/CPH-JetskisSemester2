@@ -1,3 +1,6 @@
+import Product from "./class_Product.js";
+import Order from "./class_Order.js";
+
 //MM: Gets the active user ID and inserts in the navibar
 window.onload = function getActiveID() {
     fetch('/profile/user')
@@ -6,34 +9,20 @@ window.onload = function getActiveID() {
             console.log(json);
             document.getElementById('loginPhone').innerHTML="Logget ind med ID: <br>" + json.userid;
         });
-}
+};
 //MM: Creating the product class. This class is used to create objects for each products fetched from the database
-class Product {
-    constructor(productId, price, modelName, modelDescription, maxAmount, imageSRC) {
-        this.productId = productId;
-        this.price = price;
-        this.modelName = modelName;
-        this.modelDescription = modelDescription;
-        this.maxAmount = maxAmount;
-        this.imageSRC = imageSRC;
-    }
-}
+
 //MM: Creating the Order class. This class is used to create the newOrder object that is send to the API and into the database.
-class Order {
-    constructor(Products, orderDay, orderMonth, orderYear, timePeriod, orderPrice) {
-        this.Products = Products;
-        this.orderDay = orderDay;
-        this.orderMonth = orderMonth;
-        this.orderYear = orderYear;
-        this.timePeriod = timePeriod;
-        this.orderPrice = orderPrice;
-    }
-}
 /*MM: The following function is activated by the confirm time button. It requests the products from the API, and clones the modelContainer for each product in the DB.
 The product information stored for each product in the database is then inserted into each clone. The API automatically adjusts the quantity available to adjust for existing reservations.
  */
 //Function written by: MM
 //MM: The global variable storedProducts stores the product objects that are received from the database
+const confirmTimeBtn = document.getElementById('confirmTime');
+confirmTimeBtn.onclick =(event)=>{
+    event.preventDefault();
+    confirmTime();
+};
 var storedProducts = [];
 function confirmTime() {
     // MM: Creating variables that represent the user selection of date and time on the page
@@ -115,7 +104,6 @@ function confirmTime() {
 const cartBtn = document.getElementById('cartBtn');
 cartBtn.onclick = (event)=>{
     event.preventDefault();
-    console.log(123);
     calculatePrice();
 };
 var finalPrice;
@@ -164,20 +152,24 @@ function calculatePrice() {
 }
 
 //MM: The storeOrder function collects the order information and sends it to the API
+const storeOrderBtn = document.getElementById('confirmPurchaseButton');
+storeOrderBtn.onclick = ()=>{
+    storeOrder();
+};
 function storeOrder() {
     //MM: The Products array is created. It will contain all the selected products.
-    var Products = [];
+    var products = [];
     //MM: The for loop cycles through the storedProducts array and creates objects for each product selected. All product objects are pushed to the Products array.
     for (let i = 0; i<storedProducts.length; i++) {
         var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
         if (selectElement.options[selectElement.selectedIndex].value > 0) {
             var selectedProduct = {productid: storedProducts[i].productId, productAmount: parseInt(selectElement.options[selectElement.selectedIndex].value)};
-            Products.push(selectedProduct);
+            products.push(selectedProduct);
         }
     }
-    console.log(Products);
+    console.log(products);
     //MM: The newOrder object is created, and is send to the API with a post request. The client is then redirected to the orderconfirmation page.
-    const newOrder = new Order(Products, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
+    const newOrder = new Order(products, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'http://localhost:3000/orderPage/submitOrder', true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

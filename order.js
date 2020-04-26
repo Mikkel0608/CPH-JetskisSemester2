@@ -53,7 +53,7 @@ function submitOrder (request, response) {
     var rentMonth = request.body.orderMonth;
     var rentYear = request.body.orderYear;
     var rentTime = request.body.timePeriod;
-    var Products = request.body.Products;
+    var products = request.body.products;
     var totalPrice = request.body.orderPrice;
 
     //MM: If no active userid can be found, an error is send as response.
@@ -95,13 +95,13 @@ function submitOrder (request, response) {
     }
     //MM: Creates the OrderProducts and inserts the orderid from the created previously created order.
     function createOrderProducts() {
-        for (let i=0; i<Products.length; i++) {
-            for (let x=0; x<Products[i].productAmount; x++) {
+        for (let i=0; i<products.length; i++) {
+            for (let x=0; x<products[i].productAmount; x++) {
                 pool.query(`INSERT INTO orderproduct(
                 productid,
                 orderid)
                 VALUES($1, $2);
-            `, [Products[i].productid, orderId])
+            `, [products[i].productid, orderId])
             }
         }
     }

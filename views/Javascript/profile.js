@@ -1,9 +1,11 @@
 import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js";
-import Customer from "./users.js";
+import Customer from "./class_Customer.js";
+import Order from "./class_Order.js";
 
 
 const selection = document.getElementById("orderId");
 const nodes = document.getElementById('orderList');
+const userInfoList = document.getElementById('userInfoList');
 
 
 getOrderId('/profile/orders', selection);
@@ -38,6 +40,7 @@ window.onload = function getCustomerInfo() {
             var customer = new Customer(userInfo.username, userInfo.streetname, userInfo.streetnumber,
             userInfo.postalcode, userInfo.city, userInfo.phone, userInfo.email, '', userInfo.created_at, userInfo.userid);
             console.log(customer);
+            customer.showUserInfo(userInfoList);
             /*
 
             MM:
@@ -45,7 +48,7 @@ window.onload = function getCustomerInfo() {
             information should be retrieved from. This retrieved information is then saved to the newly created variables.
              */
             //console.log(userInfo);
-
+/*
             document.getElementById('userid').innerHTML = '<b>Bruger ID: </b>' + customer.userId;
             document.getElementById('customerName').innerHTML = '<b>Navn: </b>' + customer.name;
             document.getElementById('customerStreetName').innerHTML = '<b>Vejnavn: </b>' + customer.streetName;
@@ -56,7 +59,9 @@ window.onload = function getCustomerInfo() {
             document.getElementById('customerEmail').innerHTML = '<b>E-mail: </b>' + customer.email;
             document.getElementById('created_at').innerHTML = '<b>Bruger oprettet d. : </b>' + customer.created_At;
 
-            document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userId;
+ */
+
+            //document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userId;
         })
 };
 
@@ -70,6 +75,12 @@ function deleteOrder (){
     } else {
         var choice = window.confirm(`Er du sikker på, at du vil slette ordre med ordre ID ${selection.value}?`);
         if (choice === true) {
+            var order = new Order();
+            order.orderId = selection.value;
+            order.deleteOrder(selection);
+            removeNode(nodes);
+            alert(`Ordren er blevet slettet`);
+            /*
             fetch(`http://localhost:3000/profile/orders/${selection.value}`, {
                 method: 'DELETE'
             }).then(response => response.json())
@@ -84,6 +95,7 @@ function deleteOrder (){
                         alert(`Ordren er blevet slettet`);
                     }
                 })
+            */
         }
     }
 }
@@ -98,7 +110,10 @@ function deleteUser() {
         fetch('http://localhost:3000/profile/user')
             .then(response => response.json())
             .then(json => {
-
+                var customer = new Customer();
+                customer.userid = json.userid;
+                customer.deleteCustomer();
+/*
                 fetch(`http://localhost:3000/profile/user/${json.userid}`, {
                     method: 'DELETE'
                 }).then(response => response.json())
@@ -108,6 +123,8 @@ function deleteUser() {
                             window.location = 'http://localhost:3000';
                         }
                     })
+
+ */
             });
     }
 }

@@ -4,7 +4,6 @@
 <head>
     <title>CPH-Jetskis log-in</title>
     <meta charset="UTF-8">
-    <script src="Javascript/Users_customer_admin.js"></script>
     <link rel="stylesheet" type= text/css href="../CSS/Loginstyle.css">
         </head>
 
@@ -19,15 +18,15 @@
 
 <div class="loginPage">
     <div class="form">
-    <form class="loginform" action="loginpage/auth" method="POST">
+    <form class="loginform">
         <p id="logintext" >Login</p>
         <label for="email">
-            <input name="email" type="text" placeholder="E-mail">
+            <input name="email" id="name" type="text" placeholder="E-mail">
         </label> <br>
         <label for="password">
-            <input name="password" type="password" placeholder="Password">
+            <input name="password" id="password" type="password" placeholder="Password">
         </label> <br>
-        <input type="submit">
+        <button type="button" id="loginBtn">Log in</button>
         <!-- This button activates the JS function for validation-->
         <!--<button type="button" id="submit" onclick="validate()">Login</button>-->
         <br>
@@ -43,7 +42,7 @@
 </div>
 
 
-
+<script type="module" src="../Javascript/login.js"></script>
 </body>
 
 </html>

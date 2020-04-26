@@ -1,9 +1,10 @@
+import Product from "../class_Product.js";
+import Class_Order from "../class_Order.js";
 function getOrderId(path, node) {
     removeNode(node);
     fetch(path)
         .then(response => response.json())
         .then(json => {
-
             var orderArray = json;
             orderArray.forEach((item) => {
                 var orderId = new Option(`Ordre ${item.orderid}`, item.orderid);
@@ -32,10 +33,11 @@ function showOrder(path, node){
         fetch(path)
             .then(response => response.json())
             .then(json => {
+                var order = new Class_Order(json.products, json.orderday, json.ordermonth, json.orderyear, json.timeperiod,
+                            json.orderprice, json.orderid, json.userid, json.order_placed_at);
 
-                var orderInfo = json;
-                console.log(orderInfo);
-
+                order.showOrder(node);
+/*
                         var day = orderInfo.orderday;
                         var month = orderInfo.ordermonth;
                         var year = orderInfo.orderyear;
@@ -45,19 +47,28 @@ function showOrder(path, node){
                         var userID = orderInfo.userid;
                         var orderDate = orderInfo.order_placed_at;
 
-                        var order = document.createElement("P");
-                        order.innerHTML = "<b> Ordre ID: </b>" + orderID + "</b></br></br><b> Bruger ID</b>: " + userID +  "</br></br><b>Dato for udlejning: </b>" + day + "/" + month + "/" + year + "</br></br>" + "<b>Tidspunkt for udlejning: kl. </b>" + timePeriod + "</br></br>" /*+ product + "</br></br"*/ + "<b>Pris total: </b> " + orderPrice + "</br></br> <b> Ordre lavet d. : </b>" + orderDate;
-                        node.appendChild(order);
+ */
+/*
+                        var orderEl = document.createElement("P");
+                        orderEl.innerHTML = "<b> Ordre ID: </b>" + order.orderId + "</b></br></br><b> Bruger ID</b>: "
+                                            + order.userId +  "</br></br><b>Dato for udlejning: </b>" + order.orderDay
+                                            + "/" + order.orderMonth + "/" + order.orderYear + "</br></br>"
+                                            + "<b>Tidspunkt for udlejning: kl. </b>" + order.timePeriod + "</br></br>"
+                                            + "<b>Pris total: </b> " + order.orderPrice
+                                            + "</br></br> <b> Ordre lavet d. : </b>" + order.order_placed_at;
+                        node.appendChild(orderEl);
 
                         var product = null;
-                        orderInfo.products.forEach((item)=>{
+                        order.products.forEach((item)=>{
                             product = document.createElement('p');
                             product.innerHTML = '<b>Produkt: </b>' + item.modelname +'<br>' +
                                 '<b>Antal: </b>' + item.count + '<br>' +
                                 '<b>Pris: </b>' + item.price * item.count;
                             node.appendChild(product);
 
-                        });/*
+ */
+
+                        /*
                         for (let i=0; i<orderInfo.products.length; i++){
                             product = document.createElement('p');
                             product.innerHTML = '<b>Produkt: </b>' + orderInfo.products[i].modelname +'<br>' +
