@@ -24,7 +24,7 @@ confirmTimeBtn.onclick = (event) => {
     confirmTime();
 };
 var storedProducts = [];
-
+var shownProducts = [];
 function confirmTime() {
     // MM: Creating variables that represent the user selection of date and time on the page
     var rentDayID = document.getElementById("rentDay");
@@ -69,6 +69,8 @@ function confirmTime() {
                         var newProduct = new Product(json[i].productid, json[i].price, json[i].modelname, json[i].modeldescription, json[i].quantity, json[i].imagesrc);
                         storedProducts.push(newProduct);
                         if (json[i].quantity !== 0) {
+                            //MM: The shown products array only contains the objects that are shown on the page
+                            shownProducts.push(newProduct);
                             var container = document.getElementById("modelContainer");
                             var clone = container.cloneNode(true);
                             //MM: Gives each product clone its own id
@@ -95,7 +97,7 @@ function confirmTime() {
                     }
                 }
                 console.log(storedProducts);
-                if (storedProducts.length === 0) {
+                if (shownProducts.length === 0) {
                     document.getElementById('noProducts').style.display = "initial";
                 }
             });
@@ -112,7 +114,6 @@ function confirmTime() {
  */
 //Function written by: MM
 var finalPrice;
-
 function calculatePrice() {
     //MM: Goes through all the stored products and adds their individual prices and quantities to the finalPrice var
     finalPrice = 0;
