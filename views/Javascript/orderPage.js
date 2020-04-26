@@ -1,5 +1,6 @@
 import Product from "./class_Product.js";
 import Order from "./class_Order.js";
+import OrderProduct from "./class_OrderProduct.js";
 
 //MM: Gets the active user ID and inserts in the navibar
 window.onload = function getActiveID() {
@@ -176,11 +177,8 @@ function storeOrder() {
         if (document.getElementById('modelContainer'+[i]) !== null) {
             var selectElement = document.getElementById("modelContainer" + [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
             if (selectElement.options[selectElement.selectedIndex].value > 0) {
-                var selectedProduct = {
-                    productid: storedProducts[i].productId,
-                    productAmount: parseInt(selectElement.options[selectElement.selectedIndex].value)
-                };
-                products.push(selectedProduct);
+                var newOrderProduct = new OrderProduct(storedProducts[i].productId, storedProducts[i].price, storedProducts[i].modelName, parseInt(selectElement.options[selectElement.selectedIndex].value));
+                products.push(newOrderProduct);
             }
         }
     }

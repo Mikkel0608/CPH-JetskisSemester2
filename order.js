@@ -96,12 +96,12 @@ function submitOrder (request, response) {
     //MM: Creates the OrderProducts and inserts the orderid from the created previously created order.
     function createOrderProducts() {
         for (let i=0; i<products.length; i++) {
-            for (let x=0; x<products[i].productAmount; x++) {
+            for (let x=0; x<products[i].quantity; x++) {
                 pool.query(`INSERT INTO orderproduct(
                 productid,
                 orderid)
                 VALUES($1, $2);
-            `, [products[i].productid, orderId])
+            `, [products[i].productId, orderId])
             }
         }
     }
