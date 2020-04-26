@@ -35,7 +35,7 @@ function showOrder(path, node){
             .then(json => {
                 var orderProducts = [];
                 json.products.forEach((item)=>{
-                    var orderProduct = new OrderProduct(item.productId, item.price, item.modelname, item.count);
+                    var orderProduct = new OrderProduct(item.productId, item.price, item.modelname, parseInt(item.count));
                     orderProducts.push(orderProduct);
                 });
                 var order = new Order(orderProducts, json.orderday, json.ordermonth, json.orderyear, json.timeperiod,
