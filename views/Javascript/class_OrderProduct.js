@@ -12,5 +12,4 @@ export default class OrderProduct {
             '<b>Pris pr. : </b>' + this.price;
         element.appendChild(product);
     }
-
 }
