@@ -83,6 +83,8 @@ function confirmTime() {
                                 for (let x = 0; x < json[i].maxamount; x++) {
                                     selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
                                 }
+                                //MM: A eventlistener is added to the select element so that the basket is updated every time the amount is changed
+                                selectElement.addEventListener('change', calculatePrice);
                         }
                     }
                 }
@@ -100,12 +102,6 @@ function confirmTime() {
 3. It generates the product name, photo, and price in basket.
  */
 //Function written by: MM
-
-const cartBtn = document.getElementById('cartBtn');
-cartBtn.onclick = (event)=>{
-    event.preventDefault();
-    calculatePrice();
-};
 var finalPrice;
 function calculatePrice() {
     //MM: Goes through all the stored products and adds their individual prices and quantities to the finalPrice var
