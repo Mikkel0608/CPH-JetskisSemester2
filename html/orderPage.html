@@ -27,7 +27,7 @@
     <br>
 </div>
     <!-- Selection of date and time -->
-<form action="createOrder" method="POST">
+<div action="createOrder" method="POST">
 <div name="chooseDate">
     <h3> Vælg venligst et udlejningstidspunkt for at se ledige vandscootere:</h3>
     <br>
@@ -105,8 +105,9 @@
 </div>
 <br><br>
 <hr>
-<!-- The template modelContainer that is clones for every product in the DB -->
-<div id="productContainer">
+<!-- The template modelContainer that is cloned for every product in the DB -->
+    <div id="noProducts" style="display: none;"><h2> Ingen ledige produkter på valgte tidspunkt. </h2></div>
+    <div id="productContainer">
     <div style="display: none; float: left; width: 100%;" id="modelContainer">
     <div style="width:100%; height: 50px; background-color: #00A8FF; position: relative; top: 10px;">
         <h2 id="jetskiHeadline"></h2>

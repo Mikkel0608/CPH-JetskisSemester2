@@ -61,7 +61,7 @@ window.onload = function getCustomerInfo() {
 
  */
 
-            //document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + userInfo.userId;
+            document.getElementById('loginPhone').innerHTML = "Logget ind med ID: <br>" + customer.userId;
         })
 };
 

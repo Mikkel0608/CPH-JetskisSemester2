@@ -48,7 +48,7 @@ const createTables = () =>{
                             price FLOAT,
                             modelName VARCHAR(50),
                             modelDescription VARCHAR(250),
-                            maxAmount INT,
+                            quantity INT,
                             imageSRC VARCHAR(50)
                             );
                             
@@ -75,7 +75,7 @@ const createTables = () =>{
                             price, 
                             modelName,
                             modelDescription,
-                            maxAmount,
+                            quantity,
                             imageSRC)
                             VALUES(
                             1, 300, 'Sea Doo Spark', 'Sea Doo Spark er en fornuftig maskine til en stærk pris. <br><br> Pris: 300 kr. for 2 timer.', 3, '../images/sea-doo-spark.jpg') ON CONFLICT (productId) DO NOTHING;
@@ -85,7 +85,7 @@ const createTables = () =>{
                             price, 
                             modelName,
                             modelDescription,
-                            maxAmount,
+                            quantity,
                             imageSRC)
                             VALUES(
                             2, 500, 'Yamaha Waverunner VX', 'Pris: 500 kr. for 2 timer', 3, '../images/yamaha-waverunner-vx.jpg') ON CONFLICT (productId) DO NOTHING;
@@ -95,7 +95,7 @@ const createTables = () =>{
                             price, 
                             modelName,
                             modelDescription,
-                            maxAmount,
+                            quantity,
                             imageSRC)
                             VALUES(
                             3, 600, 'Kawasaki STF-15F', 'Pris: 600 kr. for 2 timer', 3, '../images/kawasaki-stx-15f.jpg') ON CONFLICT (productId) DO NOTHING;

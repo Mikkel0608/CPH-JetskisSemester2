@@ -15,7 +15,7 @@ function getProducts (request, response) {
     var selectedTime = request.body.rentTimeValue;
     var foundProducts;
     //MM: The function first queries all the products in the database
-    pool.query(`SELECT productid, price, modelname, modeldescription, maxamount, imagesrc FROM products`,
+    pool.query(`SELECT productid, price, modelname, modeldescription, quantity, imagesrc FROM products`,
         function (error, results) {
         if(error) {
             throw error;
@@ -36,7 +36,7 @@ function getProducts (request, response) {
                     console.log(results.rows);
                     //MM: For each product in the database, the quantity is adjusted in the foundProducts array
                     for (let i = 0; i<results.rows.length; i++) {
-                        foundProducts[i].maxamount -= parseInt(results.rows[i].count);
+                        foundProducts[i].quantity -= parseInt(results.rows[i].count);
                         console.log()
                     }
                     console.log("responded to request");
