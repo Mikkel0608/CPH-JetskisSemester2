@@ -20,7 +20,8 @@ app.use(bodyParser.json());
 const randomChar = (length) => {
     const randomChars = 'abcdefghijklmnopqrstuvwxyz';
     var result = '';
-    for ( var i = 0; i < length; i++ ) {
+    let i;
+    for (i = 0; i < length; i++ ) {
         result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
     }
     return result;

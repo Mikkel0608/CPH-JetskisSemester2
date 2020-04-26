@@ -25,7 +25,8 @@ sortBtn.onclick = () => {
             console.log(json);
             var orders = json;
             removeNode(node);
-            for (let i = 0; i < orders.length; i++) {
+            let i;
+            for (i = 0; i < orders.length; i++) {
                 var orderProducts = [];
                 orders[i].products.forEach((item)=>{
                     var orderProduct = new OrderProduct(item.productId, item.price, item.modelname, item.count);
