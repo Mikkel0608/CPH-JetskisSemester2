@@ -11,28 +11,30 @@ app.use(bodyParser.json());
 
 
 function deleteUser(request, response){
-    var usertypeid = null;
-    const activeEmail = request.session.email;
-    console.log(activeEmail);
-    pool.query(`SELECT u.userid, ut.usertypeid
+    if (parseInt(request.params.userid) === request.session.userid) {
+        var usertypeid = null;
+        const activeEmail = request.session.email;
+        console.log(activeEmail);
+        pool.query(`SELECT u.userid, ut.usertypeid
                 FROM users AS u JOIN usertype AS ut
                 ON u.usertypeid = ut.usertypeid
-                WHERE userid = $1;`, [request.params.userid], function (error, results){
-            if (error){
-                throw error;
-            } else {
-                usertypeid = results.rows[0].usertypeid;
-                console.log(usertypeid);
+                WHERE userid = $1;`, [request.params.userid], function (error, results) {
+                if (error) {
+                    throw error;
+                } else {
+                    usertypeid = results.rows[0].usertypeid;
+                    console.log(usertypeid);
 
-                pool.query(`DELETE FROM usertype WHERE usertypeid = $1`, [usertypeid]);
-                console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
-                request.session.email = undefined;
-                request.session.userid = undefined;
-                request.session.loggedin = undefined;
-                response.send(JSON.stringify('ok'));
+                    pool.query(`DELETE FROM usertype WHERE usertypeid = $1`, [usertypeid]);
+                    console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
+                    request.session.email = undefined;
+                    request.session.userid = undefined;
+                    request.session.loggedin = undefined;
+                    response.send(JSON.stringify('ok'));
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 function deleteOrder (req, res){
