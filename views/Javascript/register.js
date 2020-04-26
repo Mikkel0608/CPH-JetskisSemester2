@@ -138,7 +138,7 @@ The method .push is used to introduce a new customer object into the back of the
     if (form_valid) {
         console.log(password);
         const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
-        customer.createCustomer(customer);
+        customer.createCustomer();
         return true;
     } else {
         alert(validation_message);

@@ -13,13 +13,13 @@ export default class Customer extends User{
         this.userId = userId;
         this.userTypeId = userTypeId;
     }
-    createCustomer (customer){
+    createCustomer (){
         fetch('http://localhost:3000/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(customer)
+            body: JSON.stringify(this)
         }).then(response => response.json())
             .then(json => {
                 if (!json.ok){
@@ -47,7 +47,6 @@ export default class Customer extends User{
             })
     }
     updatePassword(password){
-        console.log(typeof this.userid);
         fetch(`http://localhost:3000/profile/updatepassword/update/${this.userId}`,{
             method: 'PUT',
             headers: {
