@@ -45,6 +45,7 @@ export default class Order {
                     for (let i = 0; i < selection.length; i++) {
                         if (selection[i].value === this.orderId) {
                             selection.remove(i);
+                            break;
                         }
                     }
                 }
