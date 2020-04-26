@@ -1,5 +1,5 @@
-import Product from "../class_Product.js";
-import Class_Order from "../class_Order.js";
+import Order from "../class_Order.js";
+import OrderProduct from "../class_OrderProduct.js";
 function getOrderId(path, node) {
     removeNode(node);
     fetch(path)
@@ -33,8 +33,14 @@ function showOrder(path, node){
         fetch(path)
             .then(response => response.json())
             .then(json => {
-                var order = new Class_Order(json.products, json.orderday, json.ordermonth, json.orderyear, json.timeperiod,
+                var orderProducts = [];
+                json.products.forEach((item)=>{
+                    var orderProduct = new OrderProduct(item.productId, item.price, item.modelname, item.count);
+                    orderProducts.push(orderProduct);
+                });
+                var order = new Order(orderProducts, json.orderday, json.ordermonth, json.orderyear, json.timeperiod,
                             json.orderprice, json.orderid, json.userid, json.order_placed_at);
+                console.log(order);
 
                 order.showOrder(node);
 /*

@@ -1,5 +1,6 @@
 import {removeNode, showOrder} from "./modules/showOrderFunctions.js";
 import Order from "./class_Order.js";
+import OrderProduct from "./class_OrderProduct.js";
 
 const sortBtn = document.getElementById('sortBtn');
 const sort = document.getElementById('sort');
@@ -25,7 +26,12 @@ sortBtn.onclick = () => {
             var orders = json;
             removeNode(node);
             for (let i = 0; i < orders.length; i++) {
-                var order = new Order(orders[i].products, orders[i].orderday, orders[i].ordermonth, orders[i].orderyear, orders[i].timeperiod,
+                var orderProducts = [];
+                orders[i].products.forEach((item)=>{
+                    var orderProduct = new OrderProduct(item.productId, item.price, item.modelname, item.count);
+                    orderProducts.push(orderProduct);
+                });
+                var order = new Order(orderProducts, orders[i].orderday, orders[i].ordermonth, orders[i].orderyear, orders[i].timeperiod,
                     orders[i].orderprice, orders[i].orderid, orders[i].userid, orders[i].order_placed_at);
                 order.showOrder(node);
 /*

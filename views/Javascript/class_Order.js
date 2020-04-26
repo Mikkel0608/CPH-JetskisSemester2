@@ -24,11 +24,14 @@ export default class Order {
 
         var product = null;
         this.products.forEach((item)=>{
-            product = document.createElement('p');
-            product.innerHTML = '<b>Produkt: </b>' + item.modelname +'<br>' +
-                '<b>Antal: </b>' + item.count + '<br>' +
-                '<b>Pris: </b>' + item.price * item.count;
+            item.showProducts(product, element);
+            /*product = document.createElement('p');
+            product.innerHTML = '<b>Produkt: </b>' + item.modelName +'<br>' +
+                '<b>Antal: </b>' + item.quantity + '<br>' +
+                '<b>Pris pr. : </b>' + item.price;
             element.appendChild(product);
+
+             */
 
         });
         element.appendChild(document.createElement('hr'));
