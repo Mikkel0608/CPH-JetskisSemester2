@@ -3,6 +3,18 @@ const pool = require('./Models/db');
 
 //Function that sends a response with all users where the usertype is a customer-type.
 //Joining tables users and usertype, so only customer-users are retrieved.
+function getUser(req, res){
+    if (req.session.adminloggedin === true){
+        pool.query(`SELECT u.userid, ut.type, u.username, u.streetname, u.streetnumber, u.postalcode, u.city, u.phone, u.email, u.created_at
+                    FROM users u JOIN usertype ut
+                    ON u.usertypeid = ut.usertypeid 
+                    WHERE ut.type = $1 AND userid = $2;`, ['cus', req.params.userid]).then(result => {
+                        res.send(result.rows[0]);
+        });
+    }
+}
+
+
 function getUsers(req, res) {
     if (req.session.adminloggedin === true) {
         var type = 'cus';
@@ -15,7 +27,7 @@ function getUsers(req, res) {
     }
 }
 
-//Function that sends a response with all orders by a specific customer using a parameter from the url.
+//Function that sends a response with all orders by a specific customer using a route parameter.
 function getOrdersByUser(req, res){
     if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
@@ -26,7 +38,7 @@ function getOrdersByUser(req, res){
     }
 }
 
-//Function that sends a response with an orderid from a specific order using a parameter from the url.
+//Function that sends a response with an orderid from a specific order using a route parameter
 function getOrder(req, res){
     if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid
@@ -38,8 +50,8 @@ function getOrder(req, res){
 }
 
 //Function that sends a response with all orders based on a sorting criteria from the client.
-//Type of sorting is determined by the url parameter. The number parameter is then converted to a specific table
-//which is used in the ORDER BY clause in the query.
+//Type of sorting is determined by the route parameter. The route parameter is used to make a string containing
+//the table to order the query by.
 var table = '';
 function allOrders (req, res){
     var sorting = parseInt(req.params.sorting);
@@ -89,7 +101,8 @@ module.exports = {
     getUsers,
     getOrdersByUser,
     getOrder,
-    allOrders
+    allOrders,
+    getUser
 };
 
 

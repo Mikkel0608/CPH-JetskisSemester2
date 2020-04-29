@@ -2,10 +2,8 @@ import Customer from "./class_Customer.js";
 
 const form = document.getElementById('updatepassword');
 
-/*
-Fetches the userid, which is used to make a parameterized query in the PUT request.
-New password is sent through the request body.
- */
+//Fetches userid of the active user. Creates a Customer object, and calls the updatePassword method taking the password
+//as a parameter. The method makes a PUT request to the server to update the database.
 window.onload = function(){
     fetch('http://localhost:3000/profile/user')
         .then(response => response.json())

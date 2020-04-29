@@ -40,20 +40,17 @@ function register (request, response){
             response.send(JSON.stringify(responseText));
         }
             if (form_valid === true){
-                var usertypeid = null;
                 const type = "cus";
                 pool.query(`INSERT INTO usertype(type) VALUES ($1) RETURNING userTypeId`, [type], function (error, results) {
                     if (error){
                         throw error;
                     } else{
-                        usertypeid = results.rows[0].usertypeid;
-                        console.log(usertypeid);
-                        createCustomer();
+                        createCustomer(results.rows[0].usertypeid);
                     }
                 });
 
 
-                function createCustomer() {
+                function createCustomer(usertypeid) {
                     password += randomChar(1);
                     pool.query(`INSERT INTO users(
                 usertypeid,
@@ -68,13 +65,11 @@ function register (request, response){
                 VALUES(
                 $1, $2, $3, $4, $5, $6, $7, $8, crypt($9, gen_salt('bf')));
                 `, [usertypeid, name, streetName, streetNumber, postalCode, city, phone, email, password]);
-                //response.redirect('/Loginpage.html');
                     request.body.ok = true;
                     console.log(request.body);
                     response.send(request.body);
                 }
             }
-            //response.end();
         });
         console.log(form_valid);
     });

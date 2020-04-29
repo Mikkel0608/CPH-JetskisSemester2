@@ -2,14 +2,16 @@ import {getOrderId, removeNode, showOrder} from "./modules/showOrderFunctions.js
 import Customer from "./class_Customer.js";
 import Order from "./class_Order.js";
 
-
+//html elements
 const selection = document.getElementById("orderId");
 const nodes = document.getElementById('orderList');
 const userInfoList = document.getElementById('userInfoList');
 
-
+//This function populates the select menu with order ID's from the orders the user has made
 getOrderId('/profile/orders', selection);
 
+//The showOrder is called. The url is made dynamic by using the select menu value.
+//The function displays the chosen order on the page.
 const showOrderBtn = document.getElementById('showOrderBtn');
 showOrderBtn.onclick = ()=>{
     if (selection.value === '0'){
@@ -18,6 +20,7 @@ showOrderBtn.onclick = ()=>{
         showOrder(`/profile/ordersbyorderid/${selection.value}`, nodes);
     }
 };
+
 
 const delOrderBtn = document.getElementById('delOrderBtn');
 delOrderBtn.onclick = ()=>{
@@ -30,7 +33,9 @@ delUserBtn.onclick = ()=>{
 };
 
 
-
+//The function makes a get request to the /profile/user endpoint where the server sends back user data of the user
+//that is currently logged in.
+//Customer object is created so the method showUserInfo can be called.
 window.onload = function getCustomerInfo() {
     fetch('/profile/user')
         .then(response => response.json())
@@ -65,10 +70,10 @@ window.onload = function getCustomerInfo() {
         })
 };
 
-/*
-MM: The following function deletes the order that is currently selected.
- */
-//Function written by Morten Dyberg
+
+//The following function deletes the order that is currently selected.
+//An order object is created depending on which order ID has been chosen by the user.
+//deleteOrder method is then called.
 function deleteOrder (){
     if (selection.value === '0'){
         alert(`Vælg venligst et ordre ID i menuen`)
@@ -104,6 +109,8 @@ function deleteOrder (){
 MM: The deleteUser function deletes the current user.
  */
 
+//Function that retrieves info about the user that is currently logged in.
+//Creates Customer object and calls the deleteCustomer method. The method makes a DELETE request to the server.
 function deleteUser() {
     var choice = window.confirm("Er du sikker på, at du vil slette din bruger?");
     if (choice === true) {

@@ -1,46 +1,3 @@
-/*class User {
-    constructor(name, email, password){
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-}
-
-
-export default class Customer extends User{
-    constructor(name, streetName, streetNumber, postalCode, city, phone, email, password, created_At, userId, userTypeId){
-        super(name, email, password);
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.phone = phone;
-        this.created_At = created_At;
-        this.userId = userId;
-        this.userTypeId = userTypeId;
-    }
-    create (customer){
-        fetch('http://localhost:3000/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(customer)
-        }).then(response => response.json())
-            .then(json => {
-                if (!json.ok){
-                    console.log(json);
-                    alert(json);
-                } else if (json.ok === true){
-                    console.log(json.ok);
-                    window.location = 'http://localhost:3000/loginpage.html';
-                }
-            });
-    }
-}
-
- */
-//var xhr = new XMLHttpRequest();
 import Customer from "./class_Customer.js";
 
 const registration_button = document.getElementById('registration_button');
@@ -125,16 +82,8 @@ function register() {
         form_valid = false;
     }
 
-/*MD:
-This statement checks whether the form is valid. If it is valid, that means that none of the above conditions have
-been met in order to make the form_valid = false.
-The JSON.parse command takes some JSON data and converts it back to JavaScript values.
-The JSON.stringify command does the opposite, and converts JavaScript values to a JSON-encoded string.
-The method .push is used to introduce a new customer object into the back of the userArray.
-.setItem is used to put data into the localStorage.
-*/
 
-
+    //Creates a Customer object. The createCustomer method is then called to make a POST request to the server.
     if (form_valid) {
         console.log(password);
         const customer = new Customer(name, streetName, streetNumber, postalCode, city, phone, email, password);
@@ -145,22 +94,6 @@ The method .push is used to introduce a new customer object into the back of the
         return false;
     }
 }
-
-//A class is created for the admin. The only properties in this class are username and password.
-//Class written by Markus Kronborg
-/*
-class Admin extends User{
-    constructor(name, email, password) {
-        super(name, email, password);
-    }
-    logIn(){
-        console.log(this.name, "har lige logget ind");
-    }
-}
-//We make an instance of this class by creating an object.
-admin1 = new Admin('admin', 12345);
-
- */
 
 
 

@@ -2,13 +2,14 @@ import {removeNode, showOrder} from "./modules/showOrderFunctions.js";
 import Order from "./class_Order.js";
 import OrderProduct from "./class_OrderProduct.js";
 
+//Html elements
 const sortBtn = document.getElementById('sortBtn');
 const sort = document.getElementById('sort');
 const searchBtn = document.getElementById('searchBtn');
 const search = document.getElementById('search');
 const node = document.getElementById("orderList");
 
-
+//Setting the values of the options in the select menu
 const datE = document.getElementById('date');
 datE.value = 1;
 const id = document.getElementById('id');
@@ -17,6 +18,9 @@ const price = document.getElementById('price');
 price.value = 3;
 
 
+//onclick function that makes a get request for all orders depending on a specific sorting criteria.
+//The function creates Orderproduct objects as well as order objects. The showOrder method is then called on all the
+//order objects, so the orders will get displayed on the site.
 sortBtn.onclick = () => {
     fetch(`/adminpage/allOrders/${sort.value}`, {
         method: 'GET',
@@ -90,7 +94,8 @@ sortBtn.onclick = () => {
         })
 };
 
-
+//Function that makes a request for an endpoint with an order Id as a route parameter.
+//The function makes sure that the search contains a value of type number.
 searchBtn.onclick = ()=>{
     if(isNaN(parseInt(search.value))){
            alert("Søg efter ordre-id'et")

@@ -13,6 +13,8 @@ export default class Customer extends User{
         this.userId = userId;
         this.userTypeId = userTypeId;
     }
+    //Method that makes a post request with body containing the Customer object.
+    //User is redirected when the server sends a specific response back
     createCustomer (){
         fetch('http://localhost:3000/register', {
             method: 'POST',
@@ -22,19 +24,19 @@ export default class Customer extends User{
             body: JSON.stringify(this)
         }).then(response => response.json())
             .then(json => {
-                if (!json.ok){
-                    console.log(json);
-                    alert(json);
-                } else if (json.ok === true){
+                if (json.ok === true){
                     console.log(json.ok);
                     window.location = 'http://localhost:3000/loginpage.html';
                 }
             });
     }
+    //An example of polymorphism. The method redirects the user after a successful login
     logIn(){
         console.log('customer login');
         window.location = 'http://localhost:3000'
     }
+    //Method that sends a DELETE request to the API. userid property is used to make the url dynamic
+    //Redirects the user once the server sends a response after deletion
     deleteCustomer (){
         fetch(`http://localhost:3000/profile/user/${this.userid}`, {
             method: 'DELETE'
@@ -46,6 +48,7 @@ export default class Customer extends User{
                 }
             })
     }
+    //Method that updates the user's password. The endpoint takes a specific user Id as a route parameter
     updatePassword(password){
         fetch(`http://localhost:3000/profile/updatepassword/update/${this.userId}`,{
             method: 'PUT',
@@ -60,6 +63,7 @@ export default class Customer extends User{
                 }
             })
     }
+    //Method that uses the DOM to show the property values of the object inside a html element.
     showUserInfo(element){
         element.appendChild(document.createElement('hr'));
         var userInfo = document.createElement('p');

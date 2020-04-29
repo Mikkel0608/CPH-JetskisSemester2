@@ -1,12 +1,13 @@
 import Order from "../class_Order.js";
 import OrderProduct from "../class_OrderProduct.js";
+
+//Fetches data from a specific path to make new options with an order id in a select-menu
 function getOrderId(path, node) {
     removeNode(node);
     fetch(path)
         .then(response => response.json())
         .then(json => {
-            var orderArray = json;
-            orderArray.forEach((item) => {
+            json.forEach((item) => {
                 var orderId = new Option(`Ordre ${item.orderid}`, item.orderid);
                 document.getElementById("orderId").appendChild(orderId);
             })
@@ -19,15 +20,18 @@ function getOrderId(path, node) {
         })
 }
 
+//Function that removes nodes inside an html element
+//While loop used since the amount of iterations is not known
 function removeNode (node){
     while (node.firstChild){
         node.removeChild(node.lastChild);
     }
 }
 
+//Function that fetches data about a specific order
+//Creates Orderproduct objects to store in the order object, so methods can be called on the Orderproduct objects
+//showOrder method is called on the order to display the order on the site
 function showOrder(path, node){
-    //while-loop that removes the existing nodes in the orderList div
-    //Using a while loop since the amount of iterations can differ
         removeNode(node);
 
         fetch(path)
@@ -86,6 +90,7 @@ function showOrder(path, node){
             });
 }
 
+//Exporting the functions so they can be used various places in the program
 export {getOrderId, removeNode, showOrder};
 
 

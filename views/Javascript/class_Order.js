@@ -11,6 +11,8 @@ export default class Order {
         this.userId = userId;
         this.order_placed_at = order_placed_at;
     }
+    //Method that displays the property values of an order object on the page.
+    //Creates an html p tag and appends it to the element passed as a parameter
     showOrder (element){
         element.appendChild(document.createElement('hr'));
         var orderEl = document.createElement("P");
@@ -22,9 +24,9 @@ export default class Order {
             + "</br></br> <b> Ordre lavet d. : </b>" + this.order_placed_at;
         element.appendChild(orderEl);
 
-        var product = null;
+        //Calling the showProducts method from the Orderproduct class on the objects to display those as well
         this.products.forEach((item)=>{
-            item.showProducts(product, element);
+            item.showProducts(element);
             /*product = document.createElement('p');
             product.innerHTML = '<b>Produkt: </b>' + item.modelName +'<br>' +
                 '<b>Antal: </b>' + item.quantity + '<br>' +
@@ -32,10 +34,11 @@ export default class Order {
             element.appendChild(product);
 
              */
-
         });
         element.appendChild(document.createElement('hr'));
     }
+    //Method that makes a DELETE request to an endpoint with the objects' orderId as a parameter
+    //Takes an html select element as parameter to remove the option after the order has been deleted
     deleteOrder(selection){
         fetch(`http://localhost:3000/profile/orders/${this.orderId}`, {
             method: 'DELETE'
@@ -51,6 +54,8 @@ export default class Order {
                 }
             })
     }
+    //Sends a post request with the object in JSON-format in the request body
+    //The header, which contains metadata about the request body, specifies json data
     createOrder() {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", 'http://localhost:3000/orderPage/submitOrder', true);

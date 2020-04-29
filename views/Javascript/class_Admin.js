@@ -4,6 +4,7 @@ export default class Admin extends User{
     constructor(name, email, password) {
         super(name, email, password);
     }
+    //Methods that redirects after a successful login.
     logIn() {
         console.log('adm login');
         window.location = 'http://localhost:3000/Adminpage';

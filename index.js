@@ -116,6 +116,7 @@ app.post('/orderPage/products', orderFunction.getProducts);
 
 //adminpage
 const adminFunctions = require ('./admin.js');
+app.get('/adminpage/user/:userid', adminFunctions.getUser);
 app.get('/adminpage/allusers', adminFunctions.getUsers);
 app.get('/adminpage/allOrders/:sorting', adminFunctions.allOrders);
 app.get('/adminpage/ordersByUser/:userid', adminFunctions.getOrdersByUser);
