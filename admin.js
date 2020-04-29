@@ -1,6 +1,8 @@
 //Importing the database connection
 const pool = require('./Models/db');
 
+//Function that sends a response with all users where the usertype is a customer-type.
+//Joining tables users and usertype, so only customer-users are retrieved.
 function getUsers(req, res) {
     if (req.session.adminloggedin === true) {
         var type = 'cus';
@@ -13,6 +15,7 @@ function getUsers(req, res) {
     }
 }
 
+//Function that sends a response with all orders by a specific customer using a parameter from the url.
 function getOrdersByUser(req, res){
     if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
@@ -23,6 +26,7 @@ function getOrdersByUser(req, res){
     }
 }
 
+//Function that sends a response with an orderid from a specific order using a parameter from the url.
 function getOrder(req, res){
     if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid
@@ -33,6 +37,9 @@ function getOrder(req, res){
     }
 }
 
+//Function that sends a response with all orders based on a sorting criteria from the client.
+//Type of sorting is determined by the url parameter. The number parameter is then converted to a specific table
+//which is used in the ORDER BY clause in the query.
 var table = '';
 function allOrders (req, res){
     var sorting = parseInt(req.params.sorting);
@@ -46,22 +53,24 @@ function allOrders (req, res){
                 table = 'orderprice DESC';
             }
 
-
+//Querying the database for the orders as well as the orderproducts.
+//Products property is created to store an array of orderproducts.
+//Response is sent when the loop has looped through all elements in the array.
             if (req.session.adminloggedin === true) {
                 pool.query(`SELECT * from orders ORDER BY ${table}`,
                 ).then(result => {
                     var orders = result.rows;
-                    //console.log(orders);
                     for (let i = 0; i < orders.length; i++) {
                         orders[i].products = [];
+
                         pool.query(`select count(op.productid), p.modelname, op.productid, p.price
                     from orderproduct as op JOIN products as p
                     on op.productid = p.productid 
                     where orderid = $1
                     group by p.modelname, op.productid, p.price
                     order by op.productid;`, [orders[i].orderid]).then(result1 => {
+
                             var products = result1.rows;
-                            //console.log(products.length);
                             for (let x = 0; x < products.length; x++) {
                                 orders[i].products.push(products[x]);
                             }

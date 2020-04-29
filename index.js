@@ -11,9 +11,8 @@ app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie  : { maxAge  : new Date(Date.now() + (60 * 1000 * 30)) }
+    //cookie  : { maxAge  : new Date(Date.now() + (60 * 1000 * 30)) }
 }));
-
 
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
