@@ -183,12 +183,9 @@ function storeOrder() {
         }
     }
     console.log(products);
+    
     //MM: The newOrder object is created, and is send to the API with a post request. The client is then redirected to the orderconfirmation page.
     const newOrder = new Order(products, document.getElementById('rentDay').value, document.getElementById('rentMonth').value, document.getElementById('rentYear').value, document.getElementById('rentTime').value, finalPrice);
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'http://localhost:3000/orderPage/submitOrder', true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify(newOrder));
-    window.location = "http://localhost:3000/orderconfirmation.html";
+    newOrder.createOrder();
 
 }

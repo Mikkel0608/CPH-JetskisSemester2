@@ -51,4 +51,11 @@ export default class Order {
                 }
             })
     }
+    createOrder() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'http://localhost:3000/orderPage/submitOrder', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify(this));
+        window.location = "http://localhost:3000/orderconfirmation.html";
+    }
 }
