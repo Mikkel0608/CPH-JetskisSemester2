@@ -72,6 +72,8 @@ function confirmTime() {
                         if (json[i].quantity !== 0) {
                             //MM: The shown products array only contains the objects that are shown on the page
                             shownProducts.push(newProduct);
+                            newProduct.generateProduct("modelContainer", [i]);
+                            /*
                             var container = document.getElementById("modelContainer");
                             var clone = container.cloneNode(true);
                             //MM: Gives each product clone its own id
@@ -93,7 +95,9 @@ function confirmTime() {
                                 selectElement.options[selectElement.options.length] = new Option([x + 1], [x + 1]);
                             }
                             //MM: A eventlistener is added to the select element so that the basket is updated every time the amount is changed
-                            selectElement.addEventListener('change', calculatePrice);
+
+                             */
+                            document.getElementById("modelContainer"+ [i]).getElementsByTagName('div')[2].getElementsByTagName('select')[0].addEventListener('change', calculatePrice);
                         }
                     }
                 }
