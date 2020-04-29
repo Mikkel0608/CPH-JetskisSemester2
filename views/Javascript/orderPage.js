@@ -137,6 +137,8 @@ function calculatePrice() {
 
     //MM: The following for loop cycles through the storedProducts, creates clones of the basketProduct div, and inserts the product information, along with the selected amount
     for (let x = 0; x < storedProducts.length; x++) {
+            storedProducts[x].generateBasketProduct("basketProduct","modelContainer", [x]);
+        /*
         if (document.getElementById('modelContainer' + [x]) !== null) {
             //MM: Saves the select element of product number x in the loop
             var selectElement2 = document.getElementById("modelContainer" + [x]).getElementsByTagName('div')[2].getElementsByTagName('select')[0];
@@ -164,6 +166,8 @@ function calculatePrice() {
                 document.getElementById("basketProduct" + [x]).innerHTML = "<img style=\"width:30%; float:left; \" src=" + storedProducts[x].imageSRC + "> " + storedProducts[x].modelName + " <br> Antal: " + selectElement2.options[selectElement2.selectedIndex].value + "<br> Pris: " + selectElement2.options[selectElement2.selectedIndex].value * storedProducts[x].price + " kr.";
             }
         }
+
+         */
     }
 }
 
