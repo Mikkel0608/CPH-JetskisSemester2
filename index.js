@@ -102,7 +102,6 @@ app.use(profileFunctions.orderMW);
 app.get('/profile/user', profileFunctions.showInfo);
 app.get('/profile/orders', profileFunctions.showOrder);
 app.get('/profile/ordersbyorderid/:orderid', profileFunctions.ordersByOrderId);
-//app.get('/profile/orderproduct/:orderid', profileFunctions.orderProduct);
 app.put('/profile/updatepassword/update/:userid', profileFunctions.updatePassword);
 app.delete('/profile/user/:userid', profileFunctions.deleteUser);
 app.delete('/profile/orders/:orderid', profileFunctions.deleteOrder);
@@ -118,7 +117,6 @@ app.post('/orderPage/products', orderFunction.getProducts);
 
 //adminpage
 const adminFunctions = require ('./admin.js');
-app.use(adminFunctions.getUsersMW);
 app.get('/adminpage/allusers', adminFunctions.getUsers);
 app.get('/adminpage/allOrders/:sorting', adminFunctions.allOrders);
 app.get('/adminpage/ordersByUser/:userid', adminFunctions.getOrdersByUser);

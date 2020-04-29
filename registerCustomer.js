@@ -1,22 +1,6 @@
-const session = require('express-session');
-const bodyParser = require('body-parser');
-
 //Importing the database connection
 const pool = require('./Models/db');
-//Importing the express server
-const app = require('./index.js');
 
-//Ved stadig ikke hvad dette gør
-/*app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-*/
-//used for extracting form data
-/*app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
-*/
 const randomChar = (length) => {
     const randomChars = 'abcdefghijklmnopqrstuvwxyz';
     var result = '';
@@ -94,7 +78,7 @@ function register (request, response){
         });
         console.log(form_valid);
     });
-};
+}
 
 module.exports = {
     register,
