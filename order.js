@@ -1,11 +1,6 @@
 //Importing the database connection
 const pool = require('./Models/db');
 
-const app = require('./index.js');
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 //MM: The getProducts function is requested after the client selects a date/time
 function getProducts (request, response) {
