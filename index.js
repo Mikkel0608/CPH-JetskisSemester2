@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 
-const auth = require('../Controllers/auth.js');
-const loginFunction = require('../Controllers/login.js');
-const profileFunctions = require('../Controllers/profile.js');
-const registerFunction = require('../Controllers/registerCustomer');
-const orderFunction = require('../Controllers/order.js');
-const adminFunctions = require ('../Controllers/admin.js');
+const auth = require('./Controllers/auth.js');
+const loginFunction = require('./Controllers/login.js');
+const profileFunctions = require('./Controllers/profile.js');
+const registerFunction = require('./Controllers/registerCustomer');
+const orderFunction = require('./Controllers/order.js');
+const adminFunctions = require ('./Controllers/admin.js');
 
 
 
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
-app.use(express.static('../views'));
+app.use(express.static('views'));
 app.listen(3000, ()=>{
     console.log("App listening on port 3000")
 });
@@ -31,37 +31,37 @@ app.listen(3000, ()=>{
 
 
 app.get('/',(req, res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/index.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/index.html'))
 });
 app.get('/Loginpage.html', (req, res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/Loginpage.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/Loginpage.html'))
 });
 app.get('/index.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/index.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/index.html'))
 });
 app.get('/orderPage.html', auth.authCustomer, (req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/orderpage.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/orderpage.html'))
 });
 app.get('/profile.html', auth.authCustomer, (req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/profile.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/profile.html'))
 });
 app.get('/profile/updatePassword', auth.authCustomer, (req, res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/updatePassword.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/updatePassword.html'))
 });
 app.get('/orderConfirmation.html', auth.authCustomer, (req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/orderConfirmation.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/orderConfirmation.html'))
 });
-app.get('/Register2.html',(req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/Register2.html'))
+app.get('/register.html',(req,res)=>{
+    res.sendFile(path.resolve(__dirname, 'views/html/register.html'))
 });
 app.get('/Adminpage/showuser', auth.authAdmin, (req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/Changeuser.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/admin_users.html'))
 });
-app.get('/Changeorder.html', auth.authAdmin, (req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/Changeorder.html'))
+app.get('/admin_orders.html', auth.authAdmin, (req,res)=>{
+    res.sendFile(path.resolve(__dirname, 'views/html/admin_orders.html'))
 });
 app.get('/Adminpage', auth.authAdmin, (req,res)=>{
-    res.sendFile(path.resolve(__dirname, '../views/html/Adminpage.html'))
+    res.sendFile(path.resolve(__dirname, 'views/html/Adminpage.html'))
 });
 
 //login and logout
