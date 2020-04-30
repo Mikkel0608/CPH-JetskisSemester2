@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 
-const auth = require('./auth.js');
-const loginFunction = require('./login.js');
-const profileFunctions = require('./profile.js');
-const registerFunction = require('./registerCustomer');
-const orderFunction = require('./order.js');
-const adminFunctions = require ('./admin.js');
+const auth = require('../Controllers/auth.js');
+const loginFunction = require('../Controllers/login.js');
+const profileFunctions = require('../Controllers/profile.js');
+const registerFunction = require('../Controllers/registerCustomer');
+const orderFunction = require('../Controllers/order.js');
+const adminFunctions = require ('../Controllers/admin.js');
 
 
 
