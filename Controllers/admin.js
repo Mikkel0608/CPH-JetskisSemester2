@@ -1,5 +1,5 @@
 //Importing the database connection
-const pool = require('./Models/db');
+const pool = require('../Models/db');
 
 //Function that sends a response with all users where the usertype is a customer-type.
 //Joining tables users and usertype, so only customer-users are retrieved.

@@ -1,5 +1,5 @@
 //Importing the database connection
-const pool = require('./Models/db');
+const pool = require('../Models/db');
 
 
 //MM: The getProducts function is requested after the client selects a date/time

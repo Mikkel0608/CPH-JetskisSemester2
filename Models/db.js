@@ -18,7 +18,7 @@ const requirePgcrypto = () =>{
             console.log(err);
             pool.end();
         });
-}
+};
 
 //Opretter tabeller med udgangspunkt i E/R
 const createTables = () =>{

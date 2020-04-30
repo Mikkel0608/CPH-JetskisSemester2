@@ -1,5 +1,5 @@
 //Importing the database connection
-const pool = require('./Models/db');
+const pool = require('../Models/db');
 
 const randomChar = (length) => {
     const randomChars = 'abcdefghijklmnopqrstuvwxyz';

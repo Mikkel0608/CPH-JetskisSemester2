@@ -1,5 +1,5 @@
 //Importing the database connection
-const pool = require('./Models/db');
+const pool = require('../Models/db');
 
 //Function that validates a log-in attempt
 //The function adds a pepper to the password. The pepper can be any of the lowercase english letters, so queries to the
@@ -26,12 +26,14 @@ function loginFunc (request, response) {
             [email, peppered], function (error, results, fields) {
                 if (results.rows.length > 0 && results.rows[0].type === 'cus') {
                     console.log(results.rows);
+                    request.session.adminloggedin = false;
                     request.session.loggedin = true;
                     request.session.userid = results.rows[0].userid;
                     request.session.email = email;
                     response.send(JSON.stringify('cus'));
                 } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
                     console.log(results.rows);
+                    request.session.loggedin = false;
                     request.session.adminloggedin = true;
                     console.log(request.session.adminloggedin);
                     request.session.userid = results.rows[0].userid;
