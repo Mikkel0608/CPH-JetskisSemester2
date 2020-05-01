@@ -2,7 +2,6 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors');
 
 const auth = require('./Controllers/auth.js');
 const loginFunction = require('./Controllers/login.js');
@@ -21,7 +20,6 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
-app.use(cors());
 app.use(express.json());
 app.use(express.static('views'));
 app.listen(3000, ()=>{
@@ -66,23 +64,22 @@ app.get('/Adminpage', auth.authAdmin, (req,res)=>{
 
 //login and logout
 app.post('/loginpage/auth', loginFunction.loginFunc);
-app.get('/profile/logout', loginFunction.logOut);
+app.get('/profile/logout', auth.authCustomer, loginFunction.logOut);
 
-app.use(profileFunctions.infoMW);
-app.use(profileFunctions.orderMW);
-app.get('/profile/user', profileFunctions.showInfo);
-app.get('/profile/orders', profileFunctions.showOrder);
+
+app.get('/profile/user', auth.authCustomer, profileFunctions.showInfo);
+app.get('/profile/orders', auth.authCustomer,  profileFunctions.showOrder);
 app.get('/profile/ordersbyorderid/:orderid', profileFunctions.ordersByOrderId);
-app.put('/profile/updatepassword/update/:userid', profileFunctions.updatePassword);
-app.delete('/profile/user/:userid', profileFunctions.deleteUser);
-app.delete('/profile/orders/:orderid', profileFunctions.deleteOrder);
+app.put('/profile/updatepassword/update/:userid', auth.authCustomer, auth.authCustomerId, profileFunctions.updatePassword);
+app.delete('/profile/user/:userid', auth.authCustomer, auth.authCustomerId, profileFunctions.deleteUser);
+app.delete('/profile/orders/:orderid', auth.authCustomer , profileFunctions.deleteOrder);
 
 
 app.post('/register', registerFunction.register);
 
 // creating new order
-app.post('/orderPage/submitOrder', orderFunction.submitOrder);
-app.post('/orderPage/products', orderFunction.getProducts);
+app.post('/orderPage/submitOrder', auth.authCustomer, orderFunction.submitOrder);
+app.post('/orderPage/products', auth.authCustomer, orderFunction.getProducts);
 
 //adminpage
 app.get('/adminpage/user/:userid', auth.authAdmin, adminFunctions.getUser);

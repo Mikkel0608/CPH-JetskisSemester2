@@ -17,9 +17,9 @@ export default class Order {
         element.appendChild(document.createElement('hr'));
         var orderEl = document.createElement("P");
         orderEl.innerHTML = "<b> Ordre ID: </b>" + this.orderId + "</b></br></br><b> Bruger ID</b>: "
-            + this.userId +  "</br></br><b>Dato for udlejning: </b>" + this.orderDay
+            + this.userId +  "</br></br><b>Dato for leje: </b>" + this.orderDay
             + "/" + this.orderMonth + "/" + this.orderYear + "</br></br>"
-            + "<b>Tidspunkt for udlejning: kl. </b>" + this.timePeriod + "</br></br>"
+            + "<b>Tidspunkt for leje: kl. </b>" + this.timePeriod + "</br></br>"
             + "<b>Pris total: </b> " + this.orderPrice
             + "</br></br> <b> Ordre lavet d. : </b>" + this.order_placed_at;
         element.appendChild(orderEl);

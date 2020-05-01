@@ -4,7 +4,6 @@ const registerFunction = require('./registerCustomer');
 
 
 function deleteUser(request, response){
-    if (parseInt(request.params.userid) === request.session.userid) {
         var usertypeid = null;
         const activeEmail = request.session.email;
         console.log(activeEmail);
@@ -27,7 +26,6 @@ function deleteUser(request, response){
                 }
             }
         )
-    }
 }
 
 function deleteOrder (req, res){
@@ -37,7 +35,6 @@ function deleteOrder (req, res){
 }
 
 function updatePassword(req, res){
-    if (req.params.userid == req.session.loggedin) {
         console.log(req.body);
         req.body.password += registerFunction.randomChar(1);
         pool.query(`UPDATE users SET password = crypt($1, gen_salt('bf')) WHERE userid = $2 `,
@@ -49,39 +46,33 @@ function updatePassword(req, res){
                     res.send(JSON.stringify('ok'));
                 }
             })
-    }
 }
 
-
+/*
 function infoMW (req, res, next){
-    if (req.session.loggedin === true){
         pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
                     city, phone, email, created_at FROM users WHERE userid = $1;`,
                     [req.session.userid]).then(result =>{
                         req.user = result.rows[0];
                         next();
         });
-    } else {
-        req.user = JSON.stringify(0);
-        next();
-    }
 }
+ */
 
 function showInfo (req, res){
-    res.json(req.user)
+    pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
+                    city, phone, email, created_at FROM users WHERE userid = $1;`,
+        [req.session.userid]).then(result =>{
+        res.send(result.rows[0]);
+    });
 }
 
 
-function orderMW (req, res, next){
-    if (req.session.loggedin === true){
-        pool.query(`SELECT orderid FROM orders WHERE userid = $1;`,
-                    [req.session.userid]).then(result =>{
-                        req.order = result.rows;
-                        next();
-                    });
-    } else {
-        next();
-    }
+function showOrder (req, res){
+    pool.query(`SELECT orderid FROM orders WHERE userid = $1;`,
+        [req.session.userid]).then(result =>{
+        res.send(result.rows);
+    });
 }
 
 
@@ -182,19 +173,13 @@ function orderProduct (req, res){
  */
 //
 
-function showOrder (req, res){
-    res.json(req.order);
-}
 
 
 module.exports = {
     deleteUser,
     updatePassword,
     showInfo,
-    infoMW,
-    orderMW,
     showOrder,
-    //orderProduct,
     deleteOrder,
     ordersByOrderId
 };
