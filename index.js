@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const auth = require('./Controllers/auth.js');
-const loginFunction = require('./Controllers/login.js');
-const profileFunctions = require('./Controllers/profile.js');
-const registerFunction = require('./Controllers/registerCustomer');
-const orderFunction = require('./Controllers/order.js');
-const adminFunctions = require ('./Controllers/admin.js');
+const loginFunction = require('./Controllers/loginControllers.js');
+const profileFunctions = require('./Controllers/profileControllers.js');
+const registerFunction = require('./Controllers/registerControllers');
+const orderFunction = require('./Controllers/orderControllers.js');
+const adminFunctions = require ('./Controllers/adminControllers.js');
 
 
 

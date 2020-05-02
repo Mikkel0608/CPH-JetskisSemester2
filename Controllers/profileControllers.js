@@ -1,64 +1,50 @@
 //Importing the database connection
 const pool = require('../Models/db');
-const registerFunction = require('./registerCustomer');
+const registerFunction = require('./registerControllers');
 
-
+//This function deletes the active user by using the userid from the url parameter in the query
+//Because of the ON DELETE CASCADE constraint on the usertypeid FK, the corresponding row in the users table will
+//be deleted as well.
 function deleteUser(request, response){
         var usertypeid = null;
         const activeEmail = request.session.email;
         console.log(activeEmail);
-        pool.query(`SELECT u.userid, ut.usertypeid
-                FROM users AS u JOIN usertype AS ut
-                ON u.usertypeid = ut.usertypeid
-                WHERE userid = $1;`, [request.params.userid], function (error, results) {
-                if (error) {
-                    throw error;
-                } else {
-                    usertypeid = results.rows[0].usertypeid;
-                    console.log(usertypeid);
+        pool.query(`SELECT usertypeid FROM users WHERE userid = $1;`, [request.params.userid]).then(results => {
+        usertypeid = results.rows[0].usertypeid;
+        console.log(usertypeid);
 
-                    pool.query(`DELETE FROM usertype WHERE usertypeid = $1`, [usertypeid]);
-                    console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
-                    request.session.email = undefined;
-                    request.session.userid = undefined;
-                    request.session.loggedin = undefined;
-                    response.send(JSON.stringify('ok'));
-                }
+        pool.query(`DELETE FROM usertype WHERE usertypeid = $1`, [usertypeid]);
+        console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
+        request.session.email = undefined;
+        request.session.userid = undefined;
+        request.session.loggedin = undefined;
+        response.send(JSON.stringify('ok'));
             }
         )
 }
 
+//Function that deletes a specific order from the active user.
+//Uses the url parameter to delete a specific order
 function deleteOrder (req, res){
     pool.query(`DELETE FROM orders WHERE orderid = $1 AND userid = $2`,
     [req.params.orderid, req.session.userid]);
     res.send(JSON.stringify('ok'));
 }
 
+//Function that updates the password of the active user.
+//Uses the randomChar function that returns a random lowercase letter (a pepper) and adds it to the password
+//Uses the crypt() function from the pgcrypto PostgreSQL extension to add a salt and hash the password
 function updatePassword(req, res){
         console.log(req.body);
         req.body.password += registerFunction.randomChar(1);
         pool.query(`UPDATE users SET password = crypt($1, gen_salt('bf')) WHERE userid = $2 `,
-            [req.body.password, req.params.userid], function (error, results) {
-                if (error) {
-                    throw error;
-                } else {
-                    console.log(results.rows);
-                    res.send(JSON.stringify('ok'));
-                }
-            })
+            [req.body.password, req.params.userid]).then(results => {
+                console.log(results.rows);
+                res.send(JSON.stringify('ok'));
+            });
 }
 
-/*
-function infoMW (req, res, next){
-        pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
-                    city, phone, email, created_at FROM users WHERE userid = $1;`,
-                    [req.session.userid]).then(result =>{
-                        req.user = result.rows[0];
-                        next();
-        });
-}
- */
-
+//Sends a response with user info for the active user
 function showInfo (req, res){
     pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
                     city, phone, email, created_at FROM users WHERE userid = $1;`,
@@ -67,7 +53,7 @@ function showInfo (req, res){
     });
 }
 
-
+//Sends a response with all order Ids for the active user
 function showOrder (req, res){
     pool.query(`SELECT orderid FROM orders WHERE userid = $1;`,
         [req.session.userid]).then(result =>{
@@ -75,7 +61,11 @@ function showOrder (req, res){
     });
 }
 
-
+//Function that sends a response with an order and the products in the order
+//Creates a product array on the order object to store products
+//The sql count() function is used to count the quantity of rows in the orderproduct table with identical productid's
+//Joining several tables in order to make sure that the user can only get their own information
+//Admin has access to all orders
 function ordersByOrderId (req, res) {
     if (req.session.loggedin === true) {
         pool.query(`SELECT orderid, userid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
@@ -95,14 +85,10 @@ function ordersByOrderId (req, res) {
                     group by p.modelname, op.productid, p.price
                     order by op.productid;`, [req.params.orderid, req.session.userid])
                 .then(result => {
+
                 console.log(result.rows);
                 var products = result.rows;
                 pushProducts(products, order);
-                /*
-                for (let i = 0; i < products.length; i++) {
-                    order.products.push(products[i]);
-                }
-                 */
                 res.send(order);
             });
         });
@@ -119,14 +105,10 @@ function ordersByOrderId (req, res) {
                     group by p.modelname, op.productid, p.price
                     order by op.productid;`, [req.params.orderid])
                 .then(result => {
+
                 console.log(result.rows);
                 var products = result.rows;
                 pushProducts(products, order);
-                /*
-                for (let i = 0; i < products.length; i++) {
-                    order.products.push(products[i]);
-                }
-                 */
                 res.send(order);
             });
         });

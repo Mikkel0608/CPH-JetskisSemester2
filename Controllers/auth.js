@@ -1,3 +1,4 @@
+//Checking that a customer is logged in before proceeding to the next middleware function
 function authCustomer (req, res, next){
     if (req.session.loggedin !== true) {
         res.status(401);
@@ -6,6 +7,7 @@ function authCustomer (req, res, next){
     next();
 }
 
+//Checking that the url parameter userid is the same as the active user's
 function authCustomerId (req, res, next) {
     if (parseInt(req.params.userid) !== req.session.userid) {
         res.status(401);
@@ -15,7 +17,7 @@ function authCustomerId (req, res, next) {
     }
 }
 
-
+//Checking that an admin is logged in before proceeding to the next middleware function
 function authAdmin (req, res, next){
     console.log(req.session.adminloggedin);
     if (req.session.adminloggedin !== true) {
