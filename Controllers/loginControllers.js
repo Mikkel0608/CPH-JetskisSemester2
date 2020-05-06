@@ -34,11 +34,10 @@ function loginFunc (request, response) {
                     console.log(results.rows);
                     request.session.loggedin = false;
                     request.session.adminloggedin = true;
-                    console.log(request.session.adminloggedin);
                     request.session.userid = results.rows[0].userid;
                     request.session.email = email;
                     response.send(JSON.stringify('adm'));
-                        }
+                }
             });
         }
     } else {

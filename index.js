@@ -42,7 +42,7 @@ app.get('/index.html',(req,res)=>{
 app.get('/orderPage.html', auth.authCustomer, (req,res)=>{
     res.sendFile(path.resolve(__dirname, 'views/html/orderpage.html'))
 });
-app.get('/profile.html', (req,res)=>{
+app.get('/profile.html', auth.authCustomer, (req,res)=>{
     res.sendFile(path.resolve(__dirname, 'views/html/profile.html'))
 });
 app.get('/profile/updatePassword', auth.authCustomer, (req, res)=>{
@@ -68,8 +68,6 @@ app.get('/Adminpage', (req,res)=>{
 app.post('/loginpage/auth', loginFunction.loginFunc);
 app.get('/profile/logout', auth.authCustomer, loginFunction.logOut);
 
-
-//app.get('/activeuser', loginFunction.setActiveUser);
 
 
 app.get('/profile/user', auth.authCustomer, profileFunctions.showInfo);
