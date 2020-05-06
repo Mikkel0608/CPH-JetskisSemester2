@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 
 const auth = require('./Controllers/auth.js');
 const loginFunction = require('./Controllers/loginControllers.js');
@@ -20,6 +21,7 @@ app.use(session({
 }));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.json());
 app.use(express.static('views'));
 app.listen(3000, ()=>{
@@ -40,7 +42,7 @@ app.get('/index.html',(req,res)=>{
 app.get('/orderPage.html', auth.authCustomer, (req,res)=>{
     res.sendFile(path.resolve(__dirname, 'views/html/orderpage.html'))
 });
-app.get('/profile.html', auth.authCustomer, (req,res)=>{
+app.get('/profile.html', (req,res)=>{
     res.sendFile(path.resolve(__dirname, 'views/html/profile.html'))
 });
 app.get('/profile/updatePassword', auth.authCustomer, (req, res)=>{
@@ -58,13 +60,16 @@ app.get('/Adminpage/showuser', auth.authAdmin, (req,res)=>{
 app.get('/admin_orders.html', auth.authAdmin, (req,res)=>{
     res.sendFile(path.resolve(__dirname, 'views/html/admin_orders.html'))
 });
-app.get('/Adminpage', auth.authAdmin, (req,res)=>{
+app.get('/Adminpage', (req,res)=>{
     res.sendFile(path.resolve(__dirname, 'views/html/Adminpage.html'))
 });
 
 //login and logout
 app.post('/loginpage/auth', loginFunction.loginFunc);
 app.get('/profile/logout', auth.authCustomer, loginFunction.logOut);
+
+
+//app.get('/activeuser', loginFunction.setActiveUser);
 
 
 app.get('/profile/user', auth.authCustomer, profileFunctions.showInfo);
@@ -87,8 +92,6 @@ app.get('/adminpage/allusers', auth.authAdmin, adminFunctions.getUsers);
 app.get('/adminpage/allOrders/:sorting', auth.authAdmin, adminFunctions.allOrders);
 app.get('/adminpage/ordersByUser/:userid', auth.authAdmin, adminFunctions.getOrdersByUser);
 app.get('/adminpage/order/:orderid', auth.authAdmin, adminFunctions.getOrder);
-
-
 
 
 module.exports = app;

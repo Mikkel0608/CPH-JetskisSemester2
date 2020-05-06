@@ -25,7 +25,6 @@ function loginFunc (request, response) {
                         where email = $1 AND password = crypt($2, password);`,
             [email, peppered], function (error, results, fields) {
                 if (results.rows.length > 0 && results.rows[0].type === 'cus') {
-                    console.log(results.rows);
                     request.session.adminloggedin = false;
                     request.session.loggedin = true;
                     request.session.userid = results.rows[0].userid;
