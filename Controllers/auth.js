@@ -1,36 +1,44 @@
-//Checking that a customer is logged in before proceeding to the next middleware function
+
+//Checking that the current user is of customer type
 function authCustomer (req, res, next){
-    if (req.session.loggedin !== true) {
-        res.status(401);
-        return res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    if (req.user.userid) {
+                if (req.user.type !== 'cus') {
+                    res.status(401);
+                    res.send(JSON.stringify('unauthorized'));
+                } else {
+                    next();
+                }
     }
-    next();
 }
 
 //Checking that the url parameter userid is the same as the active user's
 function authCustomerId (req, res, next) {
-    if (parseInt(req.params.userid) !== req.session.userid) {
-        res.status(401);
-        res.send('Not authorized');
-    } else {
-        next();
+    if (req.user.userid) {
+        if (parseInt(req.params.userid) !== req.user.userid) {
+            res.status(401);
+            return res.send(JSON.stringify('unauthorized'));
+        } else {
+            res.send(JSON.stringify('ok'));
+            next();
+        }
     }
 }
 
 //Checking that an admin is logged in before proceeding to the next middleware function
 function authAdmin (req, res, next){
-    console.log(req.session.adminloggedin);
-    if (req.session.adminloggedin !== true) {
-        res.status(401);
-        return res.send('Log ind for at se side' + '<a href="/loginpage.html">Klik her for at logge ind</a>');
+    if (req.user.userid) {
+                if (req.user.type !== 'adm') {
+                    res.status(401);
+                } else {
+                    next();
+                }
     }
-    next();
 }
 
 
 
 module.exports = {
     authCustomer,
-    authAdmin,
-    authCustomerId
+    authCustomerId,
+    authAdmin
 };

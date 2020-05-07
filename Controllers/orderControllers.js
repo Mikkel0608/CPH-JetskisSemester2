@@ -50,15 +50,15 @@ function submitOrder (request, response) {
     var rentTime = request.body.timePeriod;
     var products = request.body.products;
     var totalPrice = request.body.orderPrice;
+    console.log(rentDay);
 
     //MM: If no active userid can be found, an error is send as response.
-    if (request.session.userid === undefined) {
+    if (request.user.userid === undefined) {
         response.send("Session timed out. Please login again and resubmit your order. <br><br><br> <a href='/loginpage.html'>Click here to go to the login page</a>");
     }
-
     //MM: The following query uses the email stored in the session to find the corresponding customerid in the database
     var userid = null;
-    pool.query(`SELECT userid FROM users WHERE email =$1`, [request.session.email], function (error, results) {
+    pool.query(`SELECT userid FROM users WHERE userid =$1`, [request.user.userid], function (error, results) {
         if(error) {
             throw error;
         } else {

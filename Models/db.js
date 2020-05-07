@@ -8,7 +8,12 @@ const pool = new Pool({
 });
 module.exports = pool;
 
-const requirePgcrypto = () =>{
+//kør disse funktioner for at få noget data i databasen
+requirePgcrypto();
+createTables();
+//createAdmin();
+
+function requirePgcrypto() {
     const queryText = `CREATE EXTENSION IF NOT EXISTS pgcrypto;`;
 
     pool.query(queryText)
@@ -18,10 +23,10 @@ const requirePgcrypto = () =>{
             console.log(err);
             pool.end();
         });
-};
+}
 
 //Opretter tabeller med udgangspunkt i E/R
-const createTables = () =>{
+function createTables () {
     const queryText =   `CREATE TABLE IF NOT EXISTS
                            userType(
                            userTypeId SERIAL PRIMARY KEY,
@@ -109,26 +114,8 @@ const createTables = () =>{
             console.log(err);
             pool.end();
         });
-};
-
-//Kør denne funktion for at oprette lidt data
-function createProducts(){
-    const queryText = `INSERT INTO products(productId, price, modelName)
-                       values(1, 300, 'Sea Doo Spark');
-                       INSERT INTO products(productId, price, modelName)
-                       values(2, 500, 'Yamaha Waverunner VX');
-                       INSERT INTO products(productId, price, modelName)
-                       values(3, 600, 'Kawasaki STF-15F');
-                       `;
-
-    pool.query(queryText)
-        .then(()=>{
-        })
-        .catch((err)=>{
-            console.log(err);
-            pool.end();
-        });
 }
+
 
 
 function createAdmin(){
@@ -151,12 +138,7 @@ function createAdmin(){
                     VALUES($1, 'admin', 'admin@admin.com', crypt('admink', gen_salt('bf')));`, [usertypeid]);
     }
 }
-//kør disse funktioner for at få noget data i databasen
-requirePgcrypto();
-createTables();
-//createAdmin();
-//createData();
-//createProducts();
+
 
 
 

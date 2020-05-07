@@ -1,16 +1,17 @@
 //Importing the database connection
 const pool = require('../Models/db');
+const jwt = require('jsonwebtoken');
+
 
 //Function that validates a log-in attempt
 //The function adds a pepper to the password. The pepper can be any of the lowercase english letters, so queries to the
 //database are made with every lowercase letter added to the password.
 //Response sent back to determine whether the log-in was made by an admin or a customer.
 //Frontend redirects based on this response.
-function loginFunc (request, response) {
-    request.session.cookie.maxAge = 18000000;
+const secret = 'verysecret';
+function loginFunc (request, response, next) {
     var email = request.body.email;
     var password = request.body.password;
-    console.log(email, password);
 
     if (email && password) {
         var randomChars = 'abcdefghijklmnopqrstuvwxyz';
@@ -25,17 +26,16 @@ function loginFunc (request, response) {
                         where email = $1 AND password = crypt($2, password);`,
             [email, peppered], function (error, results, fields) {
                 if (results.rows.length > 0 && results.rows[0].type === 'cus') {
-                    request.session.adminloggedin = false;
-                    request.session.loggedin = true;
-                    request.session.userid = results.rows[0].userid;
-                    request.session.email = email;
+                    const token = jwt.sign({userId: results.rows[0].userid}, secret);
+                    response.cookie('jwt-token', token, {maxAge: 90000000, secure: false, overwrite: true} );
+
                     response.send(JSON.stringify('cus'));
+                    next();
+
                 } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
-                    console.log(results.rows);
-                    request.session.loggedin = false;
-                    request.session.adminloggedin = true;
-                    request.session.userid = results.rows[0].userid;
-                    request.session.email = email;
+                    const token = jwt.sign({userId: results.rows[0].userid}, secret);
+                    response.cookie('jwt-token', token, {maxAge: 90000000, secure: false, overwrite: true} );
+
                     response.send(JSON.stringify('adm'));
                 }
             });
@@ -47,18 +47,36 @@ function loginFunc (request, response) {
 
 //Function that logs the current user out
 function logOut (request, response){
-    request.session.loggedin = false;
-    request.session.email = undefined;
-    console.log("Du har logget ud");
-    response.redirect('/loginpage.html');
-    response.end();
+    response.clearCookie('jwt-token');
+    response.send(JSON.stringify('ok'));
 }
+
+function setUser (req, res, next){
+    if (req.cookies && req.cookies['jwt-token']) {
+        const userid = jwt.verify(req.cookies['jwt-token'], secret);
+
+        pool.query (`SELECT u.userid, ut.type, u.username, u.streetname, u.streetnumber, u.postalcode,
+                     u.city, u.phone, u.email, u.created_at FROM users u
+                     JOIN usertype ut
+                     on u.usertypeid = ut.usertypeid
+                     WHERE userid = $1;`, [userid.userId])
+            .then(result => {
+                req.user = result.rows[0];
+                console.log(req.user);
+                next();
+            })
+    } else {
+        next();
+    }
+}
+
 
 
 
 module.exports = {
     loginFunc,
     logOut,
+    setUser,
 };
 
 
