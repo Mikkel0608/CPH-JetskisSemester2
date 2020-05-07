@@ -20,7 +20,8 @@ function getUsers(req, res) {
                     u.city, u.phone, u.email, u.created_at
                     FROM users u JOIN usertype ut
                     ON u.usertypeid = ut.usertypeid 
-                    WHERE ut.type = $1;`, [type]).then(result => {
+                    WHERE ut.type = $1
+                    ORDER BY u.userid;`, [type]).then(result => {
         res.send(result.rows);
         })
 }
