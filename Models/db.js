@@ -65,7 +65,7 @@ function createTables () {
                             orderMonth INT,
                             orderYear INT,
                             timePeriod VARCHAR(50),
-                            orderPrice INT,
+                            orderPrice FLOAT,
                             order_placed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             );
                             
