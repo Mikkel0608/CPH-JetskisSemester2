@@ -7,8 +7,8 @@ const registerFunction = require('./registerControllers');
 //be deleted as well.
 function deleteUser(request, response){
         var usertypeid = null;
-        const activeEmail = request.session.email;
-        console.log(activeEmail);
+        //const activeEmail = request.session.email;
+        //console.log(activeEmail);
         pool.query(`SELECT usertypeid FROM users WHERE userid = $1;`,
             [request.params.userid]).then(results => {
                 usertypeid = results.rows[0].usertypeid;
@@ -16,7 +16,7 @@ function deleteUser(request, response){
 
                 pool.query(`DELETE FROM usertype WHERE usertypeid = $1`,
                     [usertypeid]);
-                    console.log(`Bruger med e-mail ${activeEmail} er blevet slettet.`);
+                    console.log(`Bruger med e-mail ${request.user.email} er blevet slettet.`);
                     response.send(JSON.stringify('ok'));
             }
         )
