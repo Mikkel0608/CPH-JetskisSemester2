@@ -4,7 +4,6 @@ const pool = require('../Models/db');
 //Function that sends a response with all users where the usertype is a customer-type.
 //Joining tables users and usertype, so only customer-users are retrieved.
 function getUser(req, res){
-   // if (req.session.adminloggedin === true){
         pool.query(`SELECT u.userid, ut.type, u.username, u.streetname, u.streetnumber, u.postalcode, 
                     u.city, u.phone, u.email, u.created_at
                     FROM users u JOIN usertype ut
@@ -12,12 +11,10 @@ function getUser(req, res){
                     WHERE ut.type = $1 AND userid = $2;`, ['cus', req.params.userid]).then(result => {
         res.send(result.rows[0]);
         });
-    //}
 }
 
-//Function that
+//Function that gets all the users with the customer usertype
 function getUsers(req, res) {
-    //if (req.session.adminloggedin === true) {
         var type = 'cus';
         pool.query(`SELECT u.userid, ut.type, u.username, u.streetname, u.streetnumber, u.postalcode, 
                     u.city, u.phone, u.email, u.created_at
@@ -26,28 +23,23 @@ function getUsers(req, res) {
                     WHERE ut.type = $1;`, [type]).then(result => {
         res.send(result.rows);
         })
-   // }
 }
 
 //Function that sends a response with all orders by a specific customer using a route parameter.
 function getOrdersByUser(req, res){
-    //if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid, orderday, ordermonth, orderyear, timeperiod, orderprice, 
                     order_placed_at
                     FROM orders WHERE userid = $1;`, [req.params.userid]).then(result => {
         res.send(result.rows);
         })
-    //}
 }
 
 //Function that sends a response with an orderid from a specific order using a route parameter
 function getOrder(req, res){
-    //if (req.session.adminloggedin === true) {
         pool.query(`SELECT orderid
                     FROM orders WHERE orderid = $1;`, [req.params.orderid]).then(result => {
         res.send(result.rows);
         })
-    //}
 }
 
 //Function that sends a response with all orders based on a sorting criteria from the client.
@@ -56,7 +48,6 @@ function getOrder(req, res){
 var table = '';
 function allOrders (req, res){
     var sorting = parseInt(req.params.sorting);
-        //console.log(typeof parseInt(req.params.sorting));
         if (sorting === 1 || 2 || 3) {
             if (sorting === 1) {
                 table = 'userid ASC';

@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 //database are made with every lowercase letter added to the password.
 //Response sent back to determine whether the log-in was made by an admin or a customer.
 //Frontend redirects based on this response.
-const secret = 'verysecret';
+const secret = 'secretsecretsecret';
 function loginFunc (request, response, next) {
     var email = request.body.email;
     var password = request.body.password;
@@ -37,15 +37,17 @@ function loginFunc (request, response, next) {
                     response.cookie('jwt-token', token, {maxAge: 90000000, secure: false, overwrite: true} );
 
                     response.send(JSON.stringify('adm'));
+                    next();
                 }
             });
         }
     } else {
         response.send('Please enter phone and password');
+        next();
     }
 }
 
-//Function that logs the current user out
+//Function that logs the current user out by clearing the cookie
 function logOut (request, response){
     response.clearCookie('jwt-token');
     response.send(JSON.stringify('ok'));

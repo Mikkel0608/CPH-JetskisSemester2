@@ -42,6 +42,7 @@ function getProducts (request, response) {
         }
     });
 }
+
 //MM: The submitOrder function receives the order information in a post request, and creates the order and orderproducts in the database.
 function submitOrder (request, response) {
     var rentDay = request.body.orderDay;
@@ -52,10 +53,6 @@ function submitOrder (request, response) {
     var totalPrice = request.body.orderPrice;
     console.log(rentDay);
 
-    //MM: If no active userid can be found, an error is send as response.
-    if (request.user.userid === undefined) {
-        response.send("Session timed out. Please login again and resubmit your order. <br><br><br> <a href='/loginpage.html'>Click here to go to the login page</a>");
-    }
     //MM: The following query uses the email stored in the session to find the corresponding customerid in the database
     var userid = null;
     pool.query(`SELECT userid FROM users WHERE userid =$1`, [request.user.userid], function (error, results) {

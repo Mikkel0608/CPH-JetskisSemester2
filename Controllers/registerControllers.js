@@ -1,6 +1,7 @@
 //Importing the database connection
 const pool = require('../Models/db');
 
+//Function that returns a random lowercase character of type string
 const randomChar = (length) => {
     const randomChars = 'abcdefghijklmnopqrstuvwxyz';
     var result = '';
@@ -11,6 +12,9 @@ const randomChar = (length) => {
     return result;
 };
 
+
+//Function that creates a new customer in the database.
+//The function checks to make sure that the phone and/or email don't already exist in the database
 function register (request, response){
     const name = request.body.name;
     const streetName = request.body.streetName;
@@ -39,6 +43,8 @@ function register (request, response){
         if(form_valid === false) {
             response.send(JSON.stringify(responseText));
         }
+
+        //Creating a new customer by inserting into usertype and users tables
             if (form_valid === true){
                 const type = "cus";
                 pool.query(`INSERT INTO usertype(type) VALUES ($1) RETURNING userTypeId`, [type], function (error, results) {
@@ -66,7 +72,6 @@ function register (request, response){
                 $1, $2, $3, $4, $5, $6, $7, $8, crypt($9, gen_salt('bf')));
                 `, [usertypeid, name, streetName, streetNumber, postalCode, city, phone, email, password]);
                     request.body.ok = true;
-                    console.log(request.body);
                     response.send(request.body);
                 }
             }
