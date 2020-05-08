@@ -15,7 +15,6 @@ const app = express();
 app.use(cors({credentials: true, origin: 'http://localhost:63342'}));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static('views'));
 app.listen(3000, ()=>{
     console.log("App listening on port 3000")
 });
