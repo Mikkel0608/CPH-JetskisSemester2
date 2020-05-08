@@ -53,6 +53,9 @@ function logOut (request, response){
     response.send(JSON.stringify('ok'));
 }
 
+//Middleware that sets the active user by checking the jwt that gets stored in a cookie
+//Creates a 'user' property on the request object, so it is available in other route handlers
+//user property also contains the type, so the system can distinguish between admin and customers
 function setUser (req, res, next){
     if (req.cookies && req.cookies['jwt-token']) {
         const userid = jwt.verify(req.cookies['jwt-token'], secret);

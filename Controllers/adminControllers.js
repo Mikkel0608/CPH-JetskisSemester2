@@ -61,7 +61,7 @@ function allOrders (req, res){
 //Querying the database for the orders as well as the orderproducts.
 //Products property is created to store an array of orderproducts.
 //Response is sent when the loop has looped through all elements in the array.
-            if (req.user.type === 'adm') {
+            //if (req.user && req.user.type === 'adm') {
                 pool.query(`SELECT * from orders ORDER BY ${table}`,
                 ).then(result => {
                     var orders = result.rows;
@@ -85,7 +85,7 @@ function allOrders (req, res){
                         });
                     }
                 })
-            }
+            //}
         }
 }
 
