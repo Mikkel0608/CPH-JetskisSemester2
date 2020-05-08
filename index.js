@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -13,8 +12,6 @@ const adminFunctions = require ('./Controllers/adminControllers.js');
 
 
 const app = express();
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
 app.use(cors({credentials: true, origin: 'http://localhost:63342'}));
 app.use(express.json());
 app.use(cookieParser());
@@ -47,7 +44,6 @@ app.get('/adminpage/user/:userid', auth.authAdmin, adminFunctions.getUser);
 app.get('/adminpage/allusers', auth.authAdmin, adminFunctions.getUsers);
 app.get('/adminpage/allOrders/:sorting', auth.authAdmin, adminFunctions.allOrders);
 app.get('/adminpage/ordersByUser/:userid', auth.authAdmin, adminFunctions.getOrdersByUser);
-app.get('/adminpage/order/:orderid', auth.authAdmin, adminFunctions.getOrder);
 
 
 app.post('/register', registerFunction.register);

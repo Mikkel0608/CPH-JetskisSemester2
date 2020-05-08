@@ -35,13 +35,6 @@ function getOrdersByUser(req, res){
         })
 }
 
-//Function that sends a response with an orderid from a specific order using a route parameter
-function getOrder(req, res){
-        pool.query(`SELECT orderid
-                    FROM orders WHERE orderid = $1;`, [req.params.orderid]).then(result => {
-        res.send(result.rows);
-        })
-}
 
 //Function that sends a response with all orders based on a sorting criteria from the client.
 //Type of sorting is determined by the route parameter. The route parameter is used to make a string containing
@@ -92,7 +85,7 @@ function allOrders (req, res){
 module.exports = {
     getUsers,
     getOrdersByUser,
-    getOrder,
+    //getOrder,
     allOrders,
     getUser
 };
