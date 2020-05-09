@@ -33,7 +33,7 @@ function loginFunc (request, response) {
 
                 } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
                     const token = jwt.sign({userId: results.rows[0].userid}, secret);
-                    response.cookie('jwt-token', token, {maxAge: 90000000, secure: false, overwrite: true} );
+                    response.cookie('jwt-token', token, {maxAge: 90000000, overwrite: true} );
 
                     response.send(JSON.stringify('adm'));
                 }
