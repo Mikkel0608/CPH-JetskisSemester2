@@ -62,7 +62,7 @@ function showOrder (req, res){
 //Function that sends a response with an order and the products in the order
 //Creates a product property with an array on the order object to store products
 //The sql count() function is used to count the quantity of rows in the orderproduct table with identical productid's
-//Joining several tables in order to make sure that the user can only get their own information
+//customer user only has access to their own orders
 //Admin has access to all orders
 function ordersByOrderId (req, res) {
     if (req.user) {
@@ -70,27 +70,25 @@ function ordersByOrderId (req, res) {
             pool.query(`SELECT orderid, userid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
                     FROM orders WHERE orderid = $1 AND userid =$2;`,
                 [req.params.orderid, req.user.userid]).then(result => {
-                var order = result.rows[0];
-                order.products = [];
-                pool.query(`select count(op.productid), p.modelname, op.productid, p.price
-                    from orderproduct as op 
-                    JOIN products as p
-                    on op.productid = p.productid
-                    JOIN orders as o
-                    on o.orderid = op.orderid
-                    JOIN users as u 
-                    on u.userid = o.userid
-                    where o.orderid = $1 AND u.userid = $2
-                    group by p.modelname, op.productid, p.price
-                    order by op.productid;`, [req.params.orderid, req.user.userid])
-                    .then(result => {
+                    if (result.rows.length > 0){
+                        var order = result.rows[0];
+                        order.products = [];
+                        pool.query(`select count(op.productid), p.modelname, op.productid, p.price
+                        from orderproduct as op 
+                        JOIN products as p
+                        on op.productid = p.productid
+                        where op.orderid = $1
+                        group by p.modelname, op.productid, p.price
+                        order by op.productid;`, [req.params.orderid])
+                            .then(result => {
 
-                        console.log(result.rows);
-                        var products = result.rows;
-                        pushProducts(products, order);
-                        res.send(order);
-                    });
-            });
+                                console.log(result.rows);
+                                var products = result.rows;
+                                pushProducts(products, order);
+                                res.send(order);
+                            });
+                    }
+                });
         } else if (req.user.type === 'adm') {
             pool.query(`SELECT orderid, userid, orderday, ordermonth, orderyear, timeperiod, orderprice, order_placed_at
                     FROM orders WHERE orderid = $1`,
