@@ -85,6 +85,7 @@ function submitOrder(request, response) {
             `, [products[i].productId, orderId])
             }
         }
+        response.send(JSON.stringify('ok'));
     }
 }
 
