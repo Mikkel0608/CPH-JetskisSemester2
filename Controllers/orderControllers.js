@@ -31,8 +31,11 @@ function getProducts (request, response) {
                     console.log(results.rows);
                     //MM: For each product in the database, the quantity is adjusted in the foundProducts array
                     for (let i = 0; i<results.rows.length; i++) {
-                        foundProducts[i].quantity -= parseInt(results.rows[i].count);
-                        console.log()
+                        for (let x =0; x<foundProducts.length; x++) {
+                            if (foundProducts[x].productid === results.rows[i].productid) {
+                                foundProducts[x].quantity -= parseInt(results.rows[i].count);
+                            }
+                        }
                     }
                     console.log("responded to request");
                     //MM: The foundProducts array has now been updated to reflect existing orders, and is now send to the frontend as a response.
