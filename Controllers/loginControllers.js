@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 //Response sent back to determine whether the log-in was made by an admin or a customer.
 //Frontend redirects based on this response.
 const secret = 'secretsecretsecret';
-function loginFunc (request, response, next) {
+function loginFunc (request, response) {
     var email = request.body.email;
     var password = request.body.password;
 
@@ -30,20 +30,17 @@ function loginFunc (request, response, next) {
                     response.cookie('jwt-token', token, {maxAge: 90000000, overwrite: true} );
 
                     response.send(JSON.stringify('cus'));
-                    next();
 
                 } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
                     const token = jwt.sign({userId: results.rows[0].userid}, secret);
                     response.cookie('jwt-token', token, {maxAge: 90000000, secure: false, overwrite: true} );
 
                     response.send(JSON.stringify('adm'));
-                    next();
                 }
             });
         }
     } else {
         response.send('Please enter phone and password');
-        next();
     }
 }
 
