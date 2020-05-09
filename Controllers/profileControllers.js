@@ -15,6 +15,7 @@ function deleteUser(request, response){
                 pool.query(`DELETE FROM usertype WHERE usertypeid = $1`,
                     [usertypeid]);
                     console.log(`Bruger med e-mail ${request.user.email} er blevet slettet.`);
+                    response.clearCookie('jwt-token');
                     response.send(JSON.stringify('ok'));
             }
         )
@@ -24,7 +25,7 @@ function deleteUser(request, response){
 //Uses the url parameter to delete a specific order
 function deleteOrder (req, res){
     pool.query(`DELETE FROM orders WHERE orderid = $1 AND userid = $2`,
-        [req.params.orderid, req.user.userid]);
+    [req.params.orderid, req.user.userid]);
     res.send(JSON.stringify('ok'));
 }
 
