@@ -36,13 +36,11 @@ function loginFunc (request, response) {
                     response.cookie('jwt-token', token, {maxAge: 90000000, overwrite: true} );
 
                     response.send(JSON.stringify('adm'));
-                } else {
-                    response.send(JSON.stringify('Forkert email/password kombination'));
                 }
             });
         }
     } else {
-        response.send('Please enter phone and password');
+        response.send(JSON.stringify('Please enter phone and password'));
     }
 }
 
