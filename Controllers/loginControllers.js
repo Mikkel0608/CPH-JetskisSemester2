@@ -37,6 +37,9 @@ function loginFunc (request, response) {
 
                     response.send(JSON.stringify('adm'));
                 }
+                if (i===randomChars.length-1 && results.rows.length === 0) {
+                        response.send(JSON.stringify('Ingen bruger fundet. Prøv igen eller opret en ny bruger.'));
+                }
             });
         }
     } else {
