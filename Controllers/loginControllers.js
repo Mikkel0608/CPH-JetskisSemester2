@@ -12,7 +12,7 @@ const secret = 'secretsecretsecret';
 function loginFunc (request, response) {
     var email = request.body.email;
     var password = request.body.password;
-
+    var userFound = false;
     if (email && password) {
         var randomChars = 'abcdefghijklmnopqrstuvwxyz';
         for (let i = 0; i < randomChars.length; i++) {
@@ -28,16 +28,16 @@ function loginFunc (request, response) {
                 if (results.rows.length > 0 && results.rows[0].type === 'cus') {
                     const token = jwt.sign({userId: results.rows[0].userid}, secret);
                     response.cookie('jwt-token', token, {maxAge: 90000000, overwrite: true} );
-
+                    userFound = true;
                     response.send(JSON.stringify('cus'));
 
                 } else if (results.rows.length > 0 && results.rows[0].type === 'adm') {
                     const token = jwt.sign({userId: results.rows[0].userid}, secret);
                     response.cookie('jwt-token', token, {maxAge: 90000000, overwrite: true} );
-
+                    userFound = true;
                     response.send(JSON.stringify('adm'));
                 }
-                if (i===randomChars.length-1 && results.rows.length === 0) {
+                if (i===randomChars.length-1 && userFound === false) {
                         response.send(JSON.stringify('Ingen bruger fundet. Prøv igen eller opret en ny bruger.'));
                 }
             });
