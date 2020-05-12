@@ -44,12 +44,7 @@ function updatePassword(req, res){
 
 //Sends a response with user info for the active user
 function showInfo (req, res){
-    console.log(req.user);
-    pool.query(`SELECT userid, username, streetname, streetnumber, postalcode, 
-                    city, phone, email, created_at FROM users WHERE userid = $1;`,
-        [req.user.userid]).then(result =>{
-            res.send(result.rows[0]);
-    });
+    res.send(req.user);
 }
 
 //Sends a response with all order Ids for the active user
