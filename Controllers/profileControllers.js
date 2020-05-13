@@ -36,7 +36,7 @@ function updatePassword(req, res){
         console.log(req.body);
         req.body.password += registerFunction.randomChar(1);
         pool.query(`UPDATE users SET password = crypt($1, gen_salt('bf')) WHERE userid = $2 `,
-            [req.body.password, req.user.userid]).then(results => {
+            [req.body.password, req.params.userid]).then(results => {
                 console.log(results.rows);
                 res.send(JSON.stringify('ok'));
             });
