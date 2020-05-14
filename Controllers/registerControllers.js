@@ -1,18 +1,6 @@
 //Importing the database connection
 const pool = require('../Models/db');
 
-//Function that returns a random lowercase character of type string
-const randomChar = (length) => {
-    const randomChars = 'abcdefghijklmnopqrstuvwxyz';
-    var result = '';
-    let i;
-    for (i = 0; i < length; i++ ) {
-        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-    }
-    return result;
-};
-
-
 //Function that creates a new customer in the database.
 //The function checks to make sure that the phone and/or email don't already exist in the database
 function register (request, response){
@@ -57,7 +45,6 @@ function register (request, response){
 
 
                 function createCustomer(usertypeid) {
-                    password += randomChar(1);
                     pool.query(`INSERT INTO users(
                 usertypeid,
                 userName, 
@@ -81,6 +68,5 @@ function register (request, response){
 }
 
 module.exports = {
-    register,
-    randomChar
+    register
 };
