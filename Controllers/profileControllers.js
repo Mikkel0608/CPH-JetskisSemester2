@@ -3,22 +3,12 @@ const pool = require('../Models/db');
 //const registerFunction = require('./registerControllers');
 
 //This function deletes the active user by using the userid from the url parameter in the query
-//Because of the ON DELETE CASCADE constraint on the usertypeid FK, the corresponding row in the users table will
-//be deleted as well.
 function deleteUser(request, response){
-        var usertypeid = null;
-        pool.query(`SELECT usertypeid FROM users WHERE userid = $1;`,
-            [request.params.userid]).then(results => {
-                usertypeid = results.rows[0].usertypeid;
-                console.log(usertypeid);
-
-                pool.query(`DELETE FROM usertype WHERE usertypeid = $1`,
-                    [usertypeid]);
-                    console.log(`Bruger med e-mail ${request.user.email} er blevet slettet.`);
-                    response.clearCookie('jwt-token');
-                    response.send(JSON.stringify('ok'));
-            }
-        )
+    pool.query(`DELETE FROM users WHERE userid = $1`,
+        [request.user.userid]);
+        console.log(`Bruger med e-mail ${request.user.email} er blevet slettet.`);
+        response.clearCookie('jwt-token');
+        response.send(JSON.stringify('ok'));
 }
 
 //Function that deletes a specific order from the active user.

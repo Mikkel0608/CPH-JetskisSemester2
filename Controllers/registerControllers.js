@@ -32,20 +32,10 @@ function register (request, response){
             response.send(JSON.stringify(responseText));
         }
 
-        //Creating a new customer by inserting into usertype and users tables
-            if (form_valid === true){
-                const type = "cus";
-                pool.query(`INSERT INTO usertype(type) VALUES ($1) RETURNING userTypeId`, [type], function (error, results) {
-                    if (error){
-                        throw error;
-                    } else{
-                        createCustomer(results.rows[0].usertypeid);
-                    }
-                });
-
-
-                function createCustomer(usertypeid) {
-                    pool.query(`INSERT INTO users(
+        //Creating a new customer by inserting into users table
+            if (form_valid === true) {
+                var userTypeId = 2;
+                pool.query(`INSERT INTO users(
                 usertypeid,
                 userName, 
                 streetName,
@@ -57,12 +47,11 @@ function register (request, response){
                 password)
                 VALUES(
                 $1, $2, $3, $4, $5, $6, $7, $8, crypt($9, gen_salt('bf')));
-                `, [usertypeid, name, streetName, streetNumber, postalCode, city, phone, email, password]);
-                    request.body.ok = true;
-                    response.send(request.body);
-                }
+                `, [userTypeId, name, streetName, streetNumber, postalCode, city, phone, email, password]);
+                request.body.ok = true;
+                response.send(request.body);
             }
-        });
+    });
         console.log(form_valid);
     });
 }
