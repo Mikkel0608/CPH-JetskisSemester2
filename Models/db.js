@@ -104,6 +104,18 @@ function createTables () {
                             imageSRC)
                             VALUES(
                             3, 600, 'Kawasaki STF-15F', 'Pris: 600 kr. for 2 timer', 3, '../images/kawasaki-stx-15f.jpg') ON CONFLICT (productId) DO NOTHING;
+                            
+                            INSERT INTO userType(
+                            userTypeId,
+                            type)
+                            VALUES(
+                            1, 'adm') ON CONFLICT (userTypeId) DO NOTHING;
+                            
+                            INSERT INTO userType(
+                            userTypeId,
+                            type)
+                            VALUES(
+                            2, 'cus') ON CONFLICT (userTypeId) DO NOTHING;
                             `;
 
 
