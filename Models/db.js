@@ -135,7 +135,7 @@ function createAdmin(){
         pool.query(`
                     INSERT INTO users(        
                     usertypeid, userName, email, password)
-                    VALUES($1, 'admin', 'admin@admin.com', crypt('admink', gen_salt('bf')));`, [usertypeid]);
+                    VALUES($1, 'admin', 'admin@admin.com', crypt('admin', gen_salt('bf')));`, [usertypeid]);
     }
 }
 
