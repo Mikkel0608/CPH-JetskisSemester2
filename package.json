@@ -17,7 +17,7 @@
   "homepage": "https://github.com/Mikkel0608/CPH-JetskisSemester2#readme",
   "dependencies": {
     "alert-node": "^3.0.10",
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cookieparser": "^0.1.0",
